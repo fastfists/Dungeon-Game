@@ -5,10 +5,10 @@ debug =[]
 class dungeon:
     notnull = []
     allrooms = []
-    self.currenType = -1
+    currenType = -1
     def __init__(self ,resolution, roomCount):
-        self.prngNum = random.randint(0, 879190747)
-        self.debug = self.prngNum
+        self.prngNum = 406809004  #random.randint(0, 879190747)
+        self.num = self.prngNum
         self.resolution = resolution
         self.roomCount = roomCount
         self.cantouch = [[0 for _ in range(self.resolution)] for _ in range(self.resolution) ]        
@@ -24,8 +24,8 @@ class dungeon:
     def make(self):
         while True:
             x,y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
-            if self._format(x,y,3):
-                self.allrooms.append(Room(3, self.currentRoom,self.notnull, self.Idtbl))
+            if self._format(3,x,y):
+                self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl))
                 break
         while len(self.allrooms) != self.roomCount:
             self.works = False
@@ -41,7 +41,7 @@ class dungeon:
                     elif self.Idtbl[x][y] == 3 or self.Idtbl[x][y] == 4:
                         size = 2
                     if self._format(size, newX,newY):
-                        self.allrooms.append(Room(size, self.currentRoom, self.notnull, self.Idtbl))
+                        self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl))
                         self.update()
                         # dont forget doors.
             except:
@@ -57,6 +57,7 @@ class dungeon:
                 try:
                     ide = self.Idtbl[x][y] % 5
                 except:
+                    print("unique")
                     ide = 4
                 if ide == 0:
                     f= 'gray'
@@ -93,13 +94,16 @@ class dungeon:
                         newX, newY = sx-x, sy-y
                     elif typ == 3:
                         newX,newY = sx+x,sy-y
-                    self.currentRoom.append((newX,newY))
+                    else:
+                        return False
                     try:
                         if self.Idtbl[newX][newY] != 0:
-                            works=False
+                            works = False
+                            break
                     except:
                         works=False
-                    if (newX,newY) in self.notnull  or newX < 0 or newY<0  or not works:
+                        break
+                    if (newX,newY) in self.notnull  or newX < 0 or newY<0:
                         works = False
                         break #breaks from X loop
                 if not works:
@@ -107,7 +111,7 @@ class dungeon:
             if works:
                 self.currenType = typ
                 return works
-        return works  # returns False because none of the types work
+        return False  # returns False because none of the types work
 
     def update(self):
         for y in range(self.resolution):
@@ -154,13 +158,20 @@ class dungeon:
         pass
 
 class Room:
-    def __init__(self, size, positions, notnull, idtbl):
+    def __init__(self, size, how, sx,sy, notnull, idtbl):
         try:
             self.width,self.height = size
         except:
             self.width,self.height = size,size
-        self.blocks = positions
-        print(positions)
+        if how == 0:
+            self.blocks = [(sx + x , sy + y ) for y in range(self.height) for x in range(self.width)]
+        if how == 1:
+            self.blocks = [(sx - x , sy + y ) for y in range(self.height) for x in range(self.width)]
+        if how == 2:
+            self.blocks = [(sx - x , sy - y ) for y in range(self.height) for x in range(self.width)]
+        if how == 3:
+            self.blocks = [(sx + x , sy - y ) for y in range(self.height) for x in range(self.width)]
+        self.how = how
         for x,y in self.blocks:
             notnull.append((x,y))
             idtbl[x][y] = size
@@ -173,6 +184,8 @@ class Room:
             
 
 if __name__ == "__main__":
-    d = dungeon(10,5)
+    d = dungeon(20,20)
     d.make()
     d.draw()
+
+    print(" Rand int:",d.num)
