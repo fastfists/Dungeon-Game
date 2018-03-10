@@ -6,8 +6,8 @@ class dungeon:
     notnull = []
     allrooms = []
     currenType = -1
-    def __init__(self ,resolution, roomCount, specialWeigth = 2):
-        self.prngNum = random.randint(0, 879190747)
+    def __init__(self ,resolution, roomCount, specialWeigth = 2 , prngnum = random.randint(0,879190747)):
+        self.prngNum = prngnum
         self.num = self.prngNum
         self.resolution = resolution
         self.roomCount = roomCount
@@ -223,7 +223,7 @@ class Room:
             
 
 if __name__ == "__main__":
-    d = dungeon(20,20)
+    d = dungeon(1000000,50, prngnum=154687469)
     d.make()
     d.draw()
     for i in range(10):
