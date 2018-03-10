@@ -56,6 +56,29 @@ class dungeon:
                 continue
         self.addWalls()
 
+    def addRoom(self):
+        self.removeWalls()
+        self.roomCount += 1
+        while len(self.allrooms) != self.roomCount:
+            self.works = False
+            x,y = self.notnull[ self._Prng(len(self.notnull)) ]
+            moveX , moveY = self.__findDir( self._Prng(4) )
+            newX , newY = x + moveX , y + moveY
+            try:
+                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
+                    if self._Prng(self.weight,wantBool=True):
+                        print("boom")
+                        size = (4,2)
+                        self.weight *= 8
+                    elif self.Idtbl[x][y] == 2:
+                        size = 4
+                    elif self.Idtbl[x][y] == 3 or self.Idtbl[x][y] == 4:
+                        size = 2
+                    if self._format(size, newX,newY):
+                        self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl))
+                        newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
+                        self.update(size, self.currenType,newX, newY)
+
     def __startVal(self, room):
         startVal = 0
         for section in room.blocks:
@@ -91,7 +114,7 @@ class dungeon:
                 if self.Idtbl[x][y] > 5:
                     o='brown'
                     w=1
-                dungeon.create_rectangle(x*(700//self.resolution),y*(700//self.resolution),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w)
+                dungeon.create_rectangle(x*(700//self.resolution)),y*(700//self.resolution),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w)
                 dungeon.pack()
         master.mainloop()
 
@@ -187,15 +210,14 @@ class dungeon:
                 try:
                     if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
                         self.Idtbl[neighborX][neighborY] = 1
+                        self.notnull.append(neighborx, neighborY)
                 except:
                     pass
 
-
-
     def removeWalls(self):
-        for y in range (self.resolution):
-            for x in range (self.resolution):
-                if self.Idtbl[x][y] == 1: self.Idtbl[x][y] == 0
+        checkVals = [x for x in self.notnull if self.Idtbl[[ x[0] ][ x[1] ] == 1 ]
+        for x,y in checkVals:
+            self.Idtbl[x][y] = 0
 
 class Room:
     def __init__(self, size, how, sx,sy, notnull, idtbl):
