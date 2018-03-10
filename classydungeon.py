@@ -11,10 +11,10 @@ class dungeon:
         self.num = self.prngNum
         self.resolution = resolution
         self.roomCount = roomCount
-        self.cantouch = [[0 for _ in range(self.resolution)] for _ in range(self.resolution) ]        
+        self.cantouch = [[0 for _ in range(self.resolution)] for _ in range(self.resolution) ]
         self.Idtbl = [[0 for _ in range(self.resolution)] for _ in range(self.resolution)]
         self.weight = specialWeigth
-    
+
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
         if wantBool:
@@ -55,7 +55,7 @@ class dungeon:
             except:
                 continue
         self.addWalls()
-    
+
     def __startVal(self, room):
         startVal = 0
         for section in room.blocks:
@@ -91,7 +91,7 @@ class dungeon:
                 if self.Idtbl[x][y] > 5:
                     o='brown'
                     w=1
-                dungeon.create_rectangle(x*(700//self.resolution),y*(700//self.resolution),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w) 
+                dungeon.create_rectangle(x*(700//self.resolution),y*(700//self.resolution),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w)
                 dungeon.pack()
         master.mainloop()
 
@@ -133,7 +133,6 @@ class dungeon:
         return False  # returns False because none of the types work
 
     def update(self, size, how, startX, startY):
-        #TODO change this update function to be mroe "limited"
         for y in range(startY + 2):
             for x in range(startX + 2):
                 _pass = True
@@ -173,23 +172,25 @@ class dungeon:
             return (-1,1)
         if dir_index == 7:
             return (1,1)
-    
+
     def doors(self):
         #TODO add this later in a better way(mabey as a Room method)
         pass
-    
+
     def addWalls(self):
-        for y in range(self.resolution):
-            for x in range(self.resolution):
-                if (x,y) in self.notnull:
-                    for direction in range(8):
-                        nx,ny = self.__findDir(direction)
-                        neighborX, neighborY = nx+x, ny+y
-                        try:
-                            if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
-                                self.Idtbl[neighborX][neighborY] = 1 
-                        except:
-                            pass
+        checkVals = [x for x in self.notnull if self.cantouch[  x[0] ][  x[1]  ] != 1]
+        for tup in checkVals:
+            x,y = tup
+            for direction in range(8):
+                nx,ny = self.__findDir(direction)
+                neighborX, neighborY = nx+x, ny+y
+                try:
+                    if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
+                        self.Idtbl[neighborX][neighborY] = 1
+                except:
+                    pass
+
+
 
     def removeWalls(self):
         for y in range (self.resolution):
@@ -215,16 +216,17 @@ class Room:
             notnull.append((x,y))
             idtbl[x][y] = size
         print("done")
-        # end of room subclass
+
     def __repr__(self):
         return "Room S: {},{}".format(self.width, self.height)
 
+    def newDoor(self,):
+        pass
 
-            
+
+
 
 if __name__ == "__main__":
     d = dungeon(1000000,50, prngnum=154687469)
     d.make()
     d.draw()
-    for i in range(10):
-        print(bool(d._Prng(2)))
