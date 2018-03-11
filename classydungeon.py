@@ -1,4 +1,4 @@
-''' A more classed based implementation of a dungeon '''
+''' Contains Dungeon object and Room objects '''
 from tkinter import Tk,Canvas
 import random
 debug =[]
@@ -40,7 +40,6 @@ class dungeon:
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
                     if self._Prng(self.weight,wantBool=True):
-                        print("boom")
                         size = (4,2)
                         self.weight *= 8
                     elif self.Idtbl[x][y] == 2:
@@ -67,7 +66,6 @@ class dungeon:
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
                     if self._Prng(self.weight,wantBool=True):
-                        print("boom")
                         size = (4,2)
                         self.weight *= 8
                     elif self.Idtbl[x][y] == 2:
@@ -78,7 +76,9 @@ class dungeon:
                         self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl))
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
-
+            except:
+                pass
+                        
     def __startVal(self, room):
         startVal = 0
         for section in room.blocks:
@@ -114,7 +114,7 @@ class dungeon:
                 if self.Idtbl[x][y] > 5:
                     o='brown'
                     w=1
-                dungeon.create_rectangle(x*(700//self.resolution)),y*(700//self.resolution),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w)
+                dungeon.create_rectangle(x*(700//self.resolution),(y*(700//self.resolution)),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w)
                 dungeon.pack()
         master.mainloop()
 
@@ -210,16 +210,19 @@ class dungeon:
                 try:
                     if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
                         self.Idtbl[neighborX][neighborY] = 1
-                        self.notnull.append(neighborx, neighborY)
+                        self.notnull.append(neighborX, neighborY)
                 except:
                     pass
 
     def removeWalls(self):
-        checkVals = [x for x in self.notnull if self.Idtbl[[ x[0] ][ x[1] ] == 1 ]
-        for x,y in checkVals:
-            self.Idtbl[x][y] = 0
+        checkVals = [x for x in self.notnull if self.Idtbl[[ x[0] ][ x[1] ] == 1 ]]
+        for tup in checkVals:
+            for x,y in tup:
+                self.Idtbl[x][y] = 0
+
 
 class Room:
+    ''' A class that contains its own pair of blocks and monsters'''
     def __init__(self, size, how, sx,sy, notnull, idtbl):
         try:
             self.width,self.height = size
@@ -237,15 +240,12 @@ class Room:
         for x,y in self.blocks:
             notnull.append((x,y))
             idtbl[x][y] = size
-        print("done")
 
     def __repr__(self):
         return "Room S: {},{}".format(self.width, self.height)
 
     def newDoor(self,):
         pass
-
-
 
 
 if __name__ == "__main__":
