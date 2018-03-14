@@ -9,10 +9,10 @@ class Player:
         self.health = 100
     
     def show(self):
-        pass
+        print('hello')
     
     def shoot(self):
-        pass
+        print("pew")
     
     def move(self,xChange=0, yChange=0):
         self.x += xChange
@@ -25,7 +25,6 @@ class Player:
 class Monster:
     def __init__(self, room):
         self.room = room
-        self.limits = self.room.blocks
         self.health = 50
     
     def attack(self):

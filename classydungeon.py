@@ -6,7 +6,8 @@ class dungeon:
     notnull = []
     allrooms = []
     currenType = -1
-    def __init__(self ,resolution, roomCount, specialWeigth = 2 , prngnum = random.randint(0,879190747)):
+
+    def __init__(self ,resolution = 10, roomCount = 3, specialWeigth = 2 , prngnum = random.randint(0,879190747)):
         self.prngNum = prngnum
         self.num = self.prngNum
         self.resolution = resolution
@@ -86,6 +87,11 @@ class dungeon:
                 if startVal > x + y:
                     startVal = x + y
         return startVal
+
+
+    def newDraw(self):
+        for room in self.allrooms:
+            room.draw()
 
     def draw(self):
         master = Tk()
@@ -176,8 +182,8 @@ class dungeon:
                         self.notnull.remove((x,y))
                     except:
                         pass
-
-    def __findDir(self,dir_index):
+    @staticmethod
+    def __findDir(dir_index):
         ''' A more conventional method to find the x and y positions '''
         if dir_index==0:
             return (1,0)
@@ -229,26 +235,45 @@ class Room:
         except:
             self.width,self.height = size,size
         if how == 0:
-            self.blocks = [(sx + x , sy + y ) for y in range(self.height) for x in range(self.width)]
-        if how == 1:
-            self.blocks = [(sx - x , sy + y ) for y in range(self.height) for x in range(self.width)]
-        if how == 2:
-            self.blocks = [(sx - x , sy - y ) for y in range(self.height) for x in range(self.width)]
-        if how == 3:
-            self.blocks = [(sx + x , sy - y ) for y in range(self.height) for x in range(self.width)]
-        self.how = how
-        for x,y in self.blocks:
+            self.blocks = [Tile(self, size, (sx + x , sy + y) ) for y in range(self.height) for x in range(self.width)]
+            print('hi')
+        elif how == 1:
+            self.blocks = [Tile(self , size, (sx - x , sy + y )) for y in range(self.height) for x in range(self.width)]
+        elif how == 2:
+            self.blocks = [Tile(self, size , (sx - x , sy - y )) for y in range(self.height) for x in range(self.width)]
+        elif how == 3:
+            self.blocks = [Tile(self, size, (sx + x , sy - y )) for y in range(self.height) for x in range(self.width)]
+        #self.blocks.sort()
+        for tile in self.blocks:
+            print(tile)
+            x,y = tile.position
+            print(x,y)
             notnull.append((x,y))
             idtbl[x][y] = size
 
+    def draw(self, resolution):
+        pass
+
     def __repr__(self):
-        return "Room S: {},{}".format(self.width, self.height)
+        return "Room: {},{}".format(self.width, self.height)
 
     def newDoor(self,):
         pass
 
+class Tile:
+    def __init__(self, Room, _type, position):
+        '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
+        self.room = Room
+        self._type = _type
+        self.position = position
+        print(self.position)
+
+    def draw(self, resolution):
+        pass
+
 
 if __name__ == "__main__":
-    d = dungeon(1000000,50, prngnum=154687469)
+    d = dungeon(resolution = 10, roomCount = 5, prngnum=15468746)
     d.make()
+    print(d.allrooms.__repr__())
     d.draw()
