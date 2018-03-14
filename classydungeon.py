@@ -1,6 +1,9 @@
 ''' Contains Dungeon object and Room objects '''
 from tkinter import Tk,Canvas
 import random
+#import pygame
+import time
+
 debug =[]
 class dungeon:
     notnull = []
@@ -79,8 +82,9 @@ class dungeon:
                         self.update(size, self.currenType,newX, newY)
             except:
                 pass
-                        
-    def __startVal(self, room):
+
+    @staticmethod           
+    def __startVal(room):
         startVal = 0
         for section in room.blocks:
             for x,y in section:
@@ -122,8 +126,7 @@ class dungeon:
                     w=1
                 dungeon.create_rectangle(x*(700//self.resolution),(y*(700//self.resolution)),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w)
                 dungeon.pack()
-        master.mainloop()
-
+        
     def _format(self,size, sx,sy):
         ''' Recieves a x and y position and creates the type needed to create it '''
         try:
@@ -236,18 +239,15 @@ class Room:
             self.width,self.height = size,size
         if how == 0:
             self.blocks = [Tile(self, size, (sx + x , sy + y) ) for y in range(self.height) for x in range(self.width)]
-            print('hi')
         elif how == 1:
             self.blocks = [Tile(self , size, (sx - x , sy + y )) for y in range(self.height) for x in range(self.width)]
         elif how == 2:
             self.blocks = [Tile(self, size , (sx - x , sy - y )) for y in range(self.height) for x in range(self.width)]
         elif how == 3:
             self.blocks = [Tile(self, size, (sx + x , sy - y )) for y in range(self.height) for x in range(self.width)]
-        #self.blocks.sort()
+        self.blocks.sort()
         for tile in self.blocks:
-            print(tile)
             x,y = tile.position
-            print(x,y)
             notnull.append((x,y))
             idtbl[x][y] = size
 
@@ -266,14 +266,29 @@ class Tile:
         self.room = Room
         self._type = _type
         self.position = position
-        print(self.position)
+        #self.picture = pygame.image.load()
+
+    def addDoor(self, positon):
+        '''Recievs a Position North South East and West and changes the values of it'''
+        pass
 
     def draw(self, resolution):
         pass
 
+    def __lt__(self, other):
+        return self.position < other.position
+    
+    def __gt__(self, other):
+        return self.position > other.position
+
+    def __eq__(self, other):
+        return self.position == other.position    
 
 if __name__ == "__main__":
-    d = dungeon(resolution = 10, roomCount = 5, prngnum=15468746)
+    start = time.time()
+    d = dungeon(resolution = 20, roomCount = 25, prngnum=15468746)
     d.make()
-    print(d.allrooms.__repr__())
     d.draw()
+    end = time.time()
+    print(end - start)
+    

@@ -7,6 +7,7 @@ class Player:
         self.x = xStart
         self.y = yStart
         self.health = 100
+        self.isAlive = True
     
     def show(self):
         print('hello')
@@ -37,4 +38,7 @@ class Monster:
         pass
 
 if __name__ == '__main__':
+    boi = dun.dungeon()
+    boi.make()
+    boi.draw()
     print("?")
