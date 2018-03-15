@@ -3,6 +3,7 @@ from tkinter import Tk,Canvas
 import random
 #import pygame
 import time
+import characters
 
 debug =[]
 class dungeon:
@@ -252,6 +253,10 @@ class Room:
             x,y = tile.position
             notnull.append((x,y))
             idtbl[x][y] = size
+        if size == 3:
+            self.monsters = characters.Boss(self, 3)
+        else:
+            self.monsters = [ characters.Monster(self) for x in range(random.randint(0,3))
 
     def draw(self, resolution):
         for tile in self.blocks:
@@ -283,6 +288,12 @@ class Tile:
             self.doors["East"] = 1
         if position == 'W':
             self.doors["West"] = 1
+
+    def get_x(self):
+        return self.position[0]
+
+    def get_x(self):
+        return self.position[1]
 
     def draw(self, resolution):
         # TODO Import the pictures

@@ -24,18 +24,46 @@ class Player:
 
 
 class Monster:
-    def __init__(self, room):
+    def __init__(self, room, health = 50):
         self.room = room
-        self.health = 50
-    
+        self.health = health
+
+    @property
+    def x_limit(self):
+        ''' Returns a tuple containing (x min x max) '''
+        return (self.room.blocks[0].get_x(), self.room.blocks[-1].get_x())
+
+    @property
+    def y_limit(self):
+        return (self.room.blocks[0].get_y(), self.room.blocks[-1].get_y())
+
     def attack(self):
         pass
 
     def hit(self):
         pass
     
-    def patrol(self):
+    def show(self):
         pass
+
+    def patrol(self):
+        if self.x > self.x_limit[1]:
+            self.direction = 'West'
+        elif self.x < self.x_limit[0]:
+            self.direction = 'East'
+
+        if self.direction = 'East':
+            self.x += .1
+        else:
+            self.x -= .1
+
+
+class Boss(Monster):
+
+    def __init__(self, room, level):
+        self.level = level
+        super().__init__(room, health = 100)
+
 
 if __name__ == '__main__':
     boi = dun.dungeon()
