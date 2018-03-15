@@ -132,7 +132,7 @@ class dungeon:
         try:
             width, height = size
         except:
-            width,height = size,size
+            width = height = size
         for typ in range(4):
             works= True
             for y in range(height):
@@ -185,6 +185,7 @@ class dungeon:
                         self.notnull.remove((x,y))
                     except:
                         pass
+    
     @staticmethod
     def __findDir(dir_index):
         ''' A more conventional method to find the x and y positions '''
@@ -224,6 +225,7 @@ class dungeon:
                     pass
 
     def removeWalls(self):
+        ''' Scans through the list and removes all walls '''
         checkVals = [x for x in self.notnull if self.Idtbl[[ x[0] ][ x[1] ] == 1 ]]
         for tup in checkVals:
             for x,y in tup:
@@ -252,13 +254,16 @@ class Room:
             idtbl[x][y] = size
 
     def draw(self, resolution):
-        pass
+        for tile in self.blocks:
+            tile.draw()
 
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
 
-    def newDoor(self,):
-        pass
+    def newDoor(self, tile, position):
+        for square in self.blocks:
+            if square is tile:
+                tile.addDoor(position)      
 
 class Tile:
     def __init__(self, Room, _type, position):
@@ -266,21 +271,26 @@ class Tile:
         self.room = Room
         self._type = _type
         self.position = position
-        #self.picture = pygame.image.load()
+        self.doors = {"North":0,"South":0,"East":0, "West":0}
 
     def addDoor(self, positon):
         '''Recievs a Position North South East and West and changes the values of it'''
-        pass
+        if position == 'N':
+            self.doors ["North"] = 1
+        if position == 'S':
+            self.doors["South"] = 1
+        if position == 'E':
+            self.doors["East"] = 1
+        if position == 'W':
+            self.doors["West"] = 1
 
     def draw(self, resolution):
+        # TODO Import the pictures
         pass
 
     def __lt__(self, other):
         return self.position < other.position
     
-    def __gt__(self, other):
-        return self.position > other.position
-
     def __eq__(self, other):
         return self.position == other.position    
 
@@ -289,6 +299,6 @@ if __name__ == "__main__":
     d = dungeon(resolution = 20, roomCount = 25, prngnum=15468746)
     d.make()
     d.draw()
-    end = time.time()
-    print(end - start)
+    d.addRoom()
+    d.draw()
     
