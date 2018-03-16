@@ -5,7 +5,6 @@ import random
 import time
 import characters
 
-debug =[]
 class dungeon:
     notnull = []
     allrooms = []
@@ -232,7 +231,18 @@ class dungeon:
             for x,y in tup:
                 self.Idtbl[x][y] = 0
 
-
+    def make_start_pos(self):
+            x,y = self.notnull[ self._Prng(len(self.notnull)) ]
+            moveX , moveY = self.__findDir( self._Prng(4) )
+            newX , newY = x + moveX , y + moveY
+            try:
+                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
+                    self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl)
+                    self.start_pos = (newX, newY)
+            except:
+                make_start_pos()
+            
+            
 class Room:
     ''' A class that contains its own pair of blocks and monsters'''
     def __init__(self, size, how, sx,sy, notnull, idtbl):
@@ -249,14 +259,14 @@ class Room:
         elif how == 3:
             self.blocks = [Tile(self, size, (sx + x , sy - y )) for y in range(self.height) for x in range(self.width)]
         self.blocks.sort()
-        for tile in self.blocks:
+        for tile in self.blocks.sort:
             x,y = tile.position
             notnull.append((x,y))
             idtbl[x][y] = size
         if size == 3:
             self.monsters = characters.Boss(self, 3)
-        else:
-            self.monsters = [ characters.Monster(self) for x in range(random.randint(0,3))
+        elif size > 0:
+            self.monsters = [ characters.Monster(self) for x in range(random.randint(0,3)) ]
 
     def draw(self, resolution):
         for tile in self.blocks:
@@ -270,24 +280,20 @@ class Room:
             if square is tile:
                 tile.addDoor(position)      
 
+
 class Tile:
     def __init__(self, Room, _type, position):
         '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
         self.room = Room
-        self._type = _type
         self.position = position
         self.doors = {"North":0,"South":0,"East":0, "West":0}
 
     def addDoor(self, positon):
-        '''Recievs a Position North South East and West and changes the values of it'''
-        if position == 'N':
-            self.doors ["North"] = 1
-        if position == 'S':
-            self.doors["South"] = 1
-        if position == 'E':
-            self.doors["East"] = 1
-        if position == 'W':
-            self.doors["West"] = 1
+        '''Recievs a Position North South East and West and changes the values of the door'''
+        if position == 'N': self.doors ["North"] = 1
+        elif position == 'S': self.doors["South"] = 1
+        elif position == 'E': self.doors["East"] = 1
+        elif position == 'W': self.doors["West"] = 1
 
     def get_x(self):
         return self.position[0]
@@ -297,6 +303,7 @@ class Tile:
 
     def draw(self, resolution):
         # TODO Import the pictures
+
         pass
 
     def __lt__(self, other):
@@ -304,6 +311,7 @@ class Tile:
     
     def __eq__(self, other):
         return self.position == other.position    
+
 
 if __name__ == "__main__":
     start = time.time()

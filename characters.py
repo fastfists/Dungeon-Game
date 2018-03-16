@@ -27,6 +27,8 @@ class Monster:
     def __init__(self, room, health = 50):
         self.room = room
         self.health = health
+        self.isAlive = None
+        #self.picture = 'zombie.png' 
 
     @property
     def x_limit(self):
@@ -40,10 +42,18 @@ class Monster:
     def attack(self):
         pass
 
-    def hit(self):
-        pass
+    def damgage(self, dmg):
+        self.health -= dmg
+        if self.health < 0:
+            self.isAlive = False
     
     def show(self):
+        """
+        Draws self using the X and Y position
+        """
+        if not isAlive:
+            return
+        # It is alive Draw
         pass
 
     def patrol(self):

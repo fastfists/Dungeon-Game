@@ -1,3 +1,9 @@
 # Dungeon-Game
-Hello this is my repository for creating a really fancy dungeon
-I am planning to change the dungeon into a game
+
+This is a mini ""library"" in which I am creating 
+This library includes a dungeon generator and Monsters that are within
+
+## Game aspects:
+
+A few of the gmae aspects I am planning to add are 
+A Player, a reward system, an inventory of items, and many more
