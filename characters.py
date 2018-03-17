@@ -1,6 +1,6 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
 
-import classydungeon as dun
+from classydungeon import *
 
 class Player:
     def __init__(self, xStart, yStart):
@@ -62,10 +62,10 @@ class Monster:
         elif self.x < self.x_limit[0]:
             self.direction = 'East'
 
-        if self.direction = 'East':
-            self.x += .1
+        if self.direction == 'East':
+            self.x += self.speed
         else:
-            self.x -= .1
+            self.x -= self.speed
 
 
 class Boss(Monster):
@@ -76,7 +76,7 @@ class Boss(Monster):
 
 
 if __name__ == '__main__':
-    boi = dun.dungeon()
+    boi = dungeon()
     boi.make()
     boi.draw()
     print("?")

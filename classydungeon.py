@@ -10,13 +10,14 @@ class dungeon:
     allrooms = []
     currenType = -1
 
-    def __init__(self ,resolution = 10, roomCount = 3, specialWeigth = 2 , prngnum = random.randint(0,879190747)):
-        self.prngNum = prngnum
-        self.num = self.prngNum
-        self.resolution = resolution
+    def __init__(self ,resolution = (10,10), roomCount = 3, specialWeigth = 2 , seed = random.randint(0,879190747)):
+        self.prngNum = seed
+        self.seed = self.prngNum
+        self.RESOLUTION = resolution
+        self.WIDTH, self.HEIGHT = self.RESOLUTION
         self.roomCount = roomCount
-        self.cantouch = [[0 for _ in range(self.resolution)] for _ in range(self.resolution) ]
-        self.Idtbl = [[0 for _ in range(self.resolution)] for _ in range(self.resolution)]
+        self.cantouch = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH) ]
+        self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
 
     def _Prng(self,limit, wantBool = False):
@@ -28,7 +29,7 @@ class dungeon:
         return self.prngNum % limit
 
     def __repr__(self):
-        return "Dungeon: {0} , {1}" .format(self.resolution, len(self.allrooms))
+        return "Dungeon: {0} , {1}" .format(self.RESOLUTION, len(self.allrooms))
 
     def make(self):
         while True:
@@ -43,13 +44,13 @@ class dungeon:
             newX , newY = x + moveX , y + moveY
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
+                    if self.Idtbl[x][y] != 2:
+                        size = 2                    
                     if self._Prng(self.weight,wantBool=True):
                         size = (4,2)
                         self.weight *= 8
                     elif self.Idtbl[x][y] == 2:
                         size = 4
-                    elif self.Idtbl[x][y] == 3 or self.Idtbl[x][y] == 4:
-                        size = 2
                     if self._format(size, newX,newY):
                         self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl))
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
@@ -57,6 +58,7 @@ class dungeon:
                         # dont forget doors.
             except:
                 continue
+        self.make_start_pos()
         self.addWalls()
 
     def addRoom(self):
@@ -64,7 +66,7 @@ class dungeon:
         self.roomCount += 1
         while len(self.allrooms) != self.roomCount:
             self.works = False
-            x,y = self.notnull[ self._Prng(len(self.notnull)) ]
+            x, y = self.notnull[ self._Prng(len(self.notnull)) ]
             moveX , moveY = self.__findDir( self._Prng(4) )
             newX , newY = x + moveX , y + moveY
             try:
@@ -98,17 +100,13 @@ class dungeon:
             room.draw()
 
     def draw(self):
-        master = Tk()
-        dungeon= Canvas(master,width=700,height=700)
-        for y in range(self.resolution):
-            for x in range (self.resolution):
+        self.master = Tk()
+        dungeon= Canvas(self.master,width=700,height=700)
+        for y in range(self.HEIGHT):
+            for x in range (self.WIDTH):
                 w=1
                 o='black'
-                try:
-                    ide = self.Idtbl[x][y] % 5
-                except:
-                    self.Idtbl[x][y] = 5
-                    ide = 5
+                ide = self.Idtbl[x][y]
                 if ide == 0:
                     f= 'gray'
                 elif ide == 1:
@@ -121,14 +119,22 @@ class dungeon:
                     f='purple'
                 elif ide ==5:
                     f= 'red'
-                if self.Idtbl[x][y] > 5:
-                    o='brown'
-                    w=1
-                dungeon.create_rectangle(x*(700//self.resolution),(y*(700//self.resolution)),((x+1)*(700//self.resolution))-1,((y+1)*(700//self.resolution))-1,fill=f,outline=o,width=w)
+                elif type(ide) is tuple:
+                    f = 'orange'
+                dungeon.create_rectangle(
+                                        x*(700//self.WIDTH),
+                                        (y*(700//self.HEIGHT)),
+                                        ((x+1)*(700//self.WIDTH))-1,
+                                        ((y+1)*(700//self.HEIGHT))-1,
+                                        fill=f,
+                                        outline=o,
+                                        width=w
+                                        )
                 dungeon.pack()
+        self.master.mainloop()
         
     def _format(self,size, sx,sy):
-        ''' Recieves a x and y position and creates the type needed to create it '''
+        """ Recieves a x and y position and creates the type needed to create it """
         try:
             width, height = size
         except:
@@ -211,7 +217,7 @@ class dungeon:
         pass
 
     def addWalls(self):
-        checkVals = [x for x in self.notnull if self.cantouch[  x[0] ][  x[1]  ] != 1]
+        checkVals = [(x,y) for x,y in self.notnull if self.cantouch[  x][  y  ] != 1]
         for tup in checkVals:
             x,y = tup
             for direction in range(8):
@@ -226,21 +232,24 @@ class dungeon:
 
     def removeWalls(self):
         ''' Scans through the list and removes all walls '''
-        checkVals = [x for x in self.notnull if self.Idtbl[[ x[0] ][ x[1] ] == 1 ]]
-        for tup in checkVals:
-            for x,y in tup:
-                self.Idtbl[x][y] = 0
+        checkVals = [(x,y) for x,y in self.notnull if self.Idtbl[ x ][ y ] == 1]
+        for x,y in checkVals :
+            self.Idtbl[x][y] = 0
 
     def make_start_pos(self):
             x,y = self.notnull[ self._Prng(len(self.notnull)) ]
             moveX , moveY = self.__findDir( self._Prng(4) )
             newX , newY = x + moveX , y + moveY
             try:
-                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
+                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3:
                     self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl)
                     self.start_pos = (newX, newY)
+                    self.Idtbl[newX][newY] = 5
+                    #TODO dont forget to add a door after this 
+                else:
+                    self.make_start_pos()
             except:
-                make_start_pos()
+                self.make_start_pos()
             
             
 class Room:
@@ -259,7 +268,7 @@ class Room:
         elif how == 3:
             self.blocks = [Tile(self, size, (sx + x , sy - y )) for y in range(self.height) for x in range(self.width)]
         self.blocks.sort()
-        for tile in self.blocks.sort:
+        for tile in self.blocks:
             x,y = tile.position
             notnull.append((x,y))
             idtbl[x][y] = size
@@ -290,7 +299,7 @@ class Tile:
 
     def addDoor(self, positon):
         '''Recievs a Position North South East and West and changes the values of the door'''
-        if position == 'N': self.doors ["North"] = 1
+        if position == 'N': self.doors["North"] = 1
         elif position == 'S': self.doors["South"] = 1
         elif position == 'E': self.doors["East"] = 1
         elif position == 'W': self.doors["West"] = 1
@@ -310,14 +319,15 @@ class Tile:
         return self.position < other.position
     
     def __eq__(self, other):
-        return self.position == other.position    
+        return self.position == other.position
 
 
 if __name__ == "__main__":
-    start = time.time()
-    d = dungeon(resolution = 20, roomCount = 25, prngnum=15468746)
-    d.make()
-    d.draw()
-    d.addRoom()
-    d.draw()
+    try:
+        d = dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2)
+        d.make()
+        d.draw()
+    except KeyboardInterrupt as e:
+        print(d.seed)
+
     
