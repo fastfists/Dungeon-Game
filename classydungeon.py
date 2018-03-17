@@ -5,7 +5,7 @@ import random
 import time
 import characters
 
-class dungeon:
+class Dungeon:
     notnull = []
     allrooms = []
     currenType = -1
@@ -312,7 +312,7 @@ class Tile:
 
     def draw(self, resolution):
         # TODO Import the pictures
-
+        # TODO size = 360/resolution * Size of image
         pass
 
     def __lt__(self, other):
@@ -324,7 +324,7 @@ class Tile:
 
 if __name__ == "__main__":
     try:
-        d = dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2)
+        d = Dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2)
         d.make()
         d.draw()
     except KeyboardInterrupt as e:

@@ -51,10 +51,7 @@ class Monster:
         """
         Draws self using the X and Y position
         """
-        if not isAlive:
-            return
-        # It is alive Draw
-        pass
+        raise NotImplementedError
 
     def patrol(self):
         if self.x > self.x_limit[1]:
