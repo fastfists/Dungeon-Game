@@ -1,6 +1,6 @@
 from classydungeon import *
 from characters import *
-import pygame
+#import pygame
 
 
 class Game():

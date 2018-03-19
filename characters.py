@@ -1,5 +1,5 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
-import pygame.sprite
+#import pygame.sprite
 from classydungeon import *
 
 class Player:

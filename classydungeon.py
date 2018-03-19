@@ -85,14 +85,13 @@ class Dungeon:
                         self.update(size, self.currenType,newX, newY)
             except:
                 pass
-
-    @staticmethod           
-    def __startVal(room):
-        startVal = 0
-        for section in room.blocks:
-            for x,y in section:
-                if startVal > x + y:
-                    startVal = x + y
+           
+    def __startVal(self, room):
+        startVal = (0,0)
+        for tile in room.blocks:
+            x,y = tile.position
+            if startVal <  (x, y):
+                startVal = x , y
         return startVal
 
 
@@ -243,13 +242,13 @@ class Dungeon:
             newX , newY = x + moveX , y + moveY
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3:
-                    self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl)
+                    self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl,self)
                     self.start_pos = (newX, newY)
                     self.Idtbl[newX][newY] = 5
                     #TODO dont forget to add a door after this 
                 else:
                     self.make_start_pos()
-            except:
+            except IndexError:
                 self.make_start_pos()
             
             
@@ -324,10 +323,12 @@ class Tile:
     def __eq__(self, other):
         return self.position == other.position
 
+    def __repr__(self):
+        return "Tile: {}".format(position)
 
 if __name__ == "__main__":
     try:
-        d = Dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2)
+        d = Dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2, seed=584831879)
         d.make()
         d.draw()
     except KeyboardInterrupt as e:
