@@ -1,16 +1,17 @@
 ''' Contains Dungeon object and Room objects '''
-from tkinter import Tk,Canvas
+from tkinter import Tk, Canvas
 import random
 #import pygame
 import time
 import characters
+
 
 class Dungeon:
     notnull = []
     allrooms = []
     currenType = -1
 
-    def __init__(self ,resolution = (10,10), roomCount = 3, specialWeigth = 2 , seed = random.randint(0,879190747)):
+    def __init__(self, resolution=(10, 10), roomCount=3, specialWeigth=2, seed=random.randint(0, 879190747)):
         self.prngNum = seed
         self.seed = self.prngNum
         self.RESOLUTION = resolution
@@ -20,7 +21,7 @@ class Dungeon:
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
 
-    def _Prng(self,limit, wantBool = False):
+    def _Prng(self, limit, wantBool=False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
         if wantBool:
             return self.prngNum % limit == 0
@@ -35,13 +36,13 @@ class Dungeon:
         while True:
             x,y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
             if self._format(3,x,y):
-                self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl))
+                self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl,self))
                 break
         while len(self.allrooms) != self.roomCount:
             self.works = False
             x,y = self.notnull[ self._Prng(len(self.notnull)) ]
-            moveX , moveY = self.__findDir( self._Prng(4) )
-            newX , newY = x + moveX , y + moveY
+            moveX, moveY = self.__findDir( self._Prng(4) )
+            newX, newY = x + moveX, y + moveY
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
                     if self.Idtbl[x][y] != 2:
@@ -52,11 +53,11 @@ class Dungeon:
                     elif self.Idtbl[x][y] == 2:
                         size = 4
                     if self._format(size, newX,newY):
-                        self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl))
+                        self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl,self))
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
                         # dont forget doors.
-            except:
+            except IndexError:
                 continue
         self.make_start_pos()
         self.addWalls()
@@ -101,24 +102,24 @@ class Dungeon:
 
     def draw(self):
         self.master = Tk()
-        dungeon= Canvas(self.master,width=700,height=700)
+        dungeon = Canvas(self.master,width=700,height=700)
         for y in range(self.HEIGHT):
-            for x in range (self.WIDTH):
-                w=1
-                o='black'
+            for x in range(self.WIDTH):
+                w = 1
+                o = 'black'
                 ide = self.Idtbl[x][y]
                 if ide == 0:
-                    f= 'gray'
+                    f = 'gray'
                 elif ide == 1:
-                    f= 'black'
+                    f = 'black'
                 elif ide == 2:
                     f = 'blue'
                 elif ide == 3:
-                    f= 'green'
+                    f = 'green'
                 elif ide == 4:
-                    f='purple'
-                elif ide ==5:
-                    f= 'red'
+                    f = 'purple'
+                elif ide == 5:
+                    f = 'red'
                 elif type(ide) is tuple:
                     f = 'orange'
                 dungeon.create_rectangle(
@@ -254,7 +255,8 @@ class Dungeon:
             
 class Room:
     ''' A class that contains its own pair of blocks and monsters'''
-    def __init__(self, size, how, sx,sy, notnull, idtbl):
+    def __init__(self, size, how, sx,sy, notnull, idtbl, dungeon):
+        self.dungeon = dungeon
         try:
             self.width,self.height = size
         except:
@@ -272,10 +274,11 @@ class Room:
             x,y = tile.position
             notnull.append((x,y))
             idtbl[x][y] = size
-        if size == 3:
-            self.monsters = characters.Boss(self, 3)
-        elif size > 0:
-            self.monsters = [ characters.Monster(self) for x in range(random.randint(0,3)) ]
+
+        if size == 3: self.monsters = characters.Boss(self, 3)
+        else : self.monsters = [ characters.Monster(self) for x in range(random.randint(0,3)) ]
+
+
 
     def draw(self, resolution):
         for tile in self.blocks:

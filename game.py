@@ -1,9 +1,7 @@
 from classydungeon import *
 from characters import *
-print('hi')
 import pygame
-print('bye')
-from time import sleep
+
 
 class Game():
     def __init__(self, size):

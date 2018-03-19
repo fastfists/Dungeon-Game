@@ -1,9 +1,11 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
-
+import pygame.sprite
 from classydungeon import *
 
 class Player:
+    #TODO dont forget to extend this class as a sprite
     def __init__(self, xStart, yStart):
+
         self.x = xStart
         self.y = yStart
         self.health = 100

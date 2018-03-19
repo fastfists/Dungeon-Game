@@ -1,5 +1,21 @@
 {
     "python.linting.pylintEnabled": false,
+    "python.linting.pep8Enabled": true,
+    "python.linting.pep8Args": [
+        "--Disable E501"
+    ],
+    "python.linting.lintOnSave": true,
     "python.autoComplete.addBrackets": false,
-    "python.pythonPath": "C:\\Users\\fdenz\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe"
+    "python.pythonPath": "C:\\Users\\fdenz\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe",
+    "python.unitTest.unittestArgs": [
+        "-v",
+        "-s",
+        ".",
+        "-p",
+        "test*.py"
+    ],
+    "python.unitTest.unittestEnabled": false,
+    "python.unitTest.promptToConfigure": false,
+    "python.unitTest.pyTestEnabled": false,
+    "python.unitTest.nosetestsEnabled": false
 }
