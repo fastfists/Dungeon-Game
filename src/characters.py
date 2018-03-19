@@ -1,6 +1,5 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
-
-from classydungeon import *
+import pygame
 
 class Player:
     def __init__(self, xStart, yStart):
@@ -12,8 +11,8 @@ class Player:
     def show(self):
         print('hello')
     
-    def shoot(self):
-        print("pew")
+    def attack(self):
+        print("charge")
     
     def move(self,xChange=0, yChange=0):
         self.x += xChange
@@ -23,7 +22,7 @@ class Player:
         self.health -= dmg
 
 
-class Monster:
+class Monster(pygame.sprite.Sprite):
     def __init__(self, room, health = 50):
         self.room = room
         self.health = health
@@ -46,12 +45,6 @@ class Monster:
         self.health -= dmg
         if self.health < 0:
             self.isAlive = False
-    
-    def show(self):
-        """
-        Draws self using the X and Y position
-        """
-        raise NotImplementedError
 
     def patrol(self):
         if self.x > self.x_limit[1]:
@@ -76,4 +69,3 @@ if __name__ == '__main__':
     boi = dungeon()
     boi.make()
     boi.draw()
-    print("?")
