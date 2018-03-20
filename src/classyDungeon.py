@@ -33,7 +33,7 @@ class Dungeon:
         self.cantouch = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH) ]
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
-        self.walls 
+        self.walls = pygame.sprite.Group()
 
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
@@ -113,6 +113,7 @@ class Dungeon:
             self.__draw(32)
         for room in self.allrooms:
             room.room_draw()
+        self.start_room.room_draw()
 
     def __draw(self,tilesize):
         ''' This is Deprocated '''
@@ -335,14 +336,14 @@ class Tile:
         # TODO Import the pictures
         # TODO size = 360/resolution * Size of image
         color = None
-        if self.room.size == 2:
+        if self.room.size == 1:
+            color = RED
+        elif self.room.size == 2:
             color = BLUE
         elif self.room.size == 3:
             color = GREEN
         elif self.room.size == 4:
             color = PURPLE
-        elif self.room.size == 5:
-            color = RED
         elif type(self.room.size) is tuple:
             color = ORANGE
         image = pygame.image.load("C:/Users/474932/Desktop/Python stuff/Dungeon_Game/img/Tile_and_Floor.png")

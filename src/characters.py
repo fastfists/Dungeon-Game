@@ -11,11 +11,12 @@ except ImportError: pass
 
 class Player(pygame.sprite.Sprite):
 
-    def __init__(self, xStart, yStart):
-        self.x = xStart
-        self.y = yStart
+    def __init__(self, position, game):
+        self.x, self.y = position
         self.health = 100
         self.isAlive = True
+        self.game = game
+        
     
     def show(self):
         print('hello')

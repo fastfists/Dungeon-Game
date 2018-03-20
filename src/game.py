@@ -17,22 +17,26 @@ from pprint import pprint
 class Game():
 
     def __init__(self, screen_size, tilesize=32):
-        # TODO make this more dynamic
-        self.clock = pygame.time.Clock()
+        # Set Constants
         self.SIZE = screen_size
-        self.WIDTH, self.HEIGHT = screen_size
+        self.WIDTH, self.HEIGHT = self.SIZE
         self.TILESIZE = tilesize
         self.GRIDWIDTH = self.WIDTH // self.TILESIZE
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
-        self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=14, game = self, seed=30)
+        # Set Up Dungeon
+        self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=30)
         self.dungeon.make()
+        # Set Up Pygame
         pygame.init()
         self.display = pygame.display.set_mode(self.SIZE)
+        self.clock = pygame.time.Clock()
+        # Set game variables
         self.game_over = False
 
     def setup(self):
         pygame.display.set_caption('Dungoen')
-
+        self.player = Player(self.dungeon.start_pos, self)
+    
     def game_loop(self):
         while not self.game_over:
             self.draw()
@@ -41,7 +45,7 @@ class Game():
 
     def draw(self):
         self.dungeon._draw()
-        self.Player.show
+        self.player.show
 
     def update(self):
         pygame.display.update()
@@ -63,6 +67,6 @@ class Game():
 
 
 if __name__ == '__main__':
-    newgame = Game((600,800),tilesize=64)
+    newgame = Game((800,600),tilesize=64)
     newgame.setup()
     newgame.game_loop()
