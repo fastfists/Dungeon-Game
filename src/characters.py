@@ -10,7 +10,7 @@ try:
 except ImportError: pass
 
 class Player(pygame.sprite.Sprite):
-    #TODO dont forget to extend this class as a sprite
+
     def __init__(self, xStart, yStart):
         self.x = xStart
         self.y = yStart
@@ -43,11 +43,11 @@ class Monster(pygame.sprite.Sprite):
     @property
     def x_limit(self):
         ''' Returns a tuple containing (x min x max) '''
-        return (self.room.blocks[0].get_x(), self.room.blocks[-1].get_x())
+        return (self.room.blocks[0].x, self.room.blocks[-1].x)
 
     @property
     def y_limit(self):
-        return (self.room.blocks[0].get_y(), self.room.blocks[-1].get_y())
+        return (self.room.blocks[0].y, self.room.blocks[-1].y)
 
     def attack(self):
         pass
