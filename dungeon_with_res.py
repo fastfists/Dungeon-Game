@@ -1,7 +1,16 @@
 from tkinter import Tk,Canvas
+import math
+g=0
 
-
-
+prngNum = int(input("What is the seed? "))
+resolution = int(input('What is the resolution (10 is recommended): '))
+roomamt= int(input("how many rooms? "))
+Idtbl=[[0 for i in range(resolution)] for i in range(resolution)]
+cantouch=[[0 for i in range(resolution)] for i in range(resolution)]
+notnull=[]
+allrooms=[]
+master= Tk()
+dungeon= Canvas(master,width=1000,height=1000)
 def Prng(limit):
     global prngNum
     prngNum = (prngNum*154687469+879190747) % 67280421310721
@@ -42,6 +51,7 @@ def setup(pn, r, rm):
     master= Tk()
     dungeon= Canvas(master,width=1000,height=1000)
     dungeon_master()    
+
 
 def dungeon_master():
     """The main man stan that controls the map"""
