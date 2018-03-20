@@ -1,13 +1,17 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
+try:
+    from game import *
+except ImportError: pass
+try:
+    from classydungeon import Room
+except ImportError: pass
+try:
+    import pygame
+except ImportError: pass
 
-#import pygame.sprite
-from classydungeon import *
-import pygame
-
-class Player:
+class Player(pygame.sprite.Sprite):
     #TODO dont forget to extend this class as a sprite
     def __init__(self, xStart, yStart):
-
         self.x = xStart
         self.y = yStart
         self.health = 100
@@ -28,6 +32,8 @@ class Player:
 
 
 class Monster(pygame.sprite.Sprite):
+    ''' The main enemy Mob spawn  '''
+    # TODO abstract this class later on to create new mobs
     def __init__(self, room, health = 50):
         self.room = room
         self.health = health
@@ -63,7 +69,7 @@ class Monster(pygame.sprite.Sprite):
             self.x -= self.speed
 
 
-class Boss(Monster):
+class BossMonster(Monster):
 
     def __init__(self, room, level):
         self.level = level

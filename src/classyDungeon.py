@@ -1,9 +1,15 @@
-
 ''' Contains Dungeon object and Room objects '''
-import characters
-import random
-import pygame
 from tkinter import Tk, Canvas
+import random
+try:
+    from game import *
+except ImportError: pass 
+try:
+    import pygame
+except ImportError: pass
+try:
+    from characters import Monster, BossMonster
+except ImportError: pass
 
 class Dungeon:
     notnull = []
@@ -15,9 +21,7 @@ class Dungeon:
         - Roomcount as an int
     '''
     def __init__(self ,resolution, roomCount, specialWeigth = 2 , seed = random.randint(0,879190747)):
-        '''
-        hi
-        '''
+
         self.prngNum = seed
         self.seed = self.prngNum
         self.RESOLUTION = resolution
@@ -29,21 +33,20 @@ class Dungeon:
 
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
-        if wantBool:
-            return self.prngNum % limit == 0
-        else:
-            pass
+        if wantBool: return self.prngNum % limit == 0
+        else: pass
         return self.prngNum % limit
 
     def __repr__(self):
         return "Dungeon: {0} , {1}" .format(self.RESOLUTION, len(self.allrooms))
 
     def make(self):
-        while True:
+        works = False
+        while not works:
             x,y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
             if self._format(3,x,y):
-                self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl))
-                break
+                self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl, is_boss=True))
+                works = True
         while len(self.allrooms) != self.roomCount:
             self.works = False
             x,y = self.notnull[ self._Prng(len(self.notnull)) ]
@@ -63,7 +66,7 @@ class Dungeon:
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
                         # dont forget doors.
-            except:
+            except IndexError:
                 continue
         self.make_start_pos()
         self.addWalls()
@@ -89,16 +92,14 @@ class Dungeon:
                         self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl))
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
-            except:
-                pass
+            except: pass
 
     @staticmethod           
     def __startVal(room):
-        startVal = 0
+        startVal = (0,0)
         for section in room.blocks:
-            for x,y in section:
-                if startVal > x + y:
-                    startVal = x + y
+            x,y = section.position
+            if startVal < (x, y): startVal = (x, y)
         return startVal
 
 
@@ -106,9 +107,9 @@ class Dungeon:
         for room in self.allrooms:
             room.draw()
 
-    def draw(self,game):
+    def draw(self,tilesize):
         self.master = Tk()
-        dungeon= Canvas(self.master,width=self.WIDTH,height=self.HEIGHT)
+        dungeon= Canvas(self.master,width=self.WIDTH*tilesize,height=self.HEIGHT*tilesize)
         for y in range(self.HEIGHT):
             for x in range (self.WIDTH):
                 w=1
@@ -129,10 +130,10 @@ class Dungeon:
                 elif type(ide) is tuple:
                     f = 'orange'
                 dungeon.create_rectangle(
-                                        x*(game.TILESIZE),
-                                        (y*(game.TILESIZE)),
-                                        ((x+1)*(game.TILESIZE))-1,
-                                        ((y+1)*(game.TILESIZE))-1,
+                                        x*(tilesize),
+                                        (y*(tilesize)),
+                                        ((x+1)*(tilesize))-1,
+                                        ((y+1)*(tilesize))-1,
                                         fill=f,
                                         outline=o,
                                         width=w
@@ -261,7 +262,7 @@ class Dungeon:
             
 class Room:
     ''' A class that contains its own pair of blocks and monsters'''
-    def __init__(self, size, how, sx,sy, notnull, idtbl):
+    def __init__(self, size, how, sx,sy, notnull, idtbl, is_boss = False):
         try:
             self.width,self.height = size
         except:
@@ -279,10 +280,10 @@ class Room:
             x,y = tile.position
             notnull.append((x,y))
             idtbl[x][y] = size
-        if size == 3:
-            self.monsters = 3
-        elif size > 0:
-            self.monsters = 3
+        if is_boss:
+            self.monsters = BossMonster(self, 1)
+        else:
+            self.monsters = [Monster(self) for x in range(random.randint(0,1))]
 
     def draw(self, resolution):
         for tile in self.blocks:
@@ -339,9 +340,10 @@ class Wall(pygame.sprite.Sprite):
 
 if __name__ == "__main__":
     try:
+        pygame.init()
         d = Dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2)
         d.make()
-        d.draw()
+        d.draw(32)
     except KeyboardInterrupt as e:
         print(d.seed)
     

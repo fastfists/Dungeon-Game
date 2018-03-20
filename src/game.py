@@ -1,7 +1,15 @@
-from classyDungeon import Dungeon
-import pygame
-import characters
+''' Contains the Game class'''
+try:
+    import pygame
+except ImportError: pass
+try:
+    from classydungeon import Dungeon
+except ImportError: pass
+try:
+    from characters import Player
+except ImportError: pass
 
+    
 class Game():
     def __init__(self, screen_size):
         # TODO make this more dynamic
@@ -25,7 +33,7 @@ class Game():
             self.events()
 
     def draw(self):
-        self.dungeon.draw(self)
+        self.dungeon.draw(self.TILESIZE)
 
     def events(self):
         for event in pygame.event.get():
