@@ -13,8 +13,9 @@ PURPLE = (145, 57, 92)
 ORANGE = (255, 98, 0)
 
 package_path = path.dirname(path.dirname(__file__))
-tile_direc = package_path + "\img" + "\dungeon_floor.png"
-Tiles_and_ceil = pygame.image.load(tile_direc)
+img_direc = package_path + "\img" + "\dungeon_floor.png"
+
+Tiles_and_ceil = pygame.image.load(img_direc + "\dungeon_floor.png")
 
 Sheets = { "Tile": (Tiles_and_ceil_ref, Tiles_and_ceil)} # The first one is the name of the image Dict, The second to the name of the file
 

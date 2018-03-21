@@ -27,7 +27,7 @@ class Dungeon:
         - Resolution as a tuple (width,height)
         - Roomcount as an int
     '''
-    def __init__(self ,resolution, roomCount, game, specialWeigth = 2 , seed = random.randint(0,879190747)):
+    def __init__(self ,resolution: tuple, roomCount, game, specialWeigth = 2 , seed = random.randint(0,879190747)):
         self.game = game
         self.prngNum = seed
         self.seed = self.prngNum
@@ -247,6 +247,7 @@ class Dungeon:
                 try:
                     if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
                         self.Idtbl[neighborX][neighborY] = 1
+                        self.walls.append(Wall((neighborX,neighborY),self))
                         self.notnull.append(neighborX, neighborY)
                 except:
                     pass
@@ -339,7 +340,7 @@ class Tile:
     def set_tile_size(cls, size):
         ''' Recieves the size of the new tile and sets it to the defalts '''
         cls.tile_size = size
-
+    
 
     def tile_draw(self):
         # TODO Import the pictures
@@ -357,14 +358,24 @@ class Tile:
 
 
 class Wall(pygame.sprite.Sprite):
-    wall_size = 32
+    #TODO hey im over here !!!! give me stuff!!!
+    wall_size = 16
     def __init__(self, position, Dungeon):
         """
         Recieves an X and Y position and the dungeon instance
         """
+        self.x, self.y = position
+        self.Dungeon = Dungeon
         pygame.sprite.Sprite.__init__(self)
     
-    def draw():
+    def draw_wall(self):
+        pass
+
+    @classmethod
+    def set_wall_size(cls,size):
+        cls.wall_size = size
+
+    def draw(self):
         pass
 
 

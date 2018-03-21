@@ -22,15 +22,16 @@ from pprint import pprint
 
 class Game():
 
-    def __init__(self, screen_size, tilesize=16):
+    def __init__(self, screen_size:tuple, tilesize=16):
         # Set Constants
         self.SIZE = screen_size
         self.WIDTH, self.HEIGHT = self.SIZE
         self.TILESIZE = tilesize
-        Tile.set_tile_size(tilesize)
+        self.set_sizes(tilesize)
         self.GRIDWIDTH = self.WIDTH // self.TILESIZE
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
+        
         pygame.init()
         self.display = pygame.display.set_mode(self.SIZE)
         self.clock = pygame.time.Clock()
@@ -40,6 +41,10 @@ class Game():
         
         self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=30)
         self.dungeon.make()
+
+    def set_sizes(self, size):
+        Tile.set_tile_size(size)
+        Wall.set_wall_size(size)
 
     def setup(self):
         pygame.display.set_caption('Dungoen')

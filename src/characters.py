@@ -44,6 +44,7 @@ class Monster(pygame.sprite.Sprite):
         self.health = health
         self.isAlive = None
         #self.picture = 'zombie.png' 
+    
 
     @property
     def x_limit(self):
