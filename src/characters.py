@@ -1,4 +1,5 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
+
 try:
     from game import *
 except ImportError: pass
@@ -7,6 +8,9 @@ try:
 except ImportError: pass
 try:
     import pygame
+except ImportError: pass
+try:
+    from utils import *
 except ImportError: pass
 
 class Player(pygame.sprite.Sprite):

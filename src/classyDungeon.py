@@ -2,7 +2,7 @@
 from tkinter import Tk, Canvas
 import random
 try:
-    from colors import *
+    from utils import *
 except ImportError: pass
 try:
     from game import *
@@ -10,9 +10,13 @@ except ImportError: pass
 try:
     import pygame
 except ImportError: pass
-try:
-    from characters import Monster, BossMonster
-except ImportError: pass
+
+
+
+from characters import Monster, BossMonster
+
+
+
 
 class Dungeon:
     notnull = []
@@ -23,7 +27,7 @@ class Dungeon:
         - Resolution as a tuple (width,height)
         - Roomcount as an int
     '''
-    def __init__(self ,resolution, roomCount, specialWeigth = 2 , seed = random.randint(0,879190747), game = None):
+    def __init__(self ,resolution, roomCount, game, specialWeigth = 2 , seed = random.randint(0,879190747)):
         self.game = game
         self.prngNum = seed
         self.seed = self.prngNum
@@ -33,7 +37,7 @@ class Dungeon:
         self.cantouch = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH) ]
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
-        self.walls = pygame.sprite.Group()
+        self.walls = []
 
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
@@ -70,9 +74,7 @@ class Dungeon:
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
                         # dont forget doors.
-            except IndexError:
-                print('index mistake')
-            print('mistake',len(self.allrooms))
+            except IndexError: pass
         self.make_start_pos()
         self.addWalls()
 
@@ -108,12 +110,14 @@ class Dungeon:
         return startVal
 
 
-    def _draw(self):
+    def _draw(self, tilesize=32):
         if  self.game is None:
             self.__draw(32)
         for room in self.allrooms:
             room.room_draw()
         self.start_room.room_draw()
+        for wall in self.walls:
+            wall.draw()
 
     def __draw(self,tilesize):
         ''' This is Deprocated '''
@@ -310,14 +314,16 @@ class Room:
 
 
 class Tile:
-    tile_size = 32
-
+    tile_size = 16
     def __init__(self, Room, _type, position):
         '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
         self.room = Room
         self.position = position
         self.doors = {"North":0,"South":0,"East":0, "West":0}
         self.x , self.y = self.position
+        self.display = self.room.dungeon.game.display
+        self.image = get_img("Tile",random.randint(2,73))
+        self.isDoor = False
 
     def addDoor(self, positon):
         '''Recievs a Position North South East and West and changes the values of the door'''
@@ -325,32 +331,24 @@ class Tile:
         elif position == 'S': self.doors["South"] = 1
         elif position == 'E': self.doors["East"] = 1
         elif position == 'W': self.doors["West"] = 1
-
+        self.isDoor = True
 
     
     @classmethod
     def set_tile_size(cls, size):
+        ''' Recieves the size of the new tile and sets it to the defalts '''
         cls.tile_size = size
+
 
     def tile_draw(self):
         # TODO Import the pictures
         # TODO size = 360/resolution * Size of image
-        color = None
-        if self.room.size == 1:
-            color = RED
-        elif self.room.size == 2:
-            color = BLUE
-        elif self.room.size == 3:
-            color = GREEN
-        elif self.room.size == 4:
-            color = PURPLE
-        elif type(self.room.size) is tuple:
-            color = ORANGE
-        image = pygame.image.load("C:/Users/474932/Desktop/Python stuff/Dungeon_Game/img/Tile_and_Floor.png")
-        pygame.draw.rect(self.room.dungeon.game.display, color,(self.x * self.tile_size,
-                                                            self.y * self.tile_size,
-                                                            self.tile_size,
-                                                            self.tile_size))
+        if self.tile_size != 16:
+            self.image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
+        print(self.tile_size, self.room.dungeon.game.WIDTH)
+        location = self.position[0] * self.tile_size, self.position[1] * self.tile_size
+        self.display.blit(self.image,location)
+
 
     def __lt__(self, other):
         return self.position < other.position
@@ -360,11 +358,15 @@ class Tile:
 
 
 class Wall(pygame.sprite.Sprite):
+    wall_size = 32
     def __init__(self, position, Dungeon):
         """
         Recieves an X and Y position and the dungeon instance
         """
-        pygame.sprite.Sprite.__init__(self, )
+        pygame.sprite.Sprite.__init__(self)
+    
+    def draw():
+        pass
 
 
 if __name__ == "__main__":
@@ -372,6 +374,6 @@ if __name__ == "__main__":
         pygame.init()
         d = Dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2)
         d.make()
-        d.draw(32)
+        d._draw(tilesize = 32)
     except KeyboardInterrupt as e:
         print(d.seed)

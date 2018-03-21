@@ -1,37 +1,45 @@
 ''' Contains the Game class'''
 try:
-    from colors import *
+    from utils import *
 except ImportError: pass
+
 try:
     import pygame
 except ImportError: pass
+
+try:
+    from characters import *
+except ImportError: pass
+
 try:
     from classydungeon import *
 except ImportError: pass
-try:
-    from characters import Player
-except ImportError: pass
+
+
+
 from pprint import pprint
 
 
 class Game():
 
-    def __init__(self, screen_size, tilesize=32):
+    def __init__(self, screen_size, tilesize=16):
         # Set Constants
         self.SIZE = screen_size
         self.WIDTH, self.HEIGHT = self.SIZE
         self.TILESIZE = tilesize
+        Tile.set_tile_size(tilesize)
         self.GRIDWIDTH = self.WIDTH // self.TILESIZE
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
-        # Set Up Dungeon
-        self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=30)
-        self.dungeon.make()
         # Set Up Pygame
         pygame.init()
         self.display = pygame.display.set_mode(self.SIZE)
         self.clock = pygame.time.Clock()
         # Set game variables
         self.game_over = False
+        # Set Up Dungeon
+        
+        self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=30)
+        self.dungeon.make()
 
     def setup(self):
         pygame.display.set_caption('Dungoen')
@@ -42,6 +50,7 @@ class Game():
             self.draw()
             self.update()
             self.events()
+        self.clock.tick(60)
 
     def draw(self):
         self.dungeon._draw()

@@ -20,3 +20,4 @@ if __name__ == "__main__":
         pp = multiprocessing.Process(target=make_old, args=(seed,rooms))
         p.start()
         pp.start()
+    
