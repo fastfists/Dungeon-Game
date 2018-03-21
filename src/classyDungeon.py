@@ -345,9 +345,7 @@ class Tile:
         # TODO size = 360/resolution * Size of image
         if self.tile_size != 16:
             self.image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
-        print(self.tile_size, self.room.dungeon.game.WIDTH)
-        location = self.position[0] * self.tile_size, self.position[1] * self.tile_size
-        self.display.blit(self.image,location)
+        self.display.blit(self.image, (self.x * self.tile_size, self.y * self.tile_size))
 
 
     def __lt__(self, other):
