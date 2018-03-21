@@ -322,7 +322,8 @@ class Tile:
         self.doors = {"North":0,"South":0,"East":0, "West":0}
         self.x , self.y = self.position
         self.display = self.room.dungeon.game.display
-        self.image = get_img("Tile",random.randint(2,73))
+        if self.room.size != 1: self.image = get_img("Tile",random.randint(2,70))
+        else: self.image = get_img("Tile",random.randint(71,73))
         self.isDoor = False
 
     def addDoor(self, positon):
