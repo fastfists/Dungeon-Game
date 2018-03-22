@@ -31,7 +31,6 @@ class Game():
         self.GRIDWIDTH = self.WIDTH // self.TILESIZE
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
-        
         pygame.init()
         self.display = pygame.display.set_mode(self.SIZE)
         self.clock = pygame.time.Clock()
@@ -39,7 +38,7 @@ class Game():
         self.game_over = False
         # Set Up Dungeon
         
-        self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=30)
+        self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=50)
         self.dungeon.make()
 
     def set_sizes(self, size):

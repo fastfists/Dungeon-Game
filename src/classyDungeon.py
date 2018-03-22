@@ -297,13 +297,15 @@ class Room:
             notnull.append((x,y))
             idtbl[x][y] = size
         if is_boss:
-            self.monsters = BossMonster(self, 1)
+            self.monsters = [BossMonster(self, 1)]
         else:
             self.monsters = [Monster(self) for x in range(random.randint(0,1))]
 
     def room_draw(self):
         for tile in self.blocks:
             tile.tile_draw()
+        for monster in self.monsters:
+            monster.show()
 
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
@@ -322,10 +324,16 @@ class Tile:
         self.position = position
         self.doors = {"North":0,"South":0,"East":0, "West":0}
         self.x , self.y = self.position
+        self.type = self.room.size
         self.display = self.room.dungeon.game.display
-        if self.room.size != 1: self.image = get_img("Tile",random.randint(2,70))
-        else: self.image = get_img("Tile",random.randint(71,73))
-        self.isDoor = False
+        self.hasDoor = False
+
+        if self.type != 1: 
+            self.image = get_img("Tile",random.randint(3,70))
+        elif type(self.type) is tuple:
+            self.image = get_img("Tile", 71)
+        else: 
+            self.image = get_img("Tile",random.randint(71,73))
 
     def addDoor(self, positon):
         '''Recievs a Position North South East and West and changes the values of the door'''
@@ -333,9 +341,9 @@ class Tile:
         elif position == 'S': self.doors["South"] = 1
         elif position == 'E': self.doors["East"] = 1
         elif position == 'W': self.doors["West"] = 1
-        self.isDoor = True
+        self.hasDoor = True
 
-    
+
     @classmethod
     def set_tile_size(cls, size):
         ''' Recieves the size of the new tile and sets it to the defalts '''
@@ -343,12 +351,9 @@ class Tile:
     
 
     def tile_draw(self):
-        # TODO Import the pictures
-        # TODO size = 360/resolution * Size of image
         if self.tile_size != 16:
-            self.image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
-        self.display.blit(self.image, (self.x * self.tile_size, self.y * self.tile_size))
-
+            temp_image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
+        self.display.blit(temp_image, (self.x * self.tile_size, self.y * self.tile_size))
 
     def __lt__(self, other):
         return self.position < other.position

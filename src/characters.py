@@ -12,6 +12,9 @@ except ImportError: pass
 try:
     from utils import *
 except ImportError: pass
+try:
+    import random
+except ImportError: pass
 
 class Player(pygame.sprite.Sprite):
 
@@ -20,6 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.isAlive = True
         self.game = game
+        
         
     
     def show(self):
@@ -43,8 +47,15 @@ class Monster(pygame.sprite.Sprite):
         self.room = room
         self.health = health
         self.isAlive = None
-        #self.picture = 'zombie.png' 
-    
+        self.image = get_img("Rouge", 1)
+        self.image.set_colorkey(BLACK)
+        self.x, self.y = random.choice(self.room.blocks).position
+        self.display = self.room.dungeon.game.display
+        self.size = 64 # TODO change this later so that it scales
+
+    def show(self):
+        temp_img = pygame.transform.scale(self.image, (self.size,self.size)) 
+        self.display.blit(temp_img, (self.x * self.size, self.y * self.size))
 
     @property
     def x_limit(self):
