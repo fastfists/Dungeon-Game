@@ -47,11 +47,13 @@ class Monster(pygame.sprite.Sprite):
         self.room = room
         self.health = health
         self.isAlive = None
-        self.image = get_img("Rouge", 1)
+        self.image = get_img("Skeleton", 1)
         self.image.set_colorkey(BLACK)
         self.x, self.y = random.choice(self.room.blocks).position
         self.display = self.room.dungeon.game.display
         self.size = 64 # TODO change this later so that it scales
+        self.direction = 'East'
+        self.speed = 0.01
 
     def show(self):
         temp_img = pygame.transform.scale(self.image, (self.size,self.size)) 
@@ -74,6 +76,9 @@ class Monster(pygame.sprite.Sprite):
         if self.health < 0:
             self.isAlive = False
 
+    def show_health_bar(self):
+        pass
+
     def patrol(self):
         if self.x > self.x_limit[1]:
             self.direction = 'West'
@@ -91,6 +96,9 @@ class BossMonster(Monster):
     def __init__(self, room, level):
         self.level = level
         super().__init__(room, health = 100)
+        self.image = get_img('Skeleton',34)
+        self.image.set_colorkey(BLACK)
+
 
 
 if __name__ == '__main__':

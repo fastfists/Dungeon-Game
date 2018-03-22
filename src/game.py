@@ -16,7 +16,6 @@ try:
 except ImportError: pass
 
 
-
 from pprint import pprint
 
 
@@ -54,11 +53,13 @@ class Game():
             self.draw()
             self.update()
             self.events()
-        self.clock.tick(60)
+            self.clock.tick(60)
 
     def draw(self):
         self.dungeon._draw()
         self.player.show
+        for room in self.dungeon.allrooms:
+            room.activate()
 
     def update(self):
         pygame.display.update()
@@ -80,6 +81,6 @@ class Game():
 
 
 if __name__ == '__main__':
-    newgame = Game((800,600),tilesize=64)
+    newgame = Game((1080,920),tilesize=64)
     newgame.setup()
     newgame.game_loop()

@@ -38,6 +38,7 @@ class Dungeon:
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
         self.walls = []
+        self.start_pos = (-1,-1)
 
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
@@ -264,8 +265,8 @@ class Dungeon:
             newX , newY = x + moveX , y + moveY
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3:
-                    self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl,self)
                     self.start_pos = (newX, newY)
+                    self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl,self)
                     self.Idtbl[newX][newY] = 5
                     #TODO dont forget to add a door after this 
                 else:
@@ -296,16 +297,25 @@ class Room:
             x,y = tile.position
             notnull.append((x,y))
             idtbl[x][y] = size
-        if is_boss:
-            self.monsters = [BossMonster(self, 1)]
+        if (sx,sy) != self.dungeon.start_pos:
+            if is_boss:
+                self.monsters = [BossMonster(self, 1)]
+            else:
+                self.monsters = [Monster(self) for x in range(random.randint(1,2))]
         else:
-            self.monsters = [Monster(self) for x in range(random.randint(0,1))]
+            self.monsters = None
+
+    def activate(self):
+        if not self.monsters == None:
+            for monster in self.monsters:
+                monster.patrol()
 
     def room_draw(self):
         for tile in self.blocks:
             tile.tile_draw()
-        for monster in self.monsters:
-            monster.show()
+        if not self.monsters == None:
+            for monster in self.monsters:
+                monster.show()
 
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
@@ -343,12 +353,10 @@ class Tile:
         elif position == 'W': self.doors["West"] = 1
         self.hasDoor = True
 
-
     @classmethod
     def set_tile_size(cls, size):
         ''' Recieves the size of the new tile and sets it to the defalts '''
         cls.tile_size = size
-    
 
     def tile_draw(self):
         if self.tile_size != 16:
