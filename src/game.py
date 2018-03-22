@@ -1,22 +1,12 @@
 ''' Contains the Game class'''
-try:
-    from utils import *
-except ImportError: pass
-
-try:
-    import pygame
-except ImportError: pass
-
-try:
-    from characters import *
-except ImportError: pass
-
-try:
-    from classydungeon import *
-except ImportError: pass
 
 
-from pprint import pprint
+from utils import *
+import pygame
+import characters
+import classydungeon as dun 
+
+
 
 
 class Game():
@@ -37,18 +27,21 @@ class Game():
         self.game_over = False
         # Set Up Dungeon
         
-        self.dungeon = Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=50)
-        self.dungeon.make()
+        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=5)
+
 
     def set_sizes(self, size):
-        Tile.set_tile_size(size)
-        Wall.set_wall_size(size)
+        
+        dun.Tile.set_tile_size(size)
+        dun.Wall.set_wall_size(size)
 
     def setup(self):
+        self.dungeon.make()
         pygame.display.set_caption('Dungoen')
-        self.player = Player(self.dungeon.start_pos, self)
+        self.player = characters.Player(self.dungeon.start_pos, self)
     
-    def game_loop(self):
+    def run(self):
+        self.setup()
         while not self.game_over:
             self.draw()
             self.update()
@@ -63,9 +56,9 @@ class Game():
 
     def update(self):
         pygame.display.update()
-        for x in range(self.GRIDWIDTH):
+        for x in range(self.GRIDHEIGHT):
             pygame.draw.line(self.display, (0,255,255), (0, x*self.TILESIZE), (self.HEIGHT,x*self.TILESIZE))
-        for y in range(self.GRIDHEIGHT):
+        for y in range(self.GRIDWIDTH):
             pygame.draw.line(self.display, (0,255,255), (y*self.TILESIZE, 0), (y*self.TILESIZE, self.WIDTH))
 
 
@@ -81,6 +74,5 @@ class Game():
 
 
 if __name__ == '__main__':
-    newgame = Game((1080,920),tilesize=64)
-    newgame.setup()
-    newgame.game_loop()
+    newgame = Game((1080,920), tilesize=64)
+    newgame.run()

@@ -1,19 +1,12 @@
 ''' Contains Dungeon object and Room objects '''
 from tkinter import Tk, Canvas
 import random
-try:
-    from utils import *
-except ImportError: pass
-try:
-    from game import *
-except ImportError: pass 
-try:
-    import pygame
-except ImportError: pass
+import utils
+import pygame
+import characters
 
 
 
-from characters import Monster, BossMonster
 
 
 
@@ -276,6 +269,7 @@ class Dungeon:
             
             
 class Room:
+    test = "test"
     ''' A class that contains its own pair of blocks and monsters'''
     def __init__(self, size, how, sx,sy, notnull, idtbl, dungeon ,is_boss = False):
         self.dungeon = dungeon
@@ -299,9 +293,9 @@ class Room:
             idtbl[x][y] = size
         if (sx,sy) != self.dungeon.start_pos:
             if is_boss:
-                self.monsters = [BossMonster(self, 1)]
+                self.monsters = [characters.BossMonster(self, 1)]
             else:
-                self.monsters = [Monster(self) for x in range(random.randint(1,2))]
+                self.monsters = [characters.Monster(self) for x in range(random.randint(1,2))]
         else:
             self.monsters = None
 
@@ -339,11 +333,11 @@ class Tile:
         self.hasDoor = False
 
         if self.type != 1: 
-            self.image = get_img("Tile",random.randint(3,70))
+            self.image = utils.get_img("Tile",random.randint(3,70))
         elif type(self.type) is tuple:
-            self.image = get_img("Tile", 71)
+            self.image = utils.get_img("Tile", 71)
         else: 
-            self.image = get_img("Tile",random.randint(71,73))
+            self.image = utils.get_img("Tile",random.randint(71,73))
 
     def addDoor(self, positon):
         '''Recievs a Position North South East and West and changes the values of the door'''
@@ -358,9 +352,12 @@ class Tile:
         ''' Recieves the size of the new tile and sets it to the defalts '''
         cls.tile_size = size
 
+    @classmethod
+    def get_tile_size(cls):
+        return cls.tile_size
+
     def tile_draw(self):
-        if self.tile_size != 16:
-            temp_image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
+        temp_image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
         self.display.blit(temp_image, (self.x * self.tile_size, self.y * self.tile_size))
 
     def __lt__(self, other):
@@ -391,12 +388,3 @@ class Wall(pygame.sprite.Sprite):
     def draw(self):
         pass
 
-
-if __name__ == "__main__":
-    try:
-        pygame.init()
-        d = Dungeon( resolution = (20,20), roomCount = 25, specialWeigth= 2)
-        d.make()
-        d._draw(tilesize = 32)
-    except KeyboardInterrupt as e:
-        print(d.seed)

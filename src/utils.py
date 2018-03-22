@@ -1,7 +1,18 @@
+
+'''
+Animations Each row has 10 animations
+
+1: Idle
+2: Dancing
+3: Walking
+4: Attacking
+5: Death
+''' 
+
 from os import path
 try:
     import pygame
-except ImportError: pass
+except ImportError as e: print(e)
 
 from maps import *
 

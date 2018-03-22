@@ -1,20 +1,13 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
 
-try:
-    from game import *
-except ImportError: pass
-try:
-    from classydungeon import Room
-except ImportError: pass
+
 try:
     import pygame
-except ImportError: pass
-try:
-    from utils import *
-except ImportError: pass
-try:
-    import random
-except ImportError: pass
+except ImportError as e:print(e)
+import utils
+import classydungeon as dun
+import random
+
 
 class Player(pygame.sprite.Sprite):
 
@@ -24,8 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.isAlive = True
         self.game = game
         
-        
-    
     def show(self):
         print('hello')
     
@@ -47,11 +38,11 @@ class Monster(pygame.sprite.Sprite):
         self.room = room
         self.health = health
         self.isAlive = None
-        self.image = get_img("Skeleton", 1)
-        self.image.set_colorkey(BLACK)
+        self.image = utils.get_img("Rouge", 5)
+        self.image.set_colorkey(utils.BLACK)
         self.x, self.y = random.choice(self.room.blocks).position
         self.display = self.room.dungeon.game.display
-        self.size = 64 # TODO change this later so that it scales
+        self.size = dun.Tile.get_tile_size()
         self.direction = 'East'
         self.speed = 0.01
 
@@ -91,17 +82,11 @@ class Monster(pygame.sprite.Sprite):
             self.x -= self.speed
 
 
+
 class BossMonster(Monster):
 
     def __init__(self, room, level):
         self.level = level
         super().__init__(room, health = 100)
-        self.image = get_img('Skeleton',34)
-        self.image.set_colorkey(BLACK)
-
-
-
-if __name__ == '__main__':
-    boi = dungeon()
-    boi.make()
-    boi.draw()
+        self.image = utils.get_img('Skeleton',34)
+        self.image.set_colorkey(utils.BLACK)
