@@ -7,8 +7,6 @@ import characters
 import classydungeon as dun 
 
 
-
-
 class Game():
 
     def __init__(self, screen_size:tuple, tilesize=16):
@@ -31,9 +29,9 @@ class Game():
 
 
     def set_sizes(self, size):
-        
-        dun.Tile.set_tile_size(size)
-        dun.Wall.set_wall_size(size)
+        dun.Tile.tile_size = size
+        dun.Wall.wall_size = size
+
 
     def setup(self):
         self.dungeon.make()
@@ -46,9 +44,10 @@ class Game():
             self.draw()
             self.update()
             self.events()
-            self.clock.tick(60)
+            self.clock.tick(20)
 
     def draw(self):
+        self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
         self.player.show
         for room in self.dungeon.allrooms:
@@ -56,17 +55,13 @@ class Game():
 
     def update(self):
         pygame.display.update()
-        for x in range(self.GRIDHEIGHT):
-            pygame.draw.line(self.display, (0,255,255), (0, x*self.TILESIZE), (self.HEIGHT,x*self.TILESIZE))
-        for y in range(self.GRIDWIDTH):
-            pygame.draw.line(self.display, (0,255,255), (y*self.TILESIZE, 0), (y*self.TILESIZE, self.WIDTH))
+
 
 
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.end()
-            print(event)
 
     def end(self):
         pygame.quit()

@@ -1,9 +1,6 @@
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
-
-
-try:
-    import pygame
-except ImportError as e:print(e)
+from time import sleep
+import pygame
 import utils
 import classydungeon as dun
 import random
@@ -38,18 +35,27 @@ class Monster(pygame.sprite.Sprite):
         self.room = room
         self.health = health
         self.isAlive = None
-        self.image = utils.get_img("Rouge", 5)
-        self.image.set_colorkey(utils.BLACK)
+        self.images = [utils.get_img("Skeleton",x) for x in range(21,30)]
+        [image.set_colorkey(utils.BLACK) for image in self.images]
         self.x, self.y = random.choice(self.room.blocks).position
         self.display = self.room.dungeon.game.display
-        self.size = dun.Tile.get_tile_size()
+        self.size = dun.Tile.tile_size
         self.direction = 'East'
         self.speed = 0.01
+        self.animation_speed = 50
+        self.current_frame = 0
+        self.state = 0
+        self.flip = False
 
     def show(self):
-        temp_img = pygame.transform.scale(self.image, (self.size,self.size)) 
+        temp_img = pygame.transform.scale(self.images[self.state], (self.size,self.size))
+        temp_img = pygame.transform.flip(temp_img, self.flip,False)
         self.display.blit(temp_img, (self.x * self.size, self.y * self.size))
-
+        self.current_frame = 0
+        self.state += 1
+        if self.state > len(self.images) - 1:
+            self.state = 0
+        
     @property
     def x_limit(self):
         ''' Returns a tuple containing (x min x max) '''
@@ -78,8 +84,10 @@ class Monster(pygame.sprite.Sprite):
 
         if self.direction == 'East':
             self.x += self.speed
+            self.flip = False
         else:
             self.x -= self.speed
+            self.flip = True
 
 
 
@@ -90,3 +98,4 @@ class BossMonster(Monster):
         super().__init__(room, health = 100)
         self.image = utils.get_img('Skeleton',34)
         self.image.set_colorkey(utils.BLACK)
+

@@ -6,11 +6,6 @@ import pygame
 import characters
 
 
-
-
-
-
-
 class Dungeon:
     notnull = []
     allrooms = []
@@ -40,7 +35,7 @@ class Dungeon:
         return self.prngNum % limit
 
     def __repr__(self):
-        return "Dungeon: {0} , {1}" .format(self.RESOLUTION, len(self.allrooms))
+        return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}" 
 
     def make(self):
         works = False
@@ -317,8 +312,7 @@ class Room:
     def newDoor(self, tile, position):
         for square in self.blocks:
             if square is tile:
-                tile.addDoor(position)      
-
+                tile.addDoor(position)
 
 class Tile:
     tile_size = 16
@@ -346,15 +340,6 @@ class Tile:
         elif position == 'E': self.doors["East"] = 1
         elif position == 'W': self.doors["West"] = 1
         self.hasDoor = True
-
-    @classmethod
-    def set_tile_size(cls, size):
-        ''' Recieves the size of the new tile and sets it to the defalts '''
-        cls.tile_size = size
-
-    @classmethod
-    def get_tile_size(cls):
-        return cls.tile_size
 
     def tile_draw(self):
         temp_image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
