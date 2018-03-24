@@ -61,6 +61,10 @@ class Player(pygame.sprite.Sprite):
         if xChange: self.x += xChange * self.speed
         if  yChange: self.y += yChange * self.speed
         if xChange + yChange != 0: self.moved = True
+        if xChange < 0:
+            self.flip = True
+        else:
+            self.flip = False
 
     def hit(self, dmg):
         self.health -= dmg

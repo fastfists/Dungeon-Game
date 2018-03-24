@@ -64,14 +64,10 @@ class Game():
                 self.end()
             if event.type == pygame.KEYDOWN:
                 x,y = 0, 0
-                if event.key == pygame.K_DOWN:
-                    y += 1
-                if event.key == pygame.K_UP:
-                    y -= 1
-                if event.key == pygame.K_LEFT:
-                    x -= 1
-                if event.key == pygame.K_RIGHT:
-                    x += 1
+                if event.key == pygame.K_DOWN:  y += 1
+                if event.key == pygame.K_UP:    y -= 1
+                if event.key == pygame.K_LEFT:  x -= 1
+                if event.key == pygame.K_RIGHT: x += 1
                 
                 self.player.move(xChange=x, yChange=y)
                 
