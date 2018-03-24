@@ -43,12 +43,14 @@ class Dungeon:
             x,y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
             if self._format(3,x,y):
                 self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl, self,is_boss=True))
+                x,y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                 self.update(3, self.currenType, x, y)
                 self.addWalls()
                 works = True
         while len(self.allrooms) != self.roomCount:
+            print('boom')
             self.works = False
-            x,y = self.walls[ self._Prng(len(self.walls) - 1)].position # finds a random wall and gets the x and y
+            x,y = self.walls[ self._Prng(len(self.walls))].position # finds a random wall and gets the x and y
             moveX , moveY = self.__findDir( self._Prng(4) )
             newX , newY = x + moveX , y + moveY
             try:
@@ -73,11 +75,7 @@ class Dungeon:
 
     @staticmethod           
     def __startVal(room):
-        startVal = (0,0)
-        for section in room.blocks:
-            x,y = section.position
-            if startVal < (x, y): startVal = (x, y)
-        return startVal
+        return room.blocks[0].position
 
 
     def _draw(self, tilesize=32):
@@ -183,8 +181,8 @@ class Dungeon:
                         if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
                             self.Idtbl[neighborX][neighborY] = 1
                             self.walls.append(Wall((neighborX,neighborY),self))
-                            self.notnull.append(neighborX, neighborY)
-                    except:
+                            self.notnull.append((neighborX, neighborY))
+                    except IndexError:
                         pass
 
     def make_start_room(self):
@@ -294,26 +292,22 @@ class Wall(pygame.sprite.Sprite):
         """
         self.position = position
         self.x, self.y = position
-        self.Dungeon = Dungeon
+        self.dungeon = Dungeon
         pygame.sprite.Sprite.__init__(self)
-    
-    def draw_wall(self):
-        pass
-
-    @classmethod
-    def set_wall_size(cls,size):
-        cls.wall_size = size
-
+        self.image = utils.get_img("Tile", 160)
+        self.display = self.dungeon.game.display
+            
     def draw(self):
-        pass
+        temp_image = pygame.transform.scale(self.image,(self.wall_size, self.wall_size))
+        self.display.blit(temp_image, (self.x * self.wall_size, self.y * self.wall_size))
 
 class Door:
     
     def __init__(self, x, y, dungeon, direction):
         self.position = self.x, self.y = x,y
         self.dungeon = dungeon
-        direction = 'Vertical'
-        direction = 'Horizantal'
+        if direction[0] == 0: self.rotation = 'Horizantal'
+        elif direction[1] == 0: self.rotation = 'Vertical'
 
     def draw_Door(self):
         pass

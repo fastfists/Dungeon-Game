@@ -1,6 +1,6 @@
 ''' A moudle of dictionaries that have tuples (TopX,TopY,width,height) '''
-# sprites 2 - 70 are traditional tiles, 71 - 73 are special tiles, The rest are ceilings
 
+# sprites 2 - 70 are traditional tiles, 71 - 73 are special tiles, The rest are ceilings(74 - )
 Tiles_and_ceil_ref =   {2 : (0,0,16,16),
                     3 : (16,0,16,16),
                     4 : (32,0,16,16),

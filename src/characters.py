@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
         [image.set_colorkey(utils.BLACK) for image in self.death_images]
         [image.set_colorkey(utils.BLACK) for image in self.attack_images]
 
-        self.size = dun.Tile.tile_size
+        self.size = dun.Tile.tile_size // 2
         self.display = game.display
         self.state = 0
         self.flip = False
@@ -42,7 +42,7 @@ class Player(pygame.sprite.Sprite):
             image_array = self.death_images
         temp_img = pygame.transform.scale(image_array[self.state], (self.size,self.size))
         temp_img = pygame.transform.flip(temp_img, self.flip,False)
-        self.display.blit(temp_img, (self.x * self.size, self.y * self.size))
+        self.display.blit(temp_img, (self.x * dun.Tile.tile_size, self.y * dun.Tile.tile_size))
         self.current_frame += self.animation_speed
         if self.current_frame >= 1:
             self.state += 1
@@ -84,7 +84,7 @@ class Monster(pygame.sprite.Sprite):
 
         self.x, self.y = random.choice(self.room.blocks).position
         self.display = self.room.dungeon.game.display
-        self.size = dun.Tile.tile_size
+        self.size = dun.Tile.tile_size // 2
         self.direction = random.choice(['East', 'West'])
         self.speed = 0.01
         self.animation_speed = 0.33 # goes half as fast as the framerate
@@ -95,7 +95,7 @@ class Monster(pygame.sprite.Sprite):
     def show(self):
         temp_img = pygame.transform.scale(self.images[self.state], (self.size,self.size))
         temp_img = pygame.transform.flip(temp_img, self.flip,False)
-        self.display.blit(temp_img, (self.x * self.size, self.y * self.size))
+        self.display.blit(temp_img, (self.x * dun.Tile.tile_size, self.y * dun.Tile.tile_size))
         self.current_frame += self.animation_speed
         if self.current_frame >= 1:
             self.state += 1
@@ -146,4 +146,5 @@ class BossMonster(Monster):
         super().__init__(room, health = 100)
         self.image = utils.get_img('Skeleton',34)
         self.image.set_colorkey(utils.BLACK)
+        self.size = dun.Tile.tile_size
 

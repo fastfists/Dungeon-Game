@@ -25,7 +25,7 @@ class Game():
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=20, game = self)
+        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=2, game = self)
 
 
     def set_sizes(self, size):
@@ -47,7 +47,7 @@ class Game():
             self.clock.tick(60)
 
     def draw(self):
-        self.display.fill(BLACK, rect=None, special_flags=0)
+        self.display.fill(GRAY, rect=None, special_flags=0)
         self.dungeon._draw()
         self.player.show()
         for room in self.dungeon.allrooms:
@@ -82,7 +82,7 @@ class Game():
 
 
 if __name__ == '__main__':
-    try:    
+    """try:    
         from tkinter import Tk, Canvas
         from pprint import pprint
         newgame = Game((1080, 920), tilesize=32)
@@ -123,7 +123,9 @@ if __name__ == '__main__':
                 boi.pack()
         master.mainloop()
     except KeyboardInterrupt:
-        print(negame.dungeon.seed)  
-    """newgame = Game((1080, 920), tilesize=32)
-    newgame.run()"""
+        print(negame.dungeon.seed) 
+    """ 
+    newgame = Game((1080, 920), tilesize=32)
+    newgame.run()
+    
         
