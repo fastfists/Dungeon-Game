@@ -6,11 +6,6 @@ import pygame
 import characters
 
 
-
-
-
-
-
 class Dungeon:
     notnull = []
     allrooms = []
