@@ -10,19 +10,26 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, position, game):
         self.x, self.y = position
+        print(self.x, self.y)
         self.health = 100
         self.isAlive = True
         self.game = game
-        
+        self.speed = 0.05
+        self.image = utils.get_img("Rouge",1)
+        self.image.set_colorkey(utils.BLACK)
+        self.size = dun.Tile.tile_size
+        self.display = game.display
+
     def show(self):
-        print('hello')
-    
+        temp_img = pygame.transform.scale(self.image, (self.size,self.size)) 
+        self.display.blit(temp_img, (self.x * dun.Tile.tile_size , self.y * dun.Tile.tile_size ))
+
     def attack(self):
         print("charge")
     
     def move(self,xChange=0, yChange=0):
-        self.x += xChange
-        self.y += yChange
+        if xChange: self.x += xChange * self.speed
+        if  yChange: self.y += yChange * self.speed
 
     def hit(self, dmg):
         self.health -= dmg
@@ -30,13 +37,16 @@ class Player(pygame.sprite.Sprite):
 
 class Monster(pygame.sprite.Sprite):
     ''' The main enemy Mob spawn  '''
+    speed = 0.01
     # TODO abstract this class later on to create new mobs
     def __init__(self, room, health = 50):
         self.room = room
         self.health = health
         self.isAlive = None
+
         self.images = [utils.get_img("Skeleton",x) for x in range(21,30)]
         [image.set_colorkey(utils.BLACK) for image in self.images]
+
         self.x, self.y = random.choice(self.room.blocks).position
         self.display = self.room.dungeon.game.display
         self.size = dun.Tile.tile_size
@@ -56,6 +66,7 @@ class Monster(pygame.sprite.Sprite):
         if self.state > len(self.images) - 1:
             self.state = 0
         
+
     @property
     def x_limit(self):
         ''' Returns a tuple containing (x min x max) '''

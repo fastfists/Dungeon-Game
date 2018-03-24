@@ -19,13 +19,13 @@ class Game():
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        self.display = pygame.display.set_mode(self.SIZE)
+        self.display = pygame.display.set_mode(self.SIZE,pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
         
-        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=8, game = self, seed=5)
+        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=20, game = self)
 
 
     def set_sizes(self, size):
@@ -49,7 +49,7 @@ class Game():
     def draw(self):
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
-        self.player.show
+        self.player.show()
         for room in self.dungeon.allrooms:
             room.activate()
 
@@ -62,6 +62,19 @@ class Game():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.end()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    self.player.move(yChange= 1)
+                if event.key == pygame.K_UP:
+                    self.player.move(yChange= -1)
+                if event.key == pygame.K_LEFT:
+                    self.player.move(xChange= -1)
+                if event.key == pygame.K_RIGHT:
+                    self.player.move(xChange= 1)
+                
+                if event.key == pygame.K_ESCAPE:
+                    self.end()
+
 
     def end(self):
         pygame.quit()
@@ -69,5 +82,5 @@ class Game():
 
 
 if __name__ == '__main__':
-    newgame = Game((1080,920), tilesize=64)
+    newgame = Game((640, 480), tilesize=32)
     newgame.run()
