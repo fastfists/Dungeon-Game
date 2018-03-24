@@ -1,5 +1,4 @@
 ''' Contains Dungeon object and Room objects '''
-from tkinter import Tk, Canvas
 import random
 import utils
 import pygame
@@ -26,6 +25,7 @@ class Dungeon:
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
         self.walls = []
+        self.doors = []
         self.start_pos = (-1,-1)
 
     def _Prng(self,limit, wantBool = False):
@@ -43,52 +43,33 @@ class Dungeon:
             x,y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
             if self._format(3,x,y):
                 self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl, self,is_boss=True))
+                self.update(3, self.currenType, x, y)
+                self.addWalls()
                 works = True
         while len(self.allrooms) != self.roomCount:
             self.works = False
-            x,y = self.notnull[ self._Prng(len(self.notnull)) ]
+            x,y = self.walls[ self._Prng(len(self.walls) - 1)].position # finds a random wall and gets the x and y
             moveX , moveY = self.__findDir( self._Prng(4) )
             newX , newY = x + moveX , y + moveY
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
-                    if self.Idtbl[x][y] != 2:
-                        size = 2                    
                     if self._Prng(self.weight,wantBool=True):
                         size = (4,2)
                         self.weight *= 8
-                    elif self.Idtbl[x][y] == 2:
-                        size = 4
+                    else:
+                        if self._Prng(2,wantBool=True): # 50/50 chance
+                            size = 4
+                        else: size = 2
                     if self._format(size, newX,newY):
                         self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl,self))
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
-                        # dont forget doors.
+                        self.addWalls()
+                        self.Idtbl[x][y] = -1
+                        self.doors.append(Door(x, y, self, (moveX,moveY)))
             except IndexError: pass
-        self.make_start_pos()
-        self.addWalls()
-
-    def addRoom(self):
-        self.removeWalls()
-        self.roomCount += 1
-        while len(self.allrooms) != self.roomCount:
-            self.works = False
-            x, y = self.notnull[ self._Prng(len(self.notnull)) ]
-            moveX , moveY = self.__findDir( self._Prng(4) )
-            newX , newY = x + moveX , y + moveY
-            try:
-                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
-                    if self._Prng(self.weight,wantBool=True):
-                        size = (4,2)
-                        self.weight *= 8
-                    elif self.Idtbl[x][y] == 2:
-                        size = 4
-                    elif self.Idtbl[x][y] == 3 or self.Idtbl[x][y] == 4:
-                        size = 2
-                    if self._format(size, newX,newY):
-                        self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl,self))
-                        newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
-                        self.update(size, self.currenType,newX, newY)
-            except: continue
+        self.make_start_room()
+        self.addWalls(corners=True)
 
     @staticmethod           
     def __startVal(room):
@@ -107,41 +88,6 @@ class Dungeon:
         self.start_room.room_draw()
         for wall in self.walls:
             wall.draw()
-
-    def __draw(self,tilesize):
-        ''' This is Deprocated '''
-        self.master = Tk()
-        dungeon= Canvas(self.master,width=self.WIDTH*tilesize,height=self.HEIGHT*tilesize)
-        for y in range(self.HEIGHT):
-            for x in range (self.WIDTH):
-                w=1
-                o='black'
-                ide = self.Idtbl[x][y]
-                if ide == 0:
-                    f= 'gray'
-                elif ide == 1:
-                    f= 'black'
-                elif ide == 2:
-                    f = 'blue'
-                elif ide == 3:
-                    f= 'green'
-                elif ide == 4:
-                    f='purple'
-                elif ide ==5:
-                    f= 'red'
-                elif type(ide) is tuple:
-                    f = 'orange'
-                dungeon.create_rectangle(
-                                        x*(tilesize),
-                                        (y*(tilesize)),
-                                        ((x+1)*(tilesize))-1,
-                                        ((y+1)*(tilesize))-1,
-                                        fill=f,
-                                        outline=o,
-                                        width=w
-                                        )
-                dungeon.pack()
-        self.master.mainloop()
         
     def _format(self,size, sx,sy):
         """ Recieves a x and y position and creates the type needed to create it """
@@ -222,33 +168,27 @@ class Dungeon:
         if dir_index == 7:
             return (1,1)
 
-    def doors(self):
-        #TODO add this later in a better way(mabey as a Room method)
-        pass
+    def addWalls(self, corners=False):
+        dir_index = 8
+        if not corners:
+            dir_index = 4
+        checkVals = [(x,y) for x,y in self.notnull if self.cantouch[x][y] != 1 and self.Idtbl[x][y] != 1 and self.Idtbl[x][y] != -1]
+        if checkVals != []:
+            for tup in checkVals:
+                x,y = tup
+                for direction in range(dir_index):
+                    nx,ny = self.__findDir(direction)
+                    neighborX, neighborY = nx+x, ny+y
+                    try:
+                        if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
+                            self.Idtbl[neighborX][neighborY] = 1
+                            self.walls.append(Wall((neighborX,neighborY),self))
+                            self.notnull.append(neighborX, neighborY)
+                    except:
+                        pass
 
-    def addWalls(self):
-        checkVals = [(x,y) for x,y in self.notnull if self.cantouch[  x][  y  ] != 1]
-        for tup in checkVals:
-            x,y = tup
-            for direction in range(8):
-                nx,ny = self.__findDir(direction)
-                neighborX, neighborY = nx+x, ny+y
-                try:
-                    if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
-                        self.Idtbl[neighborX][neighborY] = 1
-                        self.walls.append(Wall((neighborX,neighborY),self))
-                        self.notnull.append(neighborX, neighborY)
-                except:
-                    pass
-
-    def removeWalls(self):
-        ''' Scans through the list and removes all walls '''
-        checkVals = [(x,y) for x,y in self.notnull if self.Idtbl[ x ][ y ] == 1]
-        for x,y in checkVals :
-            self.Idtbl[x][y] = 0
-
-    def make_start_pos(self):
-            x,y = self.notnull[ self._Prng(len(self.notnull)) ]
+    def make_start_room(self):
+            x,y = self.walls[ self._Prng(len(self.walls)) ].position
             moveX , moveY = self.__findDir( self._Prng(4) )
             newX , newY = x + moveX , y + moveY
             try:
@@ -256,11 +196,12 @@ class Dungeon:
                     self.start_pos = (newX, newY)
                     self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl,self)
                     self.Idtbl[newX][newY] = 5
-                    #TODO dont forget to add a door after this 
+                    self.Idtbl[x][y] = -1
+                    self.doors.append(Door(x, y, self, (moveX,moveY)))
                 else:
-                    self.make_start_pos()
+                    self.make_start_room()
             except IndexError:
-                self.make_start_pos()
+                self.make_start_room()
             
             
 class Room:
@@ -314,13 +255,13 @@ class Room:
             if square is tile:
                 tile.addDoor(position)
 
+
 class Tile:
     tile_size = 16
     def __init__(self, Room, _type, position):
         '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
         self.room = Room
         self.position = position
-        self.doors = {"North":0,"South":0,"East":0, "West":0}
         self.x , self.y = self.position
         self.type = self.room.size
         self.display = self.room.dungeon.game.display
@@ -332,14 +273,6 @@ class Tile:
             self.image = utils.get_img("Tile", 71)
         else: 
             self.image = utils.get_img("Tile",random.randint(71,73))
-
-    def addDoor(self, positon):
-        '''Recievs a Position North South East and West and changes the values of the door'''
-        if position == 'N': self.doors["North"] = 1
-        elif position == 'S': self.doors["South"] = 1
-        elif position == 'E': self.doors["East"] = 1
-        elif position == 'W': self.doors["West"] = 1
-        self.hasDoor = True
 
     def tile_draw(self):
         temp_image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
@@ -359,6 +292,7 @@ class Wall(pygame.sprite.Sprite):
         """
         Recieves an X and Y position and the dungeon instance
         """
+        self.position = position
         self.x, self.y = position
         self.Dungeon = Dungeon
         pygame.sprite.Sprite.__init__(self)
@@ -372,4 +306,16 @@ class Wall(pygame.sprite.Sprite):
 
     def draw(self):
         pass
+
+class Door:
+    
+    def __init__(self, x, y, dungeon, direction):
+        self.position = self.x, self.y = x,y
+        self.dungeon = dungeon
+        direction = 'Vertical'
+        direction = 'Horizantal'
+
+    def draw_Door(self):
+        pass
+
 

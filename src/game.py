@@ -19,7 +19,7 @@ class Game():
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        try: self.display = pygame.display.set_mode(self.SIZE,pygame.FULLSCREEN)
+        try: self.display = pygame.display.set_mode(self.SIZE)
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.clock = pygame.time.Clock()
         # Set game variables
@@ -82,5 +82,48 @@ class Game():
 
 
 if __name__ == '__main__':
-    newgame = Game((1080, 920), tilesize=32)
-    newgame.run()
+    try:    
+        from tkinter import Tk, Canvas
+        from pprint import pprint
+        newgame = Game((1080, 920), tilesize=32)
+        pygame.quit()
+        newgame.dungeon.make()
+        master = Tk()
+        boi = Canvas(master,width=newgame.WIDTH,height=newgame.HEIGHT)
+        for y in range(newgame.dungeon.HEIGHT):
+            for x in range(newgame.dungeon.WIDTH):
+                w = 1
+                o = 'black'
+                ide = newgame.dungeon.Idtbl[x][y]
+                if ide == 0:
+                    f = 'gray'
+                elif ide == 1:
+                    f = 'black'
+                elif ide == 2:
+                    f = 'blue'
+                elif ide == 3:
+                    f = 'green'
+                elif ide == 4:
+                    f = 'purple'
+                elif ide == 5:
+                    f = 'yellow'
+                elif ide == (4,2):
+                    f = 'brown'
+                elif ide == -1:
+                    f = 'orange'
+                boi.create_rectangle(
+                                        x*(700//newgame.dungeon.WIDTH),
+                                        (y*(700//newgame.dungeon.HEIGHT)),
+                                        (x+1)*(700//newgame.dungeon.WIDTH)-1,
+                                        (y+1)*(700//newgame.dungeon.HEIGHT)-1,
+                                        fill=f,
+                                        outline=o,
+                                        width=w
+                                        )
+                boi.pack()
+        master.mainloop()
+    except KeyboardInterrupt:
+        print(negame.dungeon.seed)  
+    """newgame = Game((1080, 920), tilesize=32)
+    newgame.run()"""
+        
