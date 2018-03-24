@@ -19,12 +19,12 @@ class Game():
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        self.display = pygame.display.set_mode(self.SIZE,pygame.FULLSCREEN)
+        try: self.display = pygame.display.set_mode(self.SIZE,pygame.FULLSCREEN)
+        except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.clock = pygame.time.Clock()
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        
         self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=20, game = self)
 
 
@@ -44,7 +44,7 @@ class Game():
             self.draw()
             self.update()
             self.events()
-            self.clock.tick(20)
+            self.clock.tick(60)
 
     def draw(self):
         self.display.fill(BLACK, rect=None, special_flags=0)
@@ -54,8 +54,8 @@ class Game():
             room.activate()
 
     def update(self):
-        pygame.display.update()
-
+            pygame.display.update()
+            self.player.update()
 
 
     def events(self):
@@ -63,17 +63,21 @@ class Game():
             if event.type == pygame.QUIT:
                 self.end()
             if event.type == pygame.KEYDOWN:
+                x,y = 0, 0
                 if event.key == pygame.K_DOWN:
-                    self.player.move(yChange= 1)
+                    y += 1
                 if event.key == pygame.K_UP:
-                    self.player.move(yChange= -1)
+                    y -= 1
                 if event.key == pygame.K_LEFT:
-                    self.player.move(xChange= -1)
+                    x -= 1
                 if event.key == pygame.K_RIGHT:
-                    self.player.move(xChange= 1)
+                    x += 1
+                
+                self.player.move(xChange=x, yChange=y)
                 
                 if event.key == pygame.K_ESCAPE:
                     self.end()
+        
 
 
     def end(self):
@@ -82,5 +86,5 @@ class Game():
 
 
 if __name__ == '__main__':
-    newgame = Game((640, 480), tilesize=32)
+    newgame = Game((1080, 920), tilesize=32)
     newgame.run()

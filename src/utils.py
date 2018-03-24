@@ -2,11 +2,11 @@
 '''
 Animations Each row has 10 animations
 
-1: Idle
-2: Dancing
-3: Walking
-4: Attacking
-5: Death
+1: Idle 1-10
+2: alt_action 11-20
+3: Walking 21-30
+4: Attacking 31-40
+5: Death 41-50
 ''' 
 
 from os import path
