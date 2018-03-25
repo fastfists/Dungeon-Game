@@ -6,6 +6,21 @@ import characters
 
 
 class Dungeon:
+    """
+    The dungeon uses a method of Procedual generation that I created without any outside info on the topic
+    It operates using Room Identies and "Touchable blocks" The Identity list is as follows:
+    
+      5 -     Refers to the Starting room for the player, Is unique and created at the end of the function 
+      4 -     Refers to a 4X4 room this is chosen randomly between the 2X2 and 4X2
+      3 -     Refers to the Boss room, Is unique and created at the begining of the algorithim
+      2 -     Refers to a 3 X 3 room this is chosen randomly between the 4X4 and 4X2
+      1 -     Refers to a Wall
+      (4,2) - Refers to a 4*2 room this is chosen randomly between the 4X4 and 2X2
+      0 -     Any null block
+      -1 -    Door blocks  
+      I would have set up constants, but forgot to and now its a bit to late / I am lazy and want to move on the the game
+    """ 
+
     notnull = []
     allrooms = []
     currenType = -1
@@ -26,7 +41,7 @@ class Dungeon:
         self.weight = specialWeigth
         self.walls = []
         self.doors = []
-        self.start_pos = (-1,-1)
+        self.start_pos = (-1,-1) # set it to an unreachable point to begin with to make the room class happy
 
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
@@ -69,12 +84,12 @@ class Dungeon:
                         self.doors.append(Door(x, y, self, (moveX,moveY)))
             except IndexError: pass
         self.make_start_room()
+        self.update_all()
         self.addWalls(corners=True)
 
     @staticmethod           
     def __startVal(room):
         return room.blocks[0].position
-
 
     def _draw(self, tilesize=32):
         if  self.game is None:
@@ -141,9 +156,35 @@ class Dungeon:
                     try:
                         self.cantouch[x][y]=1
                         self.notnull.remove((x,y))
-                    except:
+                    except IndexError:
                         pass
     
+    def update_all(self):
+        check_vals = [(x,y) for x,y in self.notnull if self.Idtbl[x][y] != -1 and self.Idtbl[x][y] != 1] 
+        for tup in check_vals:
+            x,y = tup
+            for d in range(8):
+                dirX, dirY = self.__findDir(d)
+                neighborX, neighborY= dirX + x, dirY + y
+                try:
+                    self.Idtbl[neighborX][neighborY]
+                except IndexError:
+                    _pass=False
+                    break
+                if (neighborX,neighborY) not in self.notnull:
+                    _pass=False
+                    break
+            if _pass == True and self.cantouch[x][y]==0:
+                try:
+                    self.cantouch[x][y]=1
+                    self.notnull.remove((x,y))
+                except IndexError:
+                    pass
+            else:
+                    print(x,y)
+                    self.cantouch[x][y] = 0
+                    self.notnull.append((x,y))
+
     @staticmethod
     def __findDir(dir_index):
         ''' A more conventional method to find the x and y positions '''
@@ -220,6 +261,7 @@ class Room:
             self.blocks = [Tile(self, size, (sx + x , sy - y )) for y in range(self.height) for x in range(self.width)]
         self.blocks.sort()
         for tile in self.blocks:
+            # this does the "dirty work" for me instead of handling it in the dungeon
             x,y = tile.position
             notnull.append((x,y))
             idtbl[x][y] = size
@@ -299,15 +341,16 @@ class Wall(pygame.sprite.Sprite):
         temp_image = pygame.transform.scale(self.image,(self.wall_size, self.wall_size))
         self.display.blit(temp_image, (self.x * self.wall_size, self.y * self.wall_size))
 
+
 class Door:
     
     def __init__(self, x, y, dungeon, direction):
         self.position = self.x, self.y = x,y
         self.dungeon = dungeon
-        if direction[0] == 0: self.rotation = 'Horizantal'
+        if direction[0] == 0: 
+            self.rotation = 'Horizantal'
         elif direction[1] == 0: self.rotation = 'Vertical'
 
     def draw_Door(self):
         pass
-
 

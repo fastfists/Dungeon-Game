@@ -26,7 +26,7 @@ class Game():
         self.game_over = False
         # Set Up Dungeon
         self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=4, game = self, seed=735111039)
-
+        print_res = lambda: print(self.dungeon.resolution)
 
     def set_sizes(self, size):
         dun.Tile.tile_size = size
@@ -77,7 +77,6 @@ class Game():
 
 
     def end(self):
-        print(self.dungeon.Idtbl)
         pygame.quit()
         quit()
 
@@ -121,16 +120,17 @@ def test(type):
                                             fill=f,
                                             outline=o,
                                             width=w
-                                            )
+                                        )
                     boi.pack()
             master.mainloop()
         except KeyboardInterrupt:
             print(negame.dungeon.seed) 
     else:
+        
         newgame = Game((1920,1080), tilesize=64)
         newgame.run()
 
 
 if __name__ == '__main__':
-    test("tkf")
+    test("tk")
     

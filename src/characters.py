@@ -102,7 +102,6 @@ class Monster(pygame.sprite.Sprite):
             if self.state > len(self.images) - 1:
                 self.state = 0
         
-
     @property
     def x_limit(self):
         ''' Returns a tuple containing (x min x max) '''
@@ -135,7 +134,6 @@ class Monster(pygame.sprite.Sprite):
         else:
             self.x -= self.speed
             self.flip = True
-
 
 
 class BossMonster(Monster):
