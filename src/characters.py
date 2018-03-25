@@ -10,7 +10,6 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, position, game):
         self.x, self.y = position
-        print(self.x, self.y)
         self.health = 100
         self.isAlive = True
         self.game = game
@@ -28,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         [image.set_colorkey(utils.BLACK) for image in self.death_images]
         [image.set_colorkey(utils.BLACK) for image in self.attack_images]
 
-        self.size = dun.Tile.tile_size // 2
+        self.size = dun.Tile.tile_size // 4 * 3
         self.display = game.display
         self.state = 0
         self.flip = False
@@ -84,7 +83,7 @@ class Monster(pygame.sprite.Sprite):
 
         self.x, self.y = random.choice(self.room.blocks).position
         self.display = self.room.dungeon.game.display
-        self.size = dun.Tile.tile_size // 2
+        self.size = dun.Tile.tile_size // 4 * 3
         self.direction = random.choice(['East', 'West'])
         self.speed = 0.01
         self.animation_speed = 0.33 # goes half as fast as the framerate

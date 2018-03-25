@@ -31,7 +31,6 @@ class Dungeon:
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
         if wantBool: return self.prngNum % limit == 0
-        else: pass
         return self.prngNum % limit
 
     def __repr__(self):
@@ -48,7 +47,6 @@ class Dungeon:
                 self.addWalls()
                 works = True
         while len(self.allrooms) != self.roomCount:
-            print('boom')
             self.works = False
             x,y = self.walls[ self._Prng(len(self.walls))].position # finds a random wall and gets the x and y
             moveX , moveY = self.__findDir( self._Prng(4) )
@@ -190,7 +188,7 @@ class Dungeon:
             moveX , moveY = self.__findDir( self._Prng(4) )
             newX , newY = x + moveX , y + moveY
             try:
-                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3:
+                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3 and newX > 0 and newY > 0:
                     self.start_pos = (newX, newY)
                     self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl,self)
                     self.Idtbl[newX][newY] = 5

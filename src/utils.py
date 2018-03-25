@@ -10,9 +10,7 @@ Animations Each row has 10 animations
 ''' 
 
 from os import path
-try:
-    import pygame
-except ImportError as e: print(e)
+import pygame
 from collections import namedtuple
 from maps import *
 
