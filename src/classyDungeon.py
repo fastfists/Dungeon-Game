@@ -304,13 +304,14 @@ class Tile:
         self.type = self.room.size
         self.display = self.room.dungeon.game.display
         self.hasDoor = False
-
+        self.image = utils.get_img("Tile", 17)
+        """
         if self.type != 1: 
             self.image = utils.get_img("Tile",random.randint(3,70))
         elif type(self.type) is tuple:
             self.image = utils.get_img("Tile", 71)
         else: 
-            self.image = utils.get_img("Tile",random.randint(71,73))
+            self.image = utils.get_img("Tile",random.randint(71,73))"""
 
     def tile_draw(self):
         temp_image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
@@ -334,7 +335,7 @@ class Wall(pygame.sprite.Sprite):
         self.x, self.y = position
         self.dungeon = Dungeon
         pygame.sprite.Sprite.__init__(self)
-        self.image = utils.get_img("Tile", 160)
+        self.image = utils.get_img("Tile", 1)
         self.display = self.dungeon.game.display
             
     def draw(self):
