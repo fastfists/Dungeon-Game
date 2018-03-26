@@ -132,5 +132,5 @@ def test(type):
 
 
 if __name__ == '__main__':
-    test("tk")
+    test("tdk")
     

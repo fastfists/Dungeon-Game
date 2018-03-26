@@ -29,11 +29,13 @@ img_direc = package_path + "\img"
 Tiles_and_ceil = pygame.image.load(img_direc + "\dungeon_floor.png")
 rouge = pygame.image.load(path.join(img_direc, "rouge.png"))
 skeleton = pygame.image.load(path.join(img_direc,"skeleton.png"))
+door = pygame.image.load(path.join(img_direc, "Doors.jpg"))
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 
 # Range not implemented yet
 Sheets = { "Tile": FileDoc(Tiles_and_ceil_ref, Tiles_and_ceil),
+           "Door": FileDoc(doors_ref, door),
            "Rouge":FileDoc(rouge_ref, rouge),
            "Skeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
 

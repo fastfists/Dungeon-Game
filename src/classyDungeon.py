@@ -99,6 +99,8 @@ class Dungeon:
         self.start_room.room_draw()
         for wall in self.walls:
             wall.draw()
+        for door in self.doors:
+            door.draw()
         
     def _format(self,size, sx,sy):
         """ Recieves a x and y position and creates the type needed to create it """
@@ -348,10 +350,14 @@ class Door:
     def __init__(self, x, y, dungeon, direction):
         self.position = self.x, self.y = x,y
         self.dungeon = dungeon
+        self.size = Tile.tile_size
+        self.display = self.dungeon.game.display
+        self.image = utils.get_img("Door",53)
+        self.image = pygame.transform.scale(self.image, (self.size,self.size))
         if direction[0] == 0: 
             self.rotation = 'Horizantal'
-        elif direction[1] == 0: self.rotation = 'Vertical'
+            self.image = pygame.transform.rotate(self.image, 90)
 
-    def draw_Door(self):
-        pass
+    def draw(self):
+        self.display.blit(self.image,(self.x * self.size, self.y * self.size))
 
