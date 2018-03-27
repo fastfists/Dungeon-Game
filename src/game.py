@@ -22,6 +22,7 @@ class Game():
 
     def __init__(self, screen_size:tuple, tilesize=16):
         # Set Constants
+        https://screencast-o-matic.com/watch/c2l6rMeTbM
         self.SIZE = screen_size
         self.WIDTH, self.HEIGHT = self.SIZE
         self.TILESIZE = tilesize
