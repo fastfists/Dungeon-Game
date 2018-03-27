@@ -10,6 +10,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, position, game):
         self.x, self.y = position
+        print(position)
         self.health = 100
         self.isAlive = True
         self.game = game
@@ -71,7 +72,7 @@ class Player(pygame.sprite.Sprite):
         self.x += move_x
         self.y += move_y
 
-        if self.dungeon[self.x // dun.Tile.tile_size][self.y // dun.Tile.tile_size] == 1:
+        if self.dungeon.Idtbl[round(self.x )][round(self.y)] == 1:
             self.x -= move_x
             self.y -= move_y
 

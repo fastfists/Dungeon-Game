@@ -21,9 +21,7 @@ class Dungeon:
       I would have set up constants, but forgot to and now its a bit to late / I am lazy and want to move on the the game
     """ 
 
-    notnull = []
-    allrooms = []
-    currenType = -1
+
     '''
     __init__ method:
         - Resolution as a tuple (width,height)
@@ -43,14 +41,18 @@ class Dungeon:
         self.wall_sprites = pygame.sprite.Group()
         self.doors = []
         self.start_pos = (-1,-1) # set it to an unreachable point to begin with to make the room class happy
+        self.notnull = []
+        self.allrooms = []
+        self.currenType = -1
     
+    def __repr__(self):
+        return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}" 
+
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
         if wantBool: return self.prngNum % limit == 0
         return self.prngNum % limit
 
-    def __repr__(self):
-        return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}" 
 
     def make(self):
         works = False
@@ -149,7 +151,7 @@ class Dungeon:
                     neighborX, neighborY= dirX + x, dirY + y
                     try:
                         self.Idtbl[neighborX][neighborY]
-                    except:
+                    except IndexError:
                         _pass=False
                         break
                     if (neighborX,neighborY) not in self.notnull:
@@ -159,7 +161,7 @@ class Dungeon:
                     try:
                         self.cantouch[x][y]=1
                         self.notnull.remove((x,y))
-                    except IndexError:
+                    except ValueError:
                         pass
     
     def update_all(self):

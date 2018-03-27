@@ -30,13 +30,13 @@ class Game():
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        try: self.display = pygame.display.set_mode(self.SIZE)
+        try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.clock = pygame.time.Clock()
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=4, game = self, seed=735111039)
+        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=4, game = self)
 
     def set_sizes(self, size):
         dun.Tile.tile_size = size
@@ -131,7 +131,7 @@ def test(type):
             print(negame.dungeon.seed) 
     else:
         
-        newgame = Game((1920,1080), tilesize=64)
+        newgame = Game((1366,768), tilesize=64)
         newgame.run()
 
 
