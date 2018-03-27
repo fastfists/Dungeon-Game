@@ -14,7 +14,8 @@ class Player(pygame.sprite.Sprite):
         self.isAlive = True
         self.game = game
         self.speed = 0.08
-        
+        self.dungeon = self.game.dungeon
+
         self.move_images = [utils.get_img("Rouge",x) for x in range(21,30)]
         self.idle_images = [utils.get_img("Rouge",x) for x in range(1,10)]
         self.death_images = [utils.get_img("Rouge",x) for x in range(41,50)]
@@ -49,20 +50,36 @@ class Player(pygame.sprite.Sprite):
             if self.state > len(image_array) - 1:
                 self.state = 0
 
-
     def attack(self):
         print("charge")
     
     def update(self):
-        pass
+        self.move()
 
-    def move(self,xChange=0, yChange=0):
-        if xChange: self.x += xChange * self.speed
-        if  yChange: self.y += yChange * self.speed
-        if xChange + yChange != 0: self.moved = True
-        if xChange < 0:
+    def move(self):
+        key = pygame.key.get_pressed()
+        move_x, move_y = 0,0
+        if key[pygame.K_DOWN]:
+            move_y = self.speed
+        if key[pygame.K_UP]:
+            move_y = -self.speed
+        if key[pygame.K_LEFT]:
+            move_x = -self.speed
+        if key[pygame.K_RIGHT]:
+            move_x = self.speed
+        
+        self.x += move_x
+        self.y += move_y
+
+        if self.dungeon[self.x // dun.Tile.tile_size][self.y // dun.Tile.tile_size] == 1:
+            self.x -= move_x
+            self.y -= move_y
+
+
+        if move_x + move_y != 0: self.moved = True
+        if move_x < 0:
             self.flip = True
-        else:
+        elif move_x > 0:
             self.flip = False
 
     def hit(self, dmg):
@@ -128,12 +145,14 @@ class Monster(pygame.sprite.Sprite):
         elif self.x <= self.x_limit[0]:
             self.direction = 'East'
 
+        move_x, move_y = 0,0
         if self.direction == 'East':
-            self.x += self.speed
+            move_x += self.speed
             self.flip = False
-        else:
-            self.x -= self.speed
+        elif self.direction == 'West':
+            move_x -= self.speed
             self.flip = True
+        self.x += move_x
 
 
 class BossMonster(Monster):

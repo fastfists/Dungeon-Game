@@ -40,9 +40,10 @@ class Dungeon:
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
         self.walls = []
+        self.wall_sprites = pygame.sprite.Group()
         self.doors = []
         self.start_pos = (-1,-1) # set it to an unreachable point to begin with to make the room class happy
-
+    
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
         if wantBool: return self.prngNum % limit == 0
@@ -183,7 +184,6 @@ class Dungeon:
                 except IndexError:
                     pass
             else:
-                    print(x,y)
                     self.cantouch[x][y] = 0
                     self.notnull.append((x,y))
 
@@ -221,7 +221,9 @@ class Dungeon:
                     try:
                         if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
                             self.Idtbl[neighborX][neighborY] = 1
-                            self.walls.append(Wall((neighborX,neighborY),self))
+                            temp_wall = Wall((neighborX,neighborY),self, (nx,ny))
+                            self.walls.append(temp_wall)
+                            self.wall_sprites.add(temp_wall)
                             self.notnull.append((neighborX, neighborY))
                     except IndexError:
                         pass
@@ -329,7 +331,7 @@ class Tile:
 class Wall(pygame.sprite.Sprite):
     #TODO hey im over here !!!! give me stuff!!!
     wall_size = 16
-    def __init__(self, position, Dungeon):
+    def __init__(self, position, Dungeon, direction):
         """
         Recieves an X and Y position and the dungeon instance
         """
@@ -337,7 +339,20 @@ class Wall(pygame.sprite.Sprite):
         self.x, self.y = position
         self.dungeon = Dungeon
         pygame.sprite.Sprite.__init__(self)
-        self.image = utils.get_img("Tile", 1)
+        self.image = utils.get_img("Tile", 5)
+        if direction == (0, 1):
+            self.image = pygame.transform.rotate(self.image, 180)
+        elif direction == (1, 0):
+            self.image = pygame.transform.rotate(self.image, 270)
+        elif direction == (-1, 0):
+            self.image = pygame.transform.rotate(self.image, 90)
+        elif direction == (0, -1):
+            self.image = self.image
+        else: # Assume that it is a corner
+            self.image = utils.get_img("Tile", 1)
+        
+        # (-1,0) is not included because no flip is needed
+        
         self.display = self.dungeon.game.display
             
     def draw(self):
@@ -345,9 +360,10 @@ class Wall(pygame.sprite.Sprite):
         self.display.blit(temp_image, (self.x * self.wall_size, self.y * self.wall_size))
 
 
-class Door:
+class Door(pygame.sprite.Sprite):
     
     def __init__(self, x, y, dungeon, direction):
+        pygame.sprite.Sprite.__init__(self)
         self.position = self.x, self.y = x,y
         self.dungeon = dungeon
         self.size = Tile.tile_size

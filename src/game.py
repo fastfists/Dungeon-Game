@@ -7,6 +7,17 @@ import characters
 import classydungeon as dun 
 
 
+'''
+Whats broken:
+    Walls look funky
+    Need better tiles (make them?)
+    Sprite animation / States(for player class)
+
+Need to implement:
+    Sprite interactions
+    Chests/ reward system
+'''
+
 class Game():
 
     def __init__(self, screen_size:tuple, tilesize=16):
@@ -26,7 +37,6 @@ class Game():
         self.game_over = False
         # Set Up Dungeon
         self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=4, game = self, seed=735111039)
-        print_res = lambda: print(self.dungeon.resolution)
 
     def set_sizes(self, size):
         dun.Tile.tile_size = size
@@ -63,13 +73,7 @@ class Game():
             if event.type == pygame.QUIT:
                 self.end()
             if event.type == pygame.KEYDOWN:
-                x,y = 0, 0
-                if event.key == pygame.K_DOWN:  y += 1
-                if event.key == pygame.K_UP:    y -= 1
-                if event.key == pygame.K_LEFT:  x -= 1
-                if event.key == pygame.K_RIGHT: x += 1
-                
-                self.player.move(xChange=x, yChange=y)
+
                 
                 if event.key == pygame.K_ESCAPE:
                     self.end()
