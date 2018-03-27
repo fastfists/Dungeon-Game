@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.isAlive = True
         self.game = game
-        self.speed = 0.08
+        self.speed = 0.03
         self.dungeon = self.game.dungeon
 
         self.move_images = [utils.get_img("Rouge",x) for x in range(21,30)]
@@ -103,7 +103,6 @@ class Monster(pygame.sprite.Sprite):
         self.display = self.room.dungeon.game.display
         self.size = dun.Tile.tile_size // 4 * 3
         self.direction = random.choice(['East', 'West'])
-        self.speed = 0.01
         self.animation_speed = 0.33 # goes half as fast as the framerate
         self.current_frame = 0
         self.state = 0
@@ -146,14 +145,12 @@ class Monster(pygame.sprite.Sprite):
         elif self.x <= self.x_limit[0]:
             self.direction = 'East'
 
-        move_x, move_y = 0,0
         if self.direction == 'East':
-            move_x += self.speed
+            self.x += self.speed
             self.flip = False
         elif self.direction == 'West':
-            move_x -= self.speed
+            self.x -= self.speed
             self.flip = True
-        self.x += move_x
 
 
 class BossMonster(Monster):

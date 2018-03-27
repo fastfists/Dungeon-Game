@@ -36,7 +36,7 @@ class Game():
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=4, game = self)
+        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=5, game = self)
 
     def set_sizes(self, size):
         dun.Tile.tile_size = size

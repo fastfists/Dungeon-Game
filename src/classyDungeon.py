@@ -53,7 +53,6 @@ class Dungeon:
         if wantBool: return self.prngNum % limit == 0
         return self.prngNum % limit
 
-
     def make(self):
         works = False
         while not works:
@@ -373,9 +372,15 @@ class Door(pygame.sprite.Sprite):
         self.image = utils.get_img("Door",53)
         self.image = pygame.transform.scale(self.image, (self.size,self.size))
         if direction[0] == 0: 
-            self.rotation = 'Horizantal'
+            # Up and down
             self.image = pygame.transform.rotate(self.image, 90)
+        elif direction[1] == 0:
+            # side to side
+            self.image = pygame.transform.rotate(self.image, 270)
 
     def draw(self):
         self.display.blit(self.image,(self.x * self.size, self.y * self.size))
+    
+    def __repr__(self):
+        return f"Door at {self.x}, {self.y}"
 
