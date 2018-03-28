@@ -22,7 +22,6 @@ class Game():
 
     def __init__(self, screen_size:tuple, tilesize=16):
         # Set Constants
-        https://screencast-o-matic.com/watch/c2l6rMeTbM
         self.SIZE = screen_size
         self.WIDTH, self.HEIGHT = self.SIZE
         self.TILESIZE = tilesize
@@ -132,7 +131,7 @@ def test(type):
             print(negame.dungeon.seed) 
     else:
         
-        newgame = Game((1366,768), tilesize=64)
+        newgame = Game((1920,1080), tilesize=64)
         newgame.run()
 
 
