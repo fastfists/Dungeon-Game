@@ -34,16 +34,14 @@ def find_dir(dir_index):
     if dir_index == 7:
         return (1,1)
     
-def setup(pn, r, rm):
+def setup():
     """
     pn in the Seed
     r is the Resoluion
     rm is the room ammount
     """
     global prngNum, resolution, roomamt, Idtbl, cantouch, allrooms, master, dungeon, notnull
-    prngNum = pn
-    resolution = r
-    roomamt = rm
+
     Idtbl=[[0 for i in range(resolution)] for i in range(resolution)]
     cantouch=[[0 for i in range(resolution)] for i in range(resolution)]
     notnull=[]

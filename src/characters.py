@@ -4,6 +4,7 @@ import pygame
 import utils
 import classydungeon as dun
 import random
+from dungeon_utils import *
 
 
 class Player(pygame.sprite.Sprite):
@@ -118,7 +119,7 @@ class Monster(pygame.sprite.Sprite):
             self.current_frame = 0
             if self.state > len(self.images) - 1:
                 self.state = 0
-        
+
     @property
     def x_limit(self):
         ''' Returns a tuple containing (x min x max) '''
@@ -162,3 +163,27 @@ class BossMonster(Monster):
         self.image.set_colorkey(utils.BLACK)
         self.size = dun.Tile.tile_size
 
+
+
+class Sprite(DungeonElement):
+    '''Containtains all monster sprites that are contained within my dungeon'''
+    def __init__(position, room, health=50):
+        super().__init__(random.choice(room.blocks).position, room.dungeon)
+        self.room = room
+        self.health = health
+
+    @property
+    def x_limit(self):
+        return (self.room.blocks[0].x, self.room.blocks[-1].x)
+
+    @property
+    def y_limit(self):
+        return (self.room.blocks[0].y, self.room.blocks[-1].y)
+    
+    def damgage(self, dmg):
+        self.health -= dmg
+        if self.health < 0:
+            self.isAlive = False
+    
+class Monsters(Sprite):
+    

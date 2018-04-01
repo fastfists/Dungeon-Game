@@ -43,7 +43,7 @@ class Room:
 
     def room_draw(self):
         for tile in self.blocks:
-            tile.tile_draw()
+            tile.draw()
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.show()
@@ -61,17 +61,16 @@ class Tile:
     tile_size = 16
     def __init__(self, Room, position):
         '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
-        self.room = Room
         self.position = position
-        self.x , self.y = self.position
+        self.image = utils.get_img("Tile", 17)
+        
+        self.room = Room
         self.type = self.room.size
         self.display = self.room.dungeon.game.display
-        self.hasDoor = False
-        self.image = utils.get_img("Tile", 17)
+        self.image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
 
 
     def tile_draw(self):
-        temp_image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
         self.display.blit(temp_image, (self.x * self.tile_size, self.y * self.tile_size))
 
     def __lt__(self, other):
@@ -101,13 +100,13 @@ class Wall():
             self.image = pygame.transform.rotate(self.image, 90)
         elif direction == (0, -1):
             self.image = self.image
-        else: # Assume that it is a corner2
 
             self.image = utils.get_img("Tile", 1)
         
         
         self.display = self.dungeon.game.display
             
+        else: # Assume that it is a corner2
     def draw(self):
         temp_image = pygame.transform.scale(self.image,(self.wall_size, self.wall_size))
         self.display.blit(temp_image, (self.x * self.wall_size, self.y * self.wall_size))
@@ -136,13 +135,13 @@ class Door():
 
 
 
-class Element():
-    ''' Abstract class that is for elements of the dungeon (Wall, & Dungeon)'''
-    def __init__(position, dungeon):
-        #self.display = dungeon.game.display
+class DungeonElement():
+    ''' Abstract class that is for all elements of the dungeon'''
+    def __init__(self,position, dungeon):
         self.image = None
+        self.display = dungeon.game.display
         self.position = position
-        #self.size = dungeon.game.TILESIZE
+        self.size = dungeon.game.TILESIZE
 
     @property
     def x(self):
@@ -152,11 +151,13 @@ class Element():
     def y(self):
         return self.position[1]
 
-    def __repr__():
-        return f"{__class__}: at {self.x} , {self.y}"
+    def __repr__(self):
+        return "{}: at {} , {}".format(self.__class__.__name__, self.x, self.y)
 
     def draw():
+        if not self.image:
+            raise NameError("Set the image to draw as self.image")
         self.display.blit(self.image,(self.x * self.size, self.y * self.size))
 
-name=3
-print(f"{name}")
+b = DungeonElement((10,3), "hi")
+print(repr(b))
