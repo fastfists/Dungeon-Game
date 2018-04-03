@@ -164,13 +164,39 @@ class BossMonster(Monster):
         self.size = dun.Tile.tile_size
 
 
-
-class Sprite(DungeonElement):
+import dungeon_utils
+class Sprite(dungeon_utils.DungeonElement, pygame.sprite.Sprite):
     '''Containtains all monster sprites that are contained within my dungeon'''
-    def __init__(position, room, health=50):
-        super().__init__(random.choice(room.blocks).position, room.dungeon)
+    def __init__(position, room, health):
+        DungeonElement.__init__(random.choice(room.blocks).position, room.dungeon)
+        self.size = self.size/3 *2
         self.room = room
         self.health = health
+        self.is_alive = True
+        # For the animations
+        self.animation_speed = 0.33 # 0.55 for the player
+        self.images = NotImplemented # Scale each image after I recieve them
+        self.state = 0
+        self.flipped = False
+        self.current_frame = 0
+    
+    def draw(self):
+        self.image = self.images[self.state]
+        self.image = flip
+        super().draw()
+
+    def update():
+        if self.is_alive:
+
+
+    def damgage(self, dmg):
+        self.health -= dmg
+        if self.health < 0:
+            self.isAlive = False
+    
+class Monsters(Sprite, pygame.sprite.Sprite):
+    def __init__(self, position, room, health=50):
+        super
 
     @property
     def x_limit(self):
@@ -179,11 +205,6 @@ class Sprite(DungeonElement):
     @property
     def y_limit(self):
         return (self.room.blocks[0].y, self.room.blocks[-1].y)
-    
-    def damgage(self, dmg):
-        self.health -= dmg
-        if self.health < 0:
-            self.isAlive = False
-    
-class Monsters(Sprite):
-    
+
+print(dir(Monsters), dir(Sprite))
+

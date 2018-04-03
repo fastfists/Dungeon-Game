@@ -106,7 +106,8 @@ class Wall():
         
         self.display = self.dungeon.game.display
             
-        else: # Assume that it is a corner2
+         # Assume that it is a corner2 TODO change this 
+        
     def draw(self):
         temp_image = pygame.transform.scale(self.image,(self.wall_size, self.wall_size))
         self.display.blit(temp_image, (self.x * self.wall_size, self.y * self.wall_size))
@@ -133,8 +134,6 @@ class Door():
         self.display.blit(self.image,(self.x * self.size, self.y * self.size))
 
 
-
-
 class DungeonElement():
     ''' Abstract class that is for all elements of the dungeon'''
     def __init__(self,position, dungeon):
@@ -158,6 +157,3 @@ class DungeonElement():
         if not self.image:
             raise NameError("Set the image to draw as self.image")
         self.display.blit(self.image,(self.x * self.size, self.y * self.size))
-
-b = DungeonElement((10,3), "hi")
-print(repr(b))
