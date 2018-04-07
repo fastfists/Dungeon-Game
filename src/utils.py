@@ -39,6 +39,8 @@ Sheets = { "Tile": FileDoc(Tiles_and_ceil_ref, Tiles_and_ceil),
            "Rouge":FileDoc(rouge_ref, rouge),
            "Skeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
 
+all_sprites = pygame.sprite.Group()
+
 def get_img(key_name, sprite_number):
     ref = Sheets[key_name].Reference[sprite_number]
     img = pygame.Surface((ref[2], ref[3]))

@@ -4,7 +4,7 @@ import pygame
 import utils
 import classydungeon as dun
 import random
-from dungeon_utils import *
+import dungeon_utils
 
 
 class Player(pygame.sprite.Sprite):
@@ -169,34 +169,40 @@ class Sprite(dungeon_utils.DungeonElement, pygame.sprite.Sprite):
     '''Containtains all monster sprites that are contained within my dungeon'''
     def __init__(position, room, health):
         DungeonElement.__init__(random.choice(room.blocks).position, room.dungeon)
+        
         self.size = self.size/3 *2
         self.room = room
         self.health = health
         self.is_alive = True
         # For the animations
-        self.animation_speed = 0.33 # 0.55 for the player
+        self.animation_speed = 1 # 0.55 for the player
         self.images = NotImplemented # Scale each image after I recieve them
-        self.state = 0
+        self.state = {'Idle':True, 
+                      'Walking':False,
+                      'Attacking':False,
+                      'Dying': False,
+                      'Dead': False }
+        self.frame = 0
         self.flipped = False
         self.current_frame = 0
     
     def draw(self):
-        self.image = self.images[self.state]
-        self.image = flip
+        self.image = self.images[self.frame]
+        self.image = pygame.transform.flip(self.image, False, self.flipped)
         super().draw()
 
     def update():
         if self.is_alive:
-
-
+            pass
+            
     def damgage(self, dmg):
         self.health -= dmg
         if self.health < 0:
             self.isAlive = False
     
-class Monsters(Sprite, pygame.sprite.Sprite):
+class Monsters(Sprite):
     def __init__(self, position, room, health=50):
-        super
+       super().__init__(self.position, self.room, health)
 
     @property
     def x_limit(self):
@@ -206,5 +212,17 @@ class Monsters(Sprite, pygame.sprite.Sprite):
     def y_limit(self):
         return (self.room.blocks[0].y, self.room.blocks[-1].y)
 
-print(dir(Monsters), dir(Sprite))
+    def move(self):
+        if self.x >= self.x_limit[1]:
+            self.direction = 'West'
+        elif self.x <= self.x_limit[0]:
+            self.direction = 'East'
 
+        if self.direction == 'East':
+            self.x += self.speed
+            self.flip = False
+        elif self.direction == 'West':
+            self.x -= self.speed
+            self.flip = True        
+
+class Players(Sprite)
