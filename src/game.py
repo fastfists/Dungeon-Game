@@ -86,6 +86,9 @@ class Game():
 
 
 def test(type):
+    '''
+    TODO ignore this 
+    '''
     if type == "tk":
         try:    
             from tkinter import Tk, Canvas
@@ -134,7 +137,7 @@ def test(type):
         newgame = Game((1920,1080), tilesize=64)
         newgame.run()
 
-
+'''
 if __name__ == '__main__':
-    test("tdk")
-    
+    Game((1920,1080), tilesize=64).run()
+   ''' 

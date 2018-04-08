@@ -6,9 +6,9 @@
         {
             "label": "python",
             "type": "shell",
-            "command": "pytyhon",
+            "command": "python3",
             "args": [
-                "${file}"
+                "src/game.py"
             ],
             "group": {
                 "kind": "build",

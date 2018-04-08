@@ -139,21 +139,22 @@ class DungeonElement():
     def __init__(self,position, dungeon):
         self.image = None
         self.display = dungeon.game.display
-        self.position = position
+        self.dungeon.game.apped()
+        self.x, self.y = position
         self.size = dungeon.game.TILESIZE
+        
 
     @property
-    def x(self):
-        return self.position[0]
-
-    @property
-    def y(self):
-        return self.position[1]
+    def position(self):
+        return self.x, self.y
 
     def __repr__(self):
         return "{}: at {} , {}".format(self.__class__.__name__, self.x, self.y)
 
     def draw():
+        '''
+        blits the sprite onto the screen
+        '''
         if not self.image:
             raise NameError("Set the image to draw as self.image")
         self.display.blit(self.image,(self.x * self.size, self.y * self.size))

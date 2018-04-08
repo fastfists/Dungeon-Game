@@ -164,7 +164,7 @@ class Dungeon:
                         pass
     
     def update_all(self):
-        check_vals = [(x,y) for x,y in self.notnull if self.Idtbl[x][y] != -1 and self.Idtbl[x][y] != 1] 
+        check_vals = [(x,y) for x,y in self.notnull if self.Idtbl[x][y] != 1] 
         for tup in check_vals:
             x,y = tup
             for d in range(8):

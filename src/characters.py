@@ -1,3 +1,4 @@
+
 ''' Where I put all of my game classes at (Player, Zombie, Boss) '''
 from time import sleep
 import pygame
@@ -11,7 +12,6 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, position, game):
         self.x, self.y = position
-        print(position)
         self.health = 100
         self.isAlive = True
         self.game = game
@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
         self.move_images = [utils.get_img("Rouge",x) for x in range(21,30)]
         self.idle_images = [utils.get_img("Rouge",x) for x in range(1,10)]
         self.death_images = [utils.get_img("Rouge",x) for x in range(41,50)]
-        self.attack_images = [utils.get_img("Rouge",x) for x in range(21,30)]
+        self.attack_images = [utils.get_img("Rouge",x) for x in range(11,40)]
         self.current_frame = 0
         self.animation_speed = 0.5 # goes half as fast as the framerate
 
@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         if self.moved:
             image_array = self.move_images
         else:
-            image_array = self.death_images
+            image_array = self.attack_images
         temp_img = pygame.transform.scale(image_array[self.state], (self.size,self.size))
         temp_img = pygame.transform.flip(temp_img, self.flip,False)
         self.display.blit(temp_img, (self.x * dun.Tile.tile_size, self.y * dun.Tile.tile_size))
@@ -54,7 +54,7 @@ class Player(pygame.sprite.Sprite):
 
     def attack(self):
         print("charge")
-    
+
     def update(self):
         self.move()
 
@@ -69,7 +69,7 @@ class Player(pygame.sprite.Sprite):
             move_x = -self.speed
         if key[pygame.K_RIGHT]:
             move_x = self.speed
-        
+
         self.x += move_x
         self.y += move_y
 
@@ -77,8 +77,8 @@ class Player(pygame.sprite.Sprite):
             self.x -= move_x
             self.y -= move_y
 
-
-        if move_x + move_y != 0: self.moved = True
+        self.moved = True if move_x != 0 or move_y != 0 else False
+        if move_x + move_y == 0: self.moved = False
         if move_x < 0:
             self.flip = True
         elif move_x > 0:
@@ -168,16 +168,14 @@ import dungeon_utils
 class Sprite(dungeon_utils.DungeonElement, pygame.sprite.Sprite):
     '''Containtains all monster sprites that are contained within my dungeon'''
     def __init__(position, room, health):
-        DungeonElement.__init__(random.choice(room.blocks).position, room.dungeon)
-        
-        self.size = self.size/3 *2
+        DungeonElement.__init__(random.choice(room.blocks).position, room.dungeon) 
+        pygame.sprite.Sprite.__init__()
         self.room = room
         self.health = health
-        self.is_alive = True
         # For the animations
         self.animation_speed = 1 # 0.55 for the player
         self.images = NotImplemented # Scale each image after I recieve them
-        self.state = {'Idle':True, 
+        self.state = {'Idle':True,
                       'Walking':False,
                       'Attacking':False,
                       'Dying': False,
@@ -223,6 +221,8 @@ class Monsters(Sprite):
             self.flip = False
         elif self.direction == 'West':
             self.x -= self.speed
-            self.flip = True        
+            self.flip = True
 
-class Players(Sprite)
+class Players(Sprite):
+    pass
+

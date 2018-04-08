@@ -26,15 +26,27 @@ WHITE = (255, 255, 255)
 package_path = path.dirname(path.dirname(__file__))
 img_direc = package_path + "\img"
 
-Tiles_and_ceil = pygame.image.load(img_direc + "\dungeon_floor.png")
-rouge = pygame.image.load(path.join(img_direc, "rouge.png"))
-skeleton = pygame.image.load(path.join(img_direc,"skeleton.png"))
-door = pygame.image.load(path.join(img_direc, "Doors.jpg"))
+if 'home' in package_path:
+    img_direc = package_path + "/img"
+
+
+
+try:
+    tiles = pygame.image.load(path.join(img_direc ,"dungeon_floor.png"))
+    rouge = pygame.image.load(path.join(img_direc, "rouge.png"))
+    skeleton = pygame.image.load(path.join(img_direc,"skeleton.png"))
+    door = pygame.image.load(path.join(img_direc, "Doors.jpg"))
+except TypeError:
+    tiles = pygame.image.load(img_direc + "dungeon_floor.png")
+    rouge = pygame.image.load(img_direc + "rouge.png")
+    skeleton = pygame.image.load(img_direc + "skeleton.png")
+    door = pygame.image.load(img_direc + "Doors.jpg")
+
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 
 # Range not implemented yet
-Sheets = { "Tile": FileDoc(Tiles_and_ceil_ref, Tiles_and_ceil),
+Sheets = { "Tile": FileDoc(Tiles_and_ceil_ref, tiles),
            "Door": FileDoc(doors_ref, door),
            "Rouge":FileDoc(rouge_ref, rouge),
            "Skeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
@@ -47,4 +59,11 @@ def get_img(key_name, sprite_number):
     img.blit(Sheets[key_name].Picture, (0,0),ref)
     return img
 
-
+class Camera():
+    """
+    This allows for simple parallax scrolling
+    """
+    def __init__(self, width, height):
+        self.Camera = pygame.Rect(0, 0, width, height)
+        self.width, self.height = width, heigh
+    
