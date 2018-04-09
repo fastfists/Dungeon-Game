@@ -159,7 +159,6 @@ class Dungeon:
                 if _pass == True and self.cantouch[x][y]==0:
                     try:
                         self.cantouch[x][y]=1
-                        self.notnull.remove((x,y))
                     except ValueError:
                         pass
     
@@ -167,6 +166,7 @@ class Dungeon:
         check_vals = [(x,y) for x,y in self.notnull if self.Idtbl[x][y] != 1] 
         for tup in check_vals:
             x,y = tup
+            _pass = True
             for d in range(8):
                 dirX, dirY = self.__findDir(d)
                 neighborX, neighborY= dirX + x, dirY + y
@@ -181,7 +181,6 @@ class Dungeon:
             if _pass == True and self.cantouch[x][y]==0:
                 try:
                     self.cantouch[x][y]=1
-                    self.notnull.remove((x,y))
                 except IndexError:
                     pass
             else:
@@ -209,10 +208,12 @@ class Dungeon:
             return (1,1)
 
     def addWalls(self, corners=False):
-        dir_index = 8
         if not corners:
             dir_index = 4
-        checkVals = [(x,y) for x,y in self.notnull if self.cantouch[x][y] != 1 and self.Idtbl[x][y] != 1 and self.Idtbl[x][y] != -1]
+            checkVals = [(x,y) for x,y in self.notnull if self.cantouch[x][y] != 1 and self.Idtbl[x][y] != 1 and self.Idtbl[x][y] != -1]
+        else:
+            dir_index = 8
+            checkVals = [(x,y) for x,y in self.notnull if self.Idtbl[x][y] != 1]    
         if checkVals != []:
             for tup in checkVals:
                 x,y = tup

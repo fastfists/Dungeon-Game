@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
         if self.moved:
             image_array = self.move_images
         else:
-            image_array = self.attack_images
+            image_array = self.idle_images
         temp_img = pygame.transform.scale(image_array[self.state], (self.size,self.size))
         temp_img = pygame.transform.flip(temp_img, self.flip,False)
         self.display.blit(temp_img, (self.x * dun.Tile.tile_size, self.y * dun.Tile.tile_size))

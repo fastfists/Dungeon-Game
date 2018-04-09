@@ -9,11 +9,10 @@ import classydungeon as dun
 
 '''
 Whats broken:
-    Walls look funky
     Need better tiles (make them?)
-    Sprite animation / States(for player class)
 
 Need to implement:
+    sprite dictionary state
     Sprite interactions
     Chests/ reward system
 '''
@@ -30,6 +29,7 @@ class Game():
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
+        pygame.mixer.music.load(song_direc + '/skeletons.mp3')
         try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.clock = pygame.time.Clock()
@@ -47,7 +47,8 @@ class Game():
         self.dungeon.make()
         pygame.display.set_caption('Dungoen')
         self.player = characters.Player(self.dungeon.start_pos, self)
-    
+        pygame.mixer.music.play()
+
     def run(self):
         self.setup()
         while not self.game_over:
@@ -137,7 +138,6 @@ def test(type):
         newgame = Game((1920,1080), tilesize=64)
         newgame.run()
 
-'''
 if __name__ == '__main__':
     Game((1920,1080), tilesize=64).run()
-   ''' 
+
