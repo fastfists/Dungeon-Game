@@ -3,6 +3,7 @@ import random
 import utils
 import pygame
 import characters
+from dungeon_utils import *
 
 
 class Dungeon:
@@ -37,17 +38,17 @@ class Dungeon:
         self.cantouch = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH) ]
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
-        self.walls = []
-        self.wall_sprites = pygame.sprite.Group()
-        self.doors = []
         self.start_pos = (-1,-1) # set it to an unreachable point to begin with to make the room class happy
         self.notnull = []
         self.allrooms = []
         self.currenType = -1
-    
+        self.walls = []
+        self.elements = []
+        self.doors = []
+
     def __repr__(self):
         return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}" 
-
+    
     def _Prng(self,limit, wantBool = False):
         self.prngNum = (self.prngNum * 154687469+879190747) % 67280421310721
         if wantBool: return self.prngNum % limit == 0
@@ -58,7 +59,7 @@ class Dungeon:
         while not works:
             x,y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
             if self._format(3,x,y):
-                self.allrooms.append(Room(3, self.currenType,x,y,self.notnull, self.Idtbl, self,is_boss=True))
+                self.allrooms.append(Room(3, self.currenType,x,y, self,is_boss=True))
                 x,y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                 self.update(3, self.currenType, x, y)
                 self.addWalls()
@@ -78,7 +79,7 @@ class Dungeon:
                             size = 4
                         else: size = 2
                     if self._format(size, newX,newY):
-                        self.allrooms.append(Room(size, self.currenType,newX, newY , self.notnull, self.Idtbl,self))
+                        self.allrooms.append(Room(size, self.currenType,newX, newY , self))
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
                         self.addWalls()
@@ -225,7 +226,6 @@ class Dungeon:
                             self.Idtbl[neighborX][neighborY] = 1
                             temp_wall = Wall((neighborX,neighborY),self, (nx,ny))
                             self.walls.append(temp_wall)
-                            self.wall_sprites.add(temp_wall)
                             self.notnull.append((neighborX, neighborY))
                     except IndexError:
                         pass
@@ -237,7 +237,7 @@ class Dungeon:
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3 and newX > 0 and newY > 0:
                     self.start_pos = (newX, newY)
-                    self.start_room = Room(1, 1, newX, newY, self.notnull, self.Idtbl,self)
+                    self.start_room = Room(1, 1, newX, newY, self)
                     self.Idtbl[newX][newY] = 5
                     self.Idtbl[x][y] = -1
                     self.doors.append(Door(x, y, self, (moveX,moveY)))
@@ -246,10 +246,10 @@ class Dungeon:
             except IndexError:
                 self.make_start_room()
             
-            
+'''            
 class Room:
     test = "test"
-    ''' A class that contains its own pair of blocks and monsters'''
+    """ A class that contains its own pair of blocks and monsters"""
     def __init__(self, size, how, sx,sy, notnull, idtbl, dungeon ,is_boss = False):
         self.dungeon = dungeon
         try:
@@ -303,7 +303,7 @@ class Room:
 class Tile:
     tile_size = 16
     def __init__(self, Room, _type, position):
-        '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
+        """Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple"""
         self.room = Room
         self.position = position
         self.x , self.y = self.position
@@ -385,3 +385,4 @@ class Door(pygame.sprite.Sprite):
     def __repr__(self):
         return f"Door at {self.x}, {self.y}"
 
+'''
