@@ -18,7 +18,7 @@ Need to implement:
 '''
 
 class Game():
-
+    
     def __init__(self, screen_size:tuple, tilesize=16):
         # Set Constants
         self.SIZE = screen_size
@@ -30,13 +30,14 @@ class Game():
         # Set Up Pygame
         pygame.init()
         pygame.mixer.music.load(song_direc + '/skeletons.mp3')
-        try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
-        except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
+
+
         self.clock = pygame.time.Clock()
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        self.dungeon = dun.Dungeon(resolution=(self.GRIDWIDTH,self.GRIDHEIGHT), roomCount=5, game = self)
+        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDWIDTH), 5, self)
+
 
     def set_sizes(self, size):
         dun.Tile.tile_size = size
@@ -44,6 +45,8 @@ class Game():
 
 
     def setup(self):
+        try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
+        except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.dungeon.make()
         pygame.display.set_caption('Dungoen')
         self.player = characters.Player(self.dungeon.start_pos, self)
