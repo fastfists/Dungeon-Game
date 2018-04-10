@@ -36,7 +36,7 @@ class Game():
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDWIDTH), 5, self)
+        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 5, self)
 
 
     def set_sizes(self, size):
@@ -45,7 +45,7 @@ class Game():
 
 
     def setup(self):
-        try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
+        try: self.display = pygame.display.set_mode(self.SIZE)
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.dungeon.make()
         pygame.display.set_caption('Dungoen')
@@ -142,5 +142,5 @@ def test(type):
         newgame.run()
 
 if __name__ == '__main__':
-    Game((1920,1080), tilesize=64).run()
-
+    game = Game((600,400), tilesize=32)
+    game.run()

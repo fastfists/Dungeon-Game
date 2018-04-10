@@ -1,6 +1,6 @@
 from classydungeon import *
 
-class DungeonElement():
+class DungeonElement:
     ''' Abstract class that is for all elements of the dungeon'''
     def __init__(self,position, dungeon):
         self.image = None
@@ -8,21 +8,29 @@ class DungeonElement():
         dungeon.elements.append(self)
         self.x, self.y = position
         self.size = dungeon.game.TILESIZE
-        
+
+
+
+        # debuging reasons
+        font = pygame.font.SysFont(None, 20)
+        self.text = font.render(f"{self.x},{self.y}", True, utils.BLACK)
+
     @property
     def position(self):
         return self.x, self.y
 
     def __repr__(self):
-        return "{}: at {} , {}".format(self.__class__.__name__, self.x, self.y)
+        return "{}: is located at {} , {}".format(self.__class__.__name__, self.x, self.y)
 
     def draw(self):
         '''
         blits the sprite onto the screen
         '''
+        
         if not self.image:
             raise NameError("Set the image to draw as self.image")
         self.display.blit(self.image,(self.x * self.size, self.y * self.size))
+        self.display.blit(self.text,(self.x * self.size, self.y * self.size))
 
 
 class Room:
