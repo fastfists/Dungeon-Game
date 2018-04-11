@@ -45,7 +45,11 @@ class Dungeon:
         self.walls = []
         self.elements = []
         self.doors = []
+        self.border = []
         self.TILESIZE = game.TILESIZE
+
+        self.add_border()
+
 
     def __repr__(self):
         return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}" 
@@ -63,7 +67,7 @@ class Dungeon:
                 self.allrooms.append(Room(3, self.currenType,x,y, self,is_boss=True))
                 x,y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                 self.update(3, self.currenType, x, y)
-                self.addWalls()
+                self.add_walls()
                 works = True
         while len(self.allrooms) != self.roomCount:
             self.works = False
@@ -83,13 +87,13 @@ class Dungeon:
                         self.allrooms.append(Room(size, self.currenType,newX, newY , self))
                         newX , newY = self.__startVal(self.allrooms[ len(self.allrooms) - 1 ])
                         self.update(size, self.currenType,newX, newY)
-                        self.addWalls()
+                        self.add_walls()
                         self.Idtbl[x][y] = -1
                         self.doors.append(Door(x, y, self, (moveX,moveY)))
             except IndexError: pass
         self.make_start_room()
         self.update_all()
-        self.addWalls(corners=True)
+        self.add_walls(corners=True)
 
     @staticmethod           
     def __startVal(room):
@@ -202,7 +206,7 @@ class Dungeon:
         if dir_index == 7:
             return (1,1)
 
-    def addWalls(self, corners=False):
+    def add_walls(self, corners=False):
         if not corners:
             dir_index = 4
             checkVals = [(x,y) for x,y in self.notnull if self.cantouch[x][y] != 1 and self.Idtbl[x][y] != 1 and self.Idtbl[x][y] != -1]
@@ -239,5 +243,6 @@ class Dungeon:
                     self.make_start_room()
             except IndexError:
                 self.make_start_room()
-
-
+    
+    def add_border(self):
+        pass
