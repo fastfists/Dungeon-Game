@@ -45,6 +45,7 @@ class Dungeon:
         self.walls = []
         self.elements = []
         self.doors = []
+        self.TILESIZE = game.TILESIZE
 
     def __repr__(self):
         return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}" 
@@ -94,17 +95,10 @@ class Dungeon:
     def __startVal(room):
         return room.blocks[0].position
 
-    def _draw(self, tilesize=32):
-        if  self.game is None:
-            self.__draw(32)
-        for room in self.allrooms:
-            room.room_draw()
-        self.start_room.room_draw()
-        for wall in self.walls:
-            wall.draw()
-        for door in self.doors:
-            door.draw()
-        
+    def _draw(self, tilesize=None):
+        for element in self.elements:
+            element.draw(tilesize)
+
     def _format(self,size, sx,sy):
         """ Recieves a x and y position and creates the type needed to create it """
         try:
@@ -245,3 +239,5 @@ class Dungeon:
                     self.make_start_room()
             except IndexError:
                 self.make_start_room()
+
+

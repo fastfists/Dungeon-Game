@@ -7,9 +7,7 @@ class DungeonElement:
         self.display = dungeon.game.display
         dungeon.elements.append(self)
         self.x, self.y = position
-        self.size = dungeon.game.TILESIZE
-
-
+        self.size = dungeon.TILESIZE
 
         # debuging reasons
         font = pygame.font.SysFont(None, 20)
@@ -20,17 +18,21 @@ class DungeonElement:
         return self.x, self.y
 
     def __repr__(self):
-        return "{}: is located at {} , {}".format(self.__class__.__name__, self.x, self.y)
+        return f"{self.__class__.__name__}: is located at {self.x} , {self.y}"
 
-    def draw(self):
+    def draw(self, size=None):
         '''
         blits the sprite onto the screen
         '''
-        
         if not self.image:
             raise NameError("Set the image to draw as self.image")
-        self.display.blit(self.image,(self.x * self.size, self.y * self.size))
-        self.display.blit(self.text,(self.x * self.size, self.y * self.size))
+        if size:
+            temp_img = pygame.transform.scale(self.image, (size, size))
+            temp_img.set_alpha(100)
+            self.display.blit(temp_img,(self.x * size, self.y * size))
+        else:
+            self.display.blit(self.text,(self.x * self.size, self.y * self.size))
+            self.display.blit(self.image,(self.x * self.size, self.y * self.size))
 
 
 class Room:
@@ -126,7 +128,7 @@ class Door(DungeonElement):
     
     def __init__(self, x, y, dungeon, direction):
         super().__init__((x,y), dungeon)
-        self.image = utils.get_img("Door",53)
+        self.image = utils.get_img("Door",59)
         self.image = pygame.transform.scale(self.image, (self.size,self.size))
         if direction[0] == 0: 
             # Up and down

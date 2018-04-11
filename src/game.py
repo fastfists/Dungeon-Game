@@ -36,17 +36,16 @@ class Game():
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
+        try: self.display = pygame.display.set_mode(self.SIZE)
+        except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 5, self)
-
 
     def set_sizes(self, size):
         dun.Tile.tile_size = size
         dun.Wall.wall_size = size
 
-
     def setup(self):
-        try: self.display = pygame.display.set_mode(self.SIZE)
-        except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
+
         self.dungeon.make()
         pygame.display.set_caption('Dungoen')
         self.player = characters.Player(self.dungeon.start_pos, self)
@@ -63,6 +62,9 @@ class Game():
     def draw(self):
         self.display.fill(GRAY, rect=None, special_flags=0)
         self.dungeon._draw()
+
+        self.dungeon._draw(tilesize=10) # draws the mini map
+
         self.player.show()
         for room in self.dungeon.allrooms:
             room.activate()
@@ -142,5 +144,5 @@ def test(type):
         newgame.run()
 
 if __name__ == '__main__':
-    game = Game((600,400), tilesize=32)
+    game = Game((800,600), tilesize=32)
     game.run()
