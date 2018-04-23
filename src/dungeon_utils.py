@@ -94,7 +94,6 @@ class Room:
 class Tile(DungeonElement):
     def __init__(self, position, Room):
         '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
-        print(Tile.__mro__)
         super().__init__(position, Room.dungeon)
         self.image = utils.get_img("Tile", 17)
         self.image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))

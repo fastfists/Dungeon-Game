@@ -80,7 +80,9 @@ class Game():
                 self.end()
             if event.type == pygame.KEYDOWN:
 
-                
+                if event.key == pygame.K_CAPSLOCK:
+                    print(self.dungeon.seed)
+                    self.end()
                 if event.key == pygame.K_ESCAPE:
                     self.end()
         
