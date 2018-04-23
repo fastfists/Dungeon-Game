@@ -5,4 +5,5 @@
 C:\Users\474932\Desktop\Python stuff\Dungeon_Game\.vscode
 *.txt
 .vscode/settings.json
-Dungeon_Game/venv/*
+venv/*
+.idea/*
