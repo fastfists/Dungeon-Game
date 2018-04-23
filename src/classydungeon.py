@@ -30,6 +30,7 @@ class Dungeon:
     '''
     def __init__(self ,resolution: tuple, roomCount, game, specialWeigth = 2 , seed = random.randint(0,879190747)):
         self.game = game
+        self.display = game.display
         self.prngNum = seed
         self.seed = self.prngNum
         self.RESOLUTION = resolution
@@ -43,12 +44,10 @@ class Dungeon:
         self.allrooms = []
         self.currenType = -1
         self.walls = []
-        self.elements = []
+        self.elements = set()
         self.doors = []
         self.border = []
         self.TILESIZE = game.TILESIZE
-
-        self.add_border()
 
 
     def __repr__(self):
@@ -60,6 +59,7 @@ class Dungeon:
         return self.prngNum % limit
 
     def make(self):
+        self.add_border()
         works = False
         while not works:
             x,y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
@@ -99,9 +99,6 @@ class Dungeon:
     def __startVal(room):
         return room.blocks[0].position
 
-    def _draw(self, tilesize=None):
-        for element in self.elements:
-            element.draw(tilesize)
 
     def _format(self,size, sx,sy):
         """ Recieves a x and y position and creates the type needed to create it """
@@ -245,4 +242,22 @@ class Dungeon:
                 self.make_start_room()
     
     def add_border(self):
-        pass
+        for  i in range(self.WIDTH):
+            # Top row TODO Dont let them get overwritten
+            Wall((i, 0), self, 0)
+            self.Idtbl[i][0] = 1
+            Wall((i, self.HEIGHT-1), self, 3)
+            self.Idtbl[i][-1] = 1
+        for  i in range(self.HEIGHT):
+            # Top row TODO Dont let them get overwritten
+            Wall((0, i), self, (1,0))
+            self.Idtbl[-1][i] = 1
+            Wall((self.WIDTH - 1, i), self, (-1,0))
+            self.Idtbl[0][i] = 1
+
+    def _draw(self, tilesize=None):
+        for element in self.elements: 
+            element.draw(tilesize)
+        
+        for room in self.allrooms: # TODO Remove this later 
+            room.room_draw()

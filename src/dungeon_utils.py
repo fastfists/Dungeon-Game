@@ -5,20 +5,24 @@ class DungeonElement:
     def __init__(self,position, dungeon):
         self.image = None
         self.display = dungeon.game.display
-        dungeon.elements.append(self)
         self.x, self.y = position
+        dungeon.elements.add(self)
         self.size = dungeon.TILESIZE
 
         # debuging reasons
         font = pygame.font.SysFont(None, 20)
         self.text = font.render(f"{self.x},{self.y}", True, utils.BLACK)
 
+    def __hash__(self):
+        # TODO Change this hashing for Sprite elements
+        return hash((self.x, self.y))
+
     @property
     def position(self):
         return self.x, self.y
 
     def __repr__(self):
-        return f"{self.__class__.__name__}: is located at {self.x} , {self.y}"
+        return f"{self.__class__.__name__}: located at {self.x} , {self.y}"
 
     def draw(self, size=None):
         '''
@@ -27,6 +31,7 @@ class DungeonElement:
         if not self.image:
             raise NameError("Set the image to draw as self.image")
         if size:
+            pass
             temp_img = pygame.transform.scale(self.image, (size, size))
             temp_img.set_alpha(100)
             self.display.blit(temp_img,(self.x * size, self.y * size))
@@ -47,11 +52,11 @@ class Room:
         if how == 0:
             self.blocks = [Tile((sx + x , sy + y), self) for y in range(self.height) for x in range(self.width)]
         elif how == 1:
-            self.blocks = [Tile((sx - x , sy + y ), self) for y in range(self.height) for x in range(self.width)]
+            self.blocks = [Tile((sx - x , sy + y), self) for y in range(self.height) for x in range(self.width)]
         elif how == 2:
-            self.blocks = [Tile((sx - x , sy - y ), self) for y in range(self.height) for x in range(self.width)]
+            self.blocks = [Tile((sx - x , sy - y), self) for y in range(self.height) for x in range(self.width)]
         elif how == 3:
-            self.blocks = [Tile((sx + x , sy - y ), self) for y in range(self.height) for x in range(self.width)]
+            self.blocks = [Tile((sx + x , sy - y), self) for y in range(self.height) for x in range(self.width)]
         self.blocks.sort()
         
         # Adds its information to the dungeon ID table
@@ -89,6 +94,7 @@ class Room:
 class Tile(DungeonElement):
     def __init__(self, position, Room):
         '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
+        print(Tile.__mro__)
         super().__init__(position, Room.dungeon)
         self.image = utils.get_img("Tile", 17)
         self.image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
@@ -98,8 +104,6 @@ class Tile(DungeonElement):
     def __lt__(self, other):
         return self.position < other.position
     
-    def __eq__(self, other):
-        return self.position == other.position
 
 
 class Wall(DungeonElement):
@@ -130,10 +134,10 @@ class Door(DungeonElement):
         super().__init__((x,y), dungeon)
         self.image = utils.get_img("Door",59)
         self.image = pygame.transform.scale(self.image, (self.size,self.size))
-        if direction[0] == 0: 
+        """if direction[0] == 0: 
             # Up and down
             self.image = pygame.transform.rotate(self.image, 90)
         elif direction[1] == 0:
             # side to side
-            self.image = pygame.transform.rotate(self.image, 270)
+            self.image = pygame.transform.rotate(self.image, 270)"""
 

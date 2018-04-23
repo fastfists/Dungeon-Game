@@ -78,7 +78,7 @@ class Player(pygame.sprite.Sprite):
             self.y -= move_y
 
         self.moved = True if move_x != 0 or move_y != 0 else False
-        if move_x + move_y == 0: self.moved = False
+        if move_x == 0 and move_y == 0: self.moved = False
         if move_x < 0:
             self.flip = True
         elif move_x > 0:
