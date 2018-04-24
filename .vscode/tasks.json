@@ -6,7 +6,7 @@
         {
             "label": "python",
             "type": "shell",
-            "command": "C:\\Users\\474932\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe",
+            "command": "${workspaceRoot}/venv/Scripts/python.exe",
             "args": [
                 "src/game.py"
             ],

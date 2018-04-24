@@ -36,9 +36,9 @@ class Game():
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        try: self.display = pygame.display.set_mode(self.SIZE)
+        try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
-        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 5, self)
+        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 10, self)
 
     def set_sizes(self, size):
         dun.Tile.tile_size = size
@@ -80,7 +80,9 @@ class Game():
                 self.end()
             if event.type == pygame.KEYDOWN:
 
-                
+                if event.key == pygame.K_CAPSLOCK:
+                    print(self.dungeon.seed)
+                    self.end()
                 if event.key == pygame.K_ESCAPE:
                     self.end()
         
@@ -144,5 +146,5 @@ def test(type):
         newgame.run()
 
 if __name__ == '__main__':
-    game = Game((800,600), tilesize=32)
+    game = Game((1366,768), tilesize=64)
     game.run()
