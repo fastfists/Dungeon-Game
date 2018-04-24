@@ -2,9 +2,8 @@
 More structered implementation
 of my sprites
 """
-
+import pygame
 import dungeon_utils
-
 
 class Sprite(dungeon_utils.DungeonElement, pygame.sprite.Sprite):
     '''Containtains all monster sprites that are contained within my dungeon'''
@@ -24,21 +23,62 @@ class Sprite(dungeon_utils.DungeonElement, pygame.sprite.Sprite):
         self.frame = 0
         self.flipped = False
         self.current_frame = 0
-    
+        self.isAlive = True
+        self.speed = 0.5
+
     def draw(self):
         self.image = self.images[self.frame]
         self.image = pygame.transform.flip(self.image, False, self.flipped)
         super().draw()
 
     def update():
-        if self.is_alive:
-            pass
+        if self.current_state == "Alive":
+            keys = pygame.key.get_pressed()
+            if key[pygame.K_DOWN]:
+                move_y = self.speed
+            if key[pygame.K_UP]:
+                move_y = -self.speed
+            if key[pygame.K_LEFT]:
+                move_x = -self.speed
+            if key[pygame.K_RIGHT]:
+                move_x = self.speed
+            
+            self.x += move_x
+            self.y += move_y
+
+            if self.dungeon.Idtbl[round(self.x )][round(self.y)] == 1:
+                self.x -= move_x
+                self.y -= move_y
+
+            self.moved = True if move_x != 0 or move_y != 0 else False
+            if move_x + move_y == 0: self.moved = False
+            if move_x < 0:
+                self.flip = True
+            elif move_x > 0:
+                self.flip = False
+                
             
     def damgage(self, dmg):
         self.health -= dmg
         if self.health < 0:
             self.isAlive = False
     
+    @property
+    def current_state(self):
+        for key,value in self.state.items():
+            if value == True:
+                return key
+    
+    @current_state.setter
+    def change_state(self, new_state):
+        unchangeable = ['Attacking', 'Dying', 'Dead']
+        if new_state in unchangeable:
+            return
+        self.state[new_state] = True
+        for key, value in self.state.items():
+            if value and key != new_state:
+                value = False
+        
 
 class Monster(Sprite):
 
@@ -65,7 +105,7 @@ class Monster(Sprite):
 
 
 class Skeleton(Monster):
-    size = super().size // 4 
+    size = super().size // 4
 
 
 class Player(Sprite):
