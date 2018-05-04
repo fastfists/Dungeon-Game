@@ -7,7 +7,7 @@
     ],
     "python.linting.lintOnSave": true,
     "python.autoComplete.addBrackets": false,
-    "python.pythonPath": "C:\\Users\\474932\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe",
+    "python.pythonPath": "${workspaceFolder}\\venv\\Scripts\\python.exe",
     "python.unitTest.unittestArgs": [
         "-v",
         "-s",
