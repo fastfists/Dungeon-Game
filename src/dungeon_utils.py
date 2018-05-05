@@ -28,8 +28,7 @@ class DungeonElement:
         '''
         blits the sprite onto the screen
         '''
-        if not self.image:
-            raise NameError("Set the image to draw as self.image")
+        assert self.name
         if size:
             pass
             temp_img = pygame.transform.scale(self.image, (size, size))

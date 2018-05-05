@@ -16,7 +16,6 @@ class Sprite(pygame.sprite.Sprite):
     animation_speed = 1
     images = NotImplemented
     image = NotImplemented
-    isAlive = True
     speed = 0.5
     frame = 0
     
@@ -29,7 +28,7 @@ class Sprite(pygame.sprite.Sprite):
         """ Reduces the health"""
         self.health -= dmg
         if self.health < 0:
-            self.isAlive = False
+            self.state = "Dying"
 
     @property
     def state(self):
@@ -45,10 +44,11 @@ class Sprite(pygame.sprite.Sprite):
                 if value and key != new_state:
                     value = False
 
+
 class Monster(Sprite, dungeon_utils.DungeonElement):
-    
     def __init__(self, room):
         self.room = room
+
 
     @property
     def x_limit(self):
