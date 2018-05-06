@@ -2,8 +2,9 @@ from classydungeon import *
 
 class DungeonElement:
     ''' Abstract class that is for all elements of the dungeon'''
+    image = NotImplemented
     def __init__(self,position, dungeon):
-        self.image = None
+        assert self.image != NotImplemented, "Dont forget to apply an image"
         self.display = dungeon.game.display
         self.x, self.y = position
         dungeon.elements.add(self)
@@ -28,7 +29,7 @@ class DungeonElement:
         '''
         blits the sprite onto the screen
         '''
-        assert self.name
+        assert self.image
         if size:
             pass
             temp_img = pygame.transform.scale(self.image, (size, size))
@@ -93,9 +94,9 @@ class Room:
 class Tile(DungeonElement):
     def __init__(self, position, Room):
         '''Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple'''
-        super().__init__(position, Room.dungeon)
         self.image = utils.get_img("Tile", 17)
-        self.image = pygame.transform.scale(self.image,(self.tile_size, self.tile_size))
+        super().__init__(position, Room.dungeon)
+        self.image = pygame.transform.scale(self.image,(self.size, self.size))
         self.room = Room
         self.type = self.room.size
 
@@ -105,14 +106,14 @@ class Tile(DungeonElement):
 
 
 class Wall(DungeonElement):
-
+    image = utils.get_img("Tile", 5)
     def __init__(self, position, Dungeon, direction):
         """
         Recieves an X and Y position and the dungeon instance
         """
         super().__init__(position, Dungeon)
 
-        self.image = utils.get_img("Tile", 5)
+
         
         if direction == (0, 1):
             self.image = pygame.transform.rotate(self.image, 180)
@@ -127,11 +128,11 @@ class Wall(DungeonElement):
             
 
 class Door(DungeonElement):
-    
     def __init__(self, x, y, dungeon, direction):
+        self.image = utils.get_img("Door",59)    
         super().__init__((x,y), dungeon)
-        self.image = utils.get_img("Door",59)
         self.image = pygame.transform.scale(self.image, (self.size,self.size))
+
         """if direction[0] == 0: 
             # Up and down
             self.image = pygame.transform.rotate(self.image, 90)

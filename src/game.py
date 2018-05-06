@@ -24,7 +24,6 @@ class Game():
         self.SIZE = screen_size
         self.WIDTH, self.HEIGHT = self.SIZE
         self.TILESIZE = tilesize
-        self.set_sizes(tilesize)
         self.GRIDWIDTH = self.WIDTH // self.TILESIZE
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
@@ -39,10 +38,6 @@ class Game():
         try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
         self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 10, self)
-
-    def set_sizes(self, size):
-        dun.Tile.tile_size = size
-        dun.Wall.wall_size = size
 
     def setup(self):
 
