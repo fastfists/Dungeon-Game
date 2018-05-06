@@ -17,7 +17,6 @@ class Player(pygame.sprite.Sprite):
         self.game = game
         self.speed = 0.03
         self.dungeon = self.game.dungeon
-
         self.move_images = [utils.get_img("Rouge",x) for x in range(21,30)]
         self.idle_images = [utils.get_img("Rouge",x) for x in range(1,10)]
         self.death_images = [utils.get_img("Rouge",x) for x in range(41,50)]
@@ -30,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         [image.set_colorkey(utils.BLACK) for image in self.death_images]
         [image.set_colorkey(utils.BLACK) for image in self.attack_images]
 
-        self.size = dun.Tile.tile_size // 4 * 3
+        self.size = game.TILESIZE // 4 * 3
         self.display = game.display
         self.state = 0
         self.flip = False
@@ -44,7 +43,7 @@ class Player(pygame.sprite.Sprite):
             image_array = self.idle_images
         temp_img = pygame.transform.scale(image_array[self.state], (self.size,self.size))
         temp_img = pygame.transform.flip(temp_img, self.flip,False)
-        self.display.blit(temp_img, (self.x * dun.Tile.tile_size, self.y * dun.Tile.tile_size))
+        self.display.blit(temp_img, (self.x * self.game.TILESIZE, self.y * self.game.TILESIZE))
         self.current_frame += self.animation_speed
         if self.current_frame >= 1:
             self.state += 1
@@ -102,7 +101,7 @@ class Monster(pygame.sprite.Sprite):
 
         self.x, self.y = random.choice(self.room.blocks).position
         self.display = self.room.dungeon.game.display
-        self.size = dun.Tile.tile_size // 4 * 3
+        self.size = room.dungeon.TILESIZE // 4 * 3
         self.direction = random.choice(['East', 'West'])
         self.animation_speed = 0.33 # goes half as fast as the framerate
         self.current_frame = 0
@@ -112,7 +111,7 @@ class Monster(pygame.sprite.Sprite):
     def show(self):
         temp_img = pygame.transform.scale(self.images[self.state], (self.size,self.size))
         temp_img = pygame.transform.flip(temp_img, self.flip,False)
-        self.display.blit(temp_img, (self.x * dun.Tile.tile_size, self.y * dun.Tile.tile_size))
+        self.display.blit(temp_img, (self.x * self.room.dungeon.TILESIZE, self.y * self.room.dungeon.TILESIZE))
         self.current_frame += self.animation_speed
         if self.current_frame >= 1:
             self.state += 1
@@ -161,6 +160,6 @@ class BossMonster(Monster):
         super().__init__(room, health = 100)
         self.image = utils.get_img('Skeleton',34)
         self.image.set_colorkey(utils.BLACK)
-        self.size = dun.Tile.tile_size
+        self.size = room.dungeon.TILESIZE
 
 

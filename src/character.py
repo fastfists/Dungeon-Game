@@ -6,7 +6,11 @@ import pygame
 import dungeon_utils
 
 class Sprite(pygame.sprite.Sprite):
-    '''Containtains all monster sprites that are contained within my dungeon'''
+    '''
+    The sprite abstract class
+    handles the animation and changing 
+    of states for a sprites object
+    '''
     health = 100
     _state = {'Idle':True,
             'Walking':False,
@@ -18,11 +22,18 @@ class Sprite(pygame.sprite.Sprite):
     image = NotImplemented
     speed = 0.5
     frame = 0
-    
+    counter = 0
+
     def animate(self):
         """ Changes the frame of the image """
         self.image = self.images[self.frame]
-        self.frame = (self.frame + 1) % len(images)
+        self.counter += self.animation_speed
+        if counter > 1:
+            counter = 0
+            self.frame = (self.frame + 1) % len(self.images)
+
+    def reset_animations(self):
+        self.frame, self.counter = 0,0
 
     def damgage(self, dmg):
         """ Reduces the health"""
@@ -40,6 +51,7 @@ class Sprite(pygame.sprite.Sprite):
     def change_state(self,new_state):
         if not new_state in ['Attacking', 'Dying', 'Dead']:
             self._state[new_state] = True
+            self.reset_animations()
             for key, value in self._state.items():
                 if value and key != new_state:
                     value = False
