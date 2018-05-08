@@ -3,26 +3,33 @@ More structered implementation
 of my sprites
 """
 import pygame
-import dungeon_utils
+from dungeon_utils import DungeonElement 
 
 class Sprite(pygame.sprite.Sprite):
     '''
     The sprite abstract class
     handles the animation and changing 
-    of states for a sprites object
+    of states for a sprite object
     '''
     health = 100
-    _state = {'Idle':True,
-            'Walking':False,
-            'Attacking':False,
-            'Dying': False,
-            'Dead': False }
+    states = []
+    default_state = 'idle'
     animation_speed = 1
     images = NotImplemented
     image = NotImplemented
     speed = 0.5
     frame = 0
     counter = 0
+    def __init__(self):
+        self._state = {default_state:True}
+        for option in self.states:
+            if option == default_state:
+                continue
+            self._state[option] = False
+        del states
+
+    def __repr__(self):
+        return super().__repr__() + " I am also a sprite"
 
     def animate(self):
         """ Changes the frame of the image """
@@ -61,7 +68,6 @@ class Monster(Sprite, dungeon_utils.DungeonElement):
     def __init__(self, room):
         self.room = room
 
-
     @property
     def x_limit(self):
         return (self.room.blocks[0].x, self.room.blocks[-1].x)
@@ -70,7 +76,11 @@ class Monster(Sprite, dungeon_utils.DungeonElement):
     def y_limit(self):
         return (self.room.blocks[0].y, self.room.blocks[-1].y)
 
-    def move(self):
+    def draw(self):
+        super().animate()
+        super().draw()
+
+    def patrol(self):
         if self.x >= self.x_limit[1]:
             self.direction = 'West'
         elif self.x <= self.x_limit[0]:
@@ -85,7 +95,7 @@ class Monster(Sprite, dungeon_utils.DungeonElement):
 
 
 class Skeleton(Monster):
-    size = super().size // 4
+    pass
 
 
 class Player(Sprite):
