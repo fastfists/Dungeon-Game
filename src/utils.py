@@ -32,7 +32,7 @@ if 'home' in package_path:
     song_direc = package_path + "/music"
 
 
-
+errors = 0
 try:
     tiles = pygame.image.load(path.join(img_direc ,"dungeon_floor.png"))
     rouge = pygame.image.load(path.join(img_direc, "rouge.png"))
@@ -51,7 +51,7 @@ FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 Sheets = { "Tile": FileDoc(Tiles_and_ceil_ref, tiles),
            "Door": FileDoc(doors_ref, door),
            "Rouge":FileDoc(rouge_ref, rouge),
-           "Skeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
+           "Monster": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
 
 all_sprites = pygame.sprite.Group()
 
@@ -60,6 +60,23 @@ def get_img(key_name, sprite_number):
     img = pygame.Surface((ref[2], ref[3]))
     img.blit(Sheets[key_name].Picture, (0,0),ref)
     return img
+
+def get_all_images(class_name: str) -> dict:
+    image_dict = {}
+    for i in range(1,5):
+        surface_list = []
+        for j in range(10):
+            surface_list.append(get_img(class_name,i+j))
+        image_dict[transform(i)] = surface_list
+
+    return image_dict
+    
+def transform(thing:int):
+    if thing == 1: return 'Idle'
+    if thing == 2: return 'Emote'
+    if thing == 3: return 'Walk'
+    if thing == 4: return 'Attack'
+    if thing == 5: return 'Death'
 
 class Camera():
     """

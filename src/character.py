@@ -3,7 +3,10 @@ More structered implementation
 of my sprites
 """
 import pygame
+import random
+import utils
 from dungeon_utils import DungeonElement 
+
 
 class Sprite(pygame.sprite.Sprite):
     '''
@@ -12,32 +15,40 @@ class Sprite(pygame.sprite.Sprite):
     of states for a sprite object
     '''
     health = 100
-    states = []
-    default_state = 'idle'
+    states = ['Idle',
+              'Emote',
+              'Walk',
+              'Attack',
+              'Death']
+    default_state = 'Idle'
     animation_speed = 1
-    images = NotImplemented
-    image = NotImplemented
     speed = 0.5
     frame = 0
     counter = 0
+
+
     def __init__(self):
-        self._state = {default_state:True}
+        pygame.sprite.Sprite.__init__(self)
+        # create the _state instance
+        self._state = {self.default_state:True}
         for option in self.states:
-            if option == default_state:
+            if option == self.default_state:
                 continue
             self._state[option] = False
-        del states
+
+        self._images = utils.get_all_images(self.__class__.__name__)
+
 
     def __repr__(self):
         return super().__repr__() + " I am also a sprite"
 
     def animate(self):
         """ Changes the frame of the image """
-        self.image = self.images[self.frame]
         self.counter += self.animation_speed
-        if counter > 1:
+        if self.counter > 1:
             counter = 0
             self.frame = (self.frame + 1) % len(self.images)
+
 
     def reset_animations(self):
         self.frame, self.counter = 0,0
@@ -49,9 +60,9 @@ class Sprite(pygame.sprite.Sprite):
             self.state = "Dying"
 
     @property
-    def state(self):
-        for key,value in self.state.items():
-            if value == True:
+    def state(self) -> str:
+        for key,value in self._state.items():
+            if value:
                 return key
     
     @ state.setter
@@ -62,11 +73,23 @@ class Sprite(pygame.sprite.Sprite):
             for key, value in self._state.items():
                 if value and key != new_state:
                     value = False
+    @property
+    def image(self) -> pygame.surface.Surface:
+        return self.images[self.frame]
+    
+    @property
+    def images(self) -> list:
+        return self._images[self.state]
 
 
-class Monster(Sprite, dungeon_utils.DungeonElement):
+class Monster(Sprite, DungeonElement):
+    
     def __init__(self, room):
         self.room = room
+        Sprite.__init__(self) # Calls the sprite class
+        DungeonElement.__init__(self, random.choice(self.room.blocks).position, self.room.dungeon)
+        print(self)
+        self.size //= 4*3 
 
     @property
     def x_limit(self):
@@ -76,11 +99,15 @@ class Monster(Sprite, dungeon_utils.DungeonElement):
     def y_limit(self):
         return (self.room.blocks[0].y, self.room.blocks[-1].y)
 
-    def draw(self):
+    def draw(self, tilesize):
         super().animate()
-        super().draw()
+        if tilesize:
+            print('getting that boi')
+        super().draw(tilesize)
 
     def patrol(self):
+        pass
+        '''
         if self.x >= self.x_limit[1]:
             self.direction = 'West'
         elif self.x <= self.x_limit[0]:
@@ -92,7 +119,7 @@ class Monster(Sprite, dungeon_utils.DungeonElement):
         elif self.direction == 'West':
             self.x -= self.speed
             self.flip = True
-
+        '''
 
 class Skeleton(Monster):
     pass

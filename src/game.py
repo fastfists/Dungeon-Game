@@ -35,18 +35,17 @@ class Game():
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        try: self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN)
+        try: self.display = pygame.display.set_mode(self.SIZE) # TODO add fullscreen
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
-        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 10, self)
+        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 10, self, seed=54545)
 
     def setup(self):
-
         self.dungeon.make()
         pygame.display.set_caption('Dungoen')
         self.player = characters.Player(self.dungeon.start_pos, self)
         pygame.mixer.music.play()
 
-    def run(self):
+    def __enter__(self):
         self.setup()
         while not self.game_over:
             self.draw()
@@ -58,7 +57,7 @@ class Game():
         self.display.fill(GRAY, rect=None, special_flags=0)
         self.dungeon._draw()
 
-        self.dungeon._draw(tilesize=10) # draws the mini map
+        #self.dungeon._draw(tilesize=10) # draws the mini map
 
         self.player.show()
         for room in self.dungeon.allrooms:
@@ -83,7 +82,8 @@ class Game():
         
 
 
-    def end(self):
+    def __exit__(self):
+        print(errors)
         pygame.quit()
         quit()
 
@@ -142,4 +142,5 @@ def test(type):
 
 if __name__ == '__main__':
     game = Game((1366,768), tilesize=64)
-    game.run()
+    with game:
+        print("We Made It")

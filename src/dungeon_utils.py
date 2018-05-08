@@ -1,43 +1,7 @@
 from classydungeon import *
+import random
+import pygame
 
-class DungeonElement:
-    ''' Abstract class that is for all elements of the dungeon'''
-    image = NotImplemented
-    def __init__(self,position, dungeon):
-        assert self.image != NotImplemented, "Dont forget to apply an image"
-        self.display = dungeon.game.display
-        self.x, self.y = position
-        dungeon.elements.add(self)
-        self.size = dungeon.TILESIZE
-
-        # debuging reasons
-        font = pygame.font.SysFont(None, 20)
-        self.text = font.render(f"{self.x},{self.y}", True, utils.BLACK)
-
-    def __hash__(self):
-        # TODO Change this hashing for Sprite elements
-        return hash((self.x, self.y))
-
-    @property
-    def position(self):
-        return self.x, self.y
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}: located at {self.x} , {self.y}"
-
-    def draw(self, size=None):
-        '''
-        blits the sprite onto the screen
-        '''
-        assert self.image
-        if size:
-            pass
-            temp_img = pygame.transform.scale(self.image, (size, size))
-            temp_img.set_alpha(100)
-            self.display.blit(temp_img,(self.x * size, self.y * size))
-        else:
-            self.display.blit(self.text,(self.x * self.size, self.y * self.size))
-            self.display.blit(self.image,(self.x * self.size, self.y * self.size))
 
 
 class Room:
@@ -69,9 +33,11 @@ class Room:
         
         if (sx,sy) != self.dungeon.start_pos:
             if is_boss:
-                self.monsters = [characters.BossMonster(self, 1)]
+                pass
+                #self.monsters = [characters.BossMonster(self, 1)]
+                self.monsters = None
             else:
-                self.monsters = [characters.Monster(self) for x in range(random.randint(1,2))]
+                self.monsters = [character.Monster(self) for x in range(random.randint(1,2))]
         else:
             self.monsters = None
 
@@ -83,13 +49,58 @@ class Room:
     def room_draw(self):
         for tile in self.blocks:
             tile.draw()
-        if not self.monsters == None:
+        '''if not self.monsters == None:
             for monster in self.monsters:
-                monster.show()
+                monster.show()'''
 
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
 
+class DungeonElement:
+    ''' Abstract class that is for all elements of the dungeon'''
+    def __init__(self,position, dungeon):
+        #assert self.image != NotImplemented, "Dont forget to apply an image"
+        self.display = dungeon.game.display
+        self.x, self.y = position
+        dungeon.elements.add(self)
+        self.size = dungeon.TILESIZE
+
+        # debuging reasons
+        font = pygame.font.SysFont(None, 20)
+        self.text = font.render(f"{self.x},{self.y}", True, utils.BLACK)
+
+    @classmethod
+    def from_room(self, room:Room):
+        self.__init__(self, random.choice(room.blocks).position, room.dungeon)
+
+    def __hash__(self):
+        # TODO Change this hashing for Sprite elements
+        return hash((self.x, self.y))
+
+    @property
+    def position(self):
+        return self.x, self.y
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}: located at {self.x} , {self.y}"
+
+    def draw(self, size=None):
+        '''
+        blits the sprite onto the screen
+        '''
+        if isinstance(self,pygame.sprite.Sprite):
+            print(self)
+            utils.errors +=1
+        elif size:
+            pass
+            temp_img = pygame.transform.scale(self.image, (size, size))
+            temp_img.set_alpha(100)
+            self.display.blit(temp_img,(self.x * size, self.y * size))
+        else:
+            self.display.blit(self.text,(self.x * self.size, self.y * self.size))
+            self.display.blit(self.image,(self.x * self.size, self.y * self.size))
+
+import character
 
 class Tile(DungeonElement):
     def __init__(self, position, Room):
