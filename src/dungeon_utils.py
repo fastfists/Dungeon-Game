@@ -64,7 +64,7 @@ class DungeonElement:
         self.x, self.y = position
         dungeon.elements.add(self)
         self.size = dungeon.TILESIZE
-
+        self.dungeon = dungeon
         # debuging reasons
         font = pygame.font.SysFont(None, 20)
         self.text = font.render(f"{self.x},{self.y}", True, utils.BLACK)
@@ -89,16 +89,15 @@ class DungeonElement:
         blits the sprite onto the screen
         '''
         if isinstance(self,pygame.sprite.Sprite):
-            print(self)
-            utils.errors +=1
-        elif size:
+            print(self.x * self.dungeon.TILESIZE, self.dungeon.WIDTH*self.dungeon.TILESIZE )
+        if size:
             pass
             temp_img = pygame.transform.scale(self.image, (size, size))
             temp_img.set_alpha(100)
             self.display.blit(temp_img,(self.x * size, self.y * size))
         else:
-            self.display.blit(self.text,(self.x * self.size, self.y * self.size))
-            self.display.blit(self.image,(self.x * self.size, self.y * self.size))
+            self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
+            self.display.blit(self.image,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
 
 import character
 
