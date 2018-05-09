@@ -44,34 +44,37 @@ class Room:
     def activate(self):
         if not self.monsters == None:
             for monster in self.monsters:
-                monster.patrol()
+                monster.activate()
 
     def room_draw(self):
         for tile in self.blocks:
             tile.draw()
-        '''if not self.monsters == None:
+        """if not self.monsters == None:
             for monster in self.monsters:
-                monster.show()'''
+                monster.draw()"""
 
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
 
 class DungeonElement:
     ''' Abstract class that is for all elements of the dungeon'''
+    image = None
     def __init__(self,position, dungeon):
-        #assert self.image != NotImplemented, "Dont forget to apply an image"
+        assert self.image, "Dont forget to apply an image"
         self.display = dungeon.game.display
         self.x, self.y = position
-        dungeon.elements.add(self)
+        dungeon.elements.append(self)
         self.size = dungeon.TILESIZE
         self.dungeon = dungeon
         # debuging reasons
         font = pygame.font.SysFont(None, 20)
         self.text = font.render(f"{self.x},{self.y}", True, utils.BLACK)
 
-    @classmethod
-    def from_room(self, room:Room):
-        self.__init__(self, random.choice(room.blocks).position, room.dungeon)
+    def __lt__(self, other):
+        meInstance = isinstance(self, character.Sprite)
+        otherInstance = isinstance(other, character.Sprite)
+        if not meInstance and otherInstance:
+            return True
 
     def __hash__(self):
         # TODO Change this hashing for Sprite elements
@@ -86,18 +89,19 @@ class DungeonElement:
 
     def draw(self, size=None):
         '''
-        blits the sprite onto the screen
+        blits the element onto the screen
         '''
-        if isinstance(self,pygame.sprite.Sprite):
-            print(self.x * self.dungeon.TILESIZE, self.dungeon.WIDTH*self.dungeon.TILESIZE )
         if size:
-            pass
             temp_img = pygame.transform.scale(self.image, (size, size))
-            temp_img.set_alpha(100)
+            #temp_img.set_alpha(100)
             self.display.blit(temp_img,(self.x * size, self.y * size))
         else:
-            self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
-            self.display.blit(self.image,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
+            #self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
+            temp_img = pygame.transform.scale(self.image, (self.size, self.size))
+            #temp_img.set_alpha(100)
+            self.display.blit(temp_img,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE)) 
+
+            
 
 import character
 
@@ -124,7 +128,7 @@ class Wall(DungeonElement):
         super().__init__(position, Dungeon)
 
 
-        
+
         if direction == (0, 1):
             self.image = pygame.transform.rotate(self.image, 180)
         elif direction == (1, 0):

@@ -2,7 +2,7 @@
 import random
 import utils
 import pygame
-import characters
+import character
 from dungeon_utils import *
 
 
@@ -44,7 +44,7 @@ class Dungeon:
         self.allrooms = []
         self.currenType = -1
         self.walls = []
-        self.elements = set()
+        self.elements = []
         self.doors = []
         self.border = []
         self.TILESIZE = game.TILESIZE
@@ -254,10 +254,18 @@ class Dungeon:
             self.Idtbl[-1][i] = 1
             Wall((self.WIDTH - 1, i), self, (-1,0))
             self.Idtbl[0][i] = 1
+    @property
+    def monsters(self):
+        return [element for element in self.elements if isinstance(element, character.Monster)]
+                
 
     def _draw(self, tilesize=None):
-        for element in self.elements: 
+        self.elements.sort()
+        for element in self.elements:
             element.draw(tilesize)
+        
+        for monster in self.monsters:
+            monster.draw(tilesize)
         
         for room in self.allrooms: # TODO Remove this later 
             room.room_draw()

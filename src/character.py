@@ -15,7 +15,7 @@ class Sprite(pygame.sprite.Sprite):
     of states for a sprite object
     '''
     health = 100
-    states = ['Idle',
+    possible_states = ['Idle',
               'Emote',
               'Walk',
               'Attack',
@@ -31,7 +31,7 @@ class Sprite(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         # create the _state instance
         self._state = {self.default_state:True}
-        for option in self.states:
+        for option in self.possible_states:
             if option == self.default_state:
                 continue
             self._state[option] = False
@@ -73,10 +73,16 @@ class Sprite(pygame.sprite.Sprite):
             for key, value in self._state.items():
                 if value and key != new_state:
                     value = False
+
+
     @property
     def image(self) -> pygame.surface.Surface:
         return self.images[self.frame]
     
+    @image.setter
+    def change_image(self, new_image: pygame.surface.Surface):
+        self.images[self.frame] = new_image
+
     @property
     def images(self) -> list:
         return self._images[self.state]
@@ -88,8 +94,7 @@ class Monster(Sprite, DungeonElement):
         self.room = room
         Sprite.__init__(self) # Calls the sprite class
         DungeonElement.__init__(self, random.choice(self.room.blocks).position, self.room.dungeon)
-        print(self)
-        self.size //= 4*3 
+        self.size = self.size // 4 * 3 
 
     @property
     def x_limit(self):
@@ -99,15 +104,16 @@ class Monster(Sprite, DungeonElement):
     def y_limit(self):
         return (self.room.blocks[0].y, self.room.blocks[-1].y)
 
-    def draw(self, tilesize):
+    def draw(self, *args):
         super().animate()
-        if tilesize:
-            print('getting that boi')
-        super().draw(tilesize)
+        self.image.set_colorkey(utils.BLACK)
+        super().draw(*args)
 
-    def patrol(self):
+    def activate(self):
         pass
-        '''
+
+class Skeleton(Monster):
+    def activate():
         if self.x >= self.x_limit[1]:
             self.direction = 'West'
         elif self.x <= self.x_limit[0]:
@@ -119,10 +125,6 @@ class Monster(Sprite, DungeonElement):
         elif self.direction == 'West':
             self.x -= self.speed
             self.flip = True
-        '''
-
-class Skeleton(Monster):
-    pass
 
 
 class Player(Sprite):

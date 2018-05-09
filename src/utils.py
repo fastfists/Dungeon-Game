@@ -48,10 +48,11 @@ except TypeError:
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 
 # Range not implemented yet
-Sheets = { "Tile": FileDoc(Tiles_and_ceil_ref, tiles),
-           "Door": FileDoc(doors_ref, door),
-           "Rouge":FileDoc(rouge_ref, rouge),
-           "Monster": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
+Sheets = {"Tile": FileDoc(Tiles_and_ceil_ref, tiles),
+          "Door": FileDoc(doors_ref, door),
+          "Rouge":FileDoc(rouge_ref, rouge),
+          "Monster": FileDoc(skeleton_ref,skeleton),
+          "Skeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
 
 all_sprites = pygame.sprite.Group()
 
@@ -62,6 +63,7 @@ def get_img(key_name, sprite_number):
     return img
 
 def get_all_images(class_name: str) -> dict:
+    """ Runs get image for a whole person"""
     image_dict = {}
     for i in range(1,5):
         surface_list = []

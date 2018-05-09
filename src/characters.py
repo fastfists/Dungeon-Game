@@ -90,7 +90,6 @@ class Player(pygame.sprite.Sprite):
 class Monster(pygame.sprite.Sprite):
     ''' The main enemy Mob spawn  '''
     speed = 0.01
-    # TODO abstract this class later on to create new mobs
     def __init__(self, room, health = 50):
         self.room = room
         self.health = health
