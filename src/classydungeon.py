@@ -260,12 +260,4 @@ class Dungeon:
                 
 
     def _draw(self, tilesize=None):
-        self.elements.sort()
-        for element in self.elements:
-            element.draw(tilesize)
-        
-        for monster in self.monsters:
-            monster.draw(tilesize)
-        
-        for room in self.allrooms: # TODO Remove this later 
-            room.room_draw()
+        [element.draw(tilesize) for element in self.elements]

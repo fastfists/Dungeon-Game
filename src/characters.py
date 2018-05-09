@@ -107,7 +107,7 @@ class Monster(pygame.sprite.Sprite):
         self.state = 0
         self.flip = False
 
-    def show(self):
+    def draw(self):
         temp_img = pygame.transform.scale(self.images[self.state], (self.size,self.size))
         temp_img = pygame.transform.flip(temp_img, self.flip,False)
         self.display.blit(temp_img, (self.x * self.room.dungeon.TILESIZE, self.y * self.room.dungeon.TILESIZE))
@@ -138,7 +138,7 @@ class Monster(pygame.sprite.Sprite):
     def show_health_bar(self):
         pass
 
-    def patrol(self):
+    def activate(self):
         if self.x >= self.x_limit[1]:
             self.direction = 'West'
         elif self.x <= self.x_limit[0]:

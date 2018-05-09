@@ -57,7 +57,7 @@ class Game():
         self.display.fill(GRAY, rect=None, special_flags=0)
         self.dungeon._draw()
 
-        #self.dungeon._draw(tilesize=10) # draws the mini map
+        self.dungeon._draw(tilesize=10) # draws the mini map
 
         self.player.show()
         for room in self.dungeon.allrooms:

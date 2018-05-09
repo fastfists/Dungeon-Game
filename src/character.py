@@ -45,12 +45,15 @@ class Sprite(pygame.sprite.Sprite):
     def animate(self):
         """ Changes the frame of the image """
         self.counter += self.animation_speed
-        if self.counter > 1:
+        if self.counter >= 1:
             counter = 0
-            self.frame = (self.frame + 1) % len(self.images)
+            self.frame += 1
+            if self.frame > len(self.images)- 1:
+                self.frame = 0
 
 
     def reset_animations(self):
+        """Sets the frame counters to 0"""
         self.frame, self.counter = 0,0
 
     def damgage(self, dmg):
@@ -66,7 +69,8 @@ class Sprite(pygame.sprite.Sprite):
                 return key
     
     @ state.setter
-    def change_state(self,new_state):
+    def state(self,new_state):
+        print("Changing state")
         if not new_state in ['Attacking', 'Dying', 'Dead']:
             self._state[new_state] = True
             self.reset_animations()
@@ -80,7 +84,7 @@ class Sprite(pygame.sprite.Sprite):
         return self.images[self.frame]
     
     @image.setter
-    def change_image(self, new_image: pygame.surface.Surface):
+    def image(self, new_image: pygame.surface.Surface):
         self.images[self.frame] = new_image
 
     @property
@@ -88,13 +92,34 @@ class Sprite(pygame.sprite.Sprite):
         return self._images[self.state]
 
 
-class Monster(Sprite, DungeonElement):
+class Person(Sprite, DungeonElement):
     
     def __init__(self, room):
         self.room = room
         Sprite.__init__(self) # Calls the sprite class
         DungeonElement.__init__(self, random.choice(self.room.blocks).position, self.room.dungeon)
-        self.size = self.size // 4 * 3 
+
+    def draw(self, *args, **kwargs):
+        super().animate()
+        self.image.set_colorkey(utils.BLACK)
+        super().draw(*args, **kwargs)
+
+    def activate(self):
+        pass
+
+
+class Skeleton(Person):
+    default_state = 'Walk'
+    possible_states = ['Walk']
+    animation_speed = 0.005
+    speed = 0.01
+    flip = False
+    def __init__(self, *args, **kwargs):
+        self.direction = random.choice(['West','East'])
+        super().__init__(*args, **kwargs)
+
+    def draw(self,*args, **kwargs):
+        super().draw(*args, flip=self.flip ,**kwargs)
 
     @property
     def x_limit(self):
@@ -104,16 +129,7 @@ class Monster(Sprite, DungeonElement):
     def y_limit(self):
         return (self.room.blocks[0].y, self.room.blocks[-1].y)
 
-    def draw(self, *args):
-        super().animate()
-        self.image.set_colorkey(utils.BLACK)
-        super().draw(*args)
-
     def activate(self):
-        pass
-
-class Skeleton(Monster):
-    def activate():
         if self.x >= self.x_limit[1]:
             self.direction = 'West'
         elif self.x <= self.x_limit[0]:
@@ -127,6 +143,6 @@ class Skeleton(Monster):
             self.flip = True
 
 
-class Player(Sprite):
+class Player(Person):
     pass
 

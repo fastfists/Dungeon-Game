@@ -1,7 +1,7 @@
 from classydungeon import *
 import random
 import pygame
-
+import characters
 
 
 class Room:
@@ -37,11 +37,12 @@ class Room:
                 #self.monsters = [characters.BossMonster(self, 1)]
                 self.monsters = None
             else:
-                self.monsters = [character.Monster(self) for x in range(random.randint(1,2))]
+                self.monsters = [character.Skeleton(self) for x in range(random.randint(1,2))]
         else:
             self.monsters = None
 
     def activate(self):
+        print("move bich")
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.activate()
@@ -49,9 +50,9 @@ class Room:
     def room_draw(self):
         for tile in self.blocks:
             tile.draw()
-        """if not self.monsters == None:
+        if not self.monsters == None:
             for monster in self.monsters:
-                monster.draw()"""
+                monster.draw()
 
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
@@ -67,8 +68,9 @@ class DungeonElement:
         self.size = dungeon.TILESIZE
         self.dungeon = dungeon
         # debuging reasons
-        font = pygame.font.SysFont(None, 20)
-        self.text = font.render(f"{self.x},{self.y}", True, utils.BLACK)
+        
+    
+
 
     def __lt__(self, other):
         meInstance = isinstance(self, character.Sprite)
@@ -87,17 +89,18 @@ class DungeonElement:
     def __repr__(self):
         return f"{self.__class__.__name__}: located at {self.x} , {self.y}"
 
-    def draw(self, size=None):
+    def draw(self, size=None, flip=False):
         '''
         blits the element onto the screen
         '''
         if size:
             temp_img = pygame.transform.scale(self.image, (size, size))
-            #temp_img.set_alpha(100)
+            temp_img.set_alpha(100)
             self.display.blit(temp_img,(self.x * size, self.y * size))
         else:
             #self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
             temp_img = pygame.transform.scale(self.image, (self.size, self.size))
+            temp_img = pygame.transform.flip(temp_img, flip, False)
             #temp_img.set_alpha(100)
             self.display.blit(temp_img,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE)) 
 

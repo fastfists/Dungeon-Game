@@ -65,20 +65,20 @@ def get_img(key_name, sprite_number):
 def get_all_images(class_name: str) -> dict:
     """ Runs get image for a whole person"""
     image_dict = {}
-    for i in range(1,5):
+    for i in range(0,4):
         surface_list = []
-        for j in range(10):
-            surface_list.append(get_img(class_name,i+j))
+        for j in range(1,11):
+            surface_list.append(get_img(class_name,(i*10)+j))
         image_dict[transform(i)] = surface_list
 
     return image_dict
     
 def transform(thing:int):
-    if thing == 1: return 'Idle'
-    if thing == 2: return 'Emote'
-    if thing == 3: return 'Walk'
-    if thing == 4: return 'Attack'
-    if thing == 5: return 'Death'
+    if thing == 0: return 'Idle'
+    if thing == 1: return 'Emote'
+    if thing == 2: return 'Walk'
+    if thing == 3: return 'Attack'
+    if thing == 4: return 'Death'
 
 class Camera():
     """
