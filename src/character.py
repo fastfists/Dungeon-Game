@@ -46,10 +46,10 @@ class Sprite(pygame.sprite.Sprite):
         """ Changes the frame of the image """
         self.counter += self.animation_speed
         if self.counter >= 1:
-            counter = 0
+            self.counter = 0
             self.frame += 1
             if self.frame > len(self.images)- 1:
-                self.frame = 0
+                self.reset_animations()
 
 
     def reset_animations(self):
@@ -111,7 +111,7 @@ class Person(Sprite, DungeonElement):
 class Skeleton(Person):
     default_state = 'Walk'
     possible_states = ['Walk']
-    animation_speed = 0.005
+    animation_speed = 0.33
     speed = 0.01
     flip = False
     def __init__(self, *args, **kwargs):
