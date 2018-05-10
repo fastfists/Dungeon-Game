@@ -90,5 +90,4 @@ class Game():
 if __name__ == '__main__':
     game = Game((1366,768), tilesize=64)
     with game:
-        import pprint; pprint.pprint(game.dungeon.elements)
         print("We Made It")

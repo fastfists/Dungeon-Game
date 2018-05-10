@@ -51,6 +51,7 @@ FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 Sheets = {"Tile": FileDoc(Tiles_and_ceil_ref, tiles),
           "Door": FileDoc(doors_ref, door),
           "Rouge":FileDoc(rouge_ref, rouge),
+          "Player":FileDoc(rouge_ref, rouge),
           "Monster": FileDoc(skeleton_ref,skeleton),
           "Skeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
 
