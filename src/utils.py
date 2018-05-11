@@ -3,9 +3,9 @@
 Animations Each row has 10 animations
 
 1: Idle 1-10
-2: alt_action 11-20
-3: Walking 21-30
-4: Attacking 31-40
+2: Emote 11-20
+3: Walk 21-30
+4: Attack 31-40
 5: Death 41-50
 ''' 
 
@@ -53,7 +53,8 @@ Sheets = {"Tile": FileDoc(Tiles_and_ceil_ref, tiles),
           "Rouge":FileDoc(rouge_ref, rouge),
           "Player":FileDoc(rouge_ref, rouge),
           "Monster": FileDoc(skeleton_ref,skeleton),
-          "Skeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
+          "Skeleton": FileDoc(skeleton_ref,skeleton),
+          "BossSkeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
 
 all_sprites = pygame.sprite.Group()
 

@@ -35,9 +35,9 @@ class Room:
             if is_boss:
                 pass
                 # self.monsters = [characters.BossMonster(self, 1)]
-                self.monsters = []
+                self.monsters = [character.BossSkeleton(self)]
             else:
-                self.monsters = [character.Skeleton(self) for x in range(random.randint(1, 2))]
+                self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
         else:
             self.monsters = []
 
@@ -84,7 +84,7 @@ class DungeonElement:
     def position(self):
         return self.x, self.y
 
-    @property.setter
+    @position.setter
     def position(self, new_position:tuple):
         self.x, self.y = new_position
     

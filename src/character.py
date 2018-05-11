@@ -34,8 +34,9 @@ class Sprite(pygame.sprite.Sprite):
             if option == self.default_state:
                 continue
             self._state[option] = False
-
         self._images = utils.get_all_images(self.__class__.__name__)
+        self.images = self._images[self.state]
+
 
     def __repr__(self):
         return super().__repr__() + " I am also a sprite"
@@ -67,6 +68,10 @@ class Sprite(pygame.sprite.Sprite):
             if value:
                 return key
 
+    @property
+    def rect(self):
+        return self.image.get_rect()
+
     @state.setter
     def state(self, new_state):
         print("Changing state")
@@ -76,6 +81,7 @@ class Sprite(pygame.sprite.Sprite):
             for key, value in self._state.items():
                 if value and key != new_state:
                     value = False
+        self.images = self._images[self.state]
 
     @property
     def image(self) -> pygame.surface.Surface:
@@ -84,10 +90,6 @@ class Sprite(pygame.sprite.Sprite):
     @image.setter
     def image(self, new_image: pygame.surface.Surface):
         self.images[self.frame] = new_image
-
-    @property
-    def images(self) -> list:
-        return self._images[self.state]
 
 
 class Monster(Sprite, DungeonElement):
@@ -116,6 +118,8 @@ class Skeleton(Monster):
     def __init__(self, *args, **kwargs):
         self.direction = random.choice(['West', 'East'])
         super().__init__(*args, **kwargs)
+        self.size //= 4
+        self.size *=2
 
     def draw(self, *args, **kwargs):
         super().draw(*args, flip=self.flip, **kwargs)
@@ -140,6 +144,13 @@ class Skeleton(Monster):
         elif self.direction == 'West':
             self.x -= self.speed
             self.flip = True
+
+
+class BossSkeleton(Skeleton):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.size *=4
+        self.size //=3
 
 
 class Player(Sprite, DungeonElement):
