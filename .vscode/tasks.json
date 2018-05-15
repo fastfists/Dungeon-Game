@@ -6,9 +6,9 @@
         {
             "label": "python",
             "type": "shell",
-            "command": "pytyhon",
+            "command": "${workspaceRoot}/venv/Scripts/python.exe",
             "args": [
-                "${file}"
+                "src/game.py"
             ],
             "group": {
                 "kind": "build",
