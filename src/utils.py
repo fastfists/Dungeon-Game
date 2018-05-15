@@ -13,7 +13,7 @@ from os import path
 import pygame
 from collections import namedtuple
 from maps import *
-
+ 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
@@ -54,7 +54,8 @@ Sheets = {"Tile": FileDoc(Tiles_and_ceil_ref, tiles),
           "Player":FileDoc(rouge_ref, rouge),
           "Monster": FileDoc(skeleton_ref,skeleton),
           "Skeleton": FileDoc(skeleton_ref,skeleton),
-          "BossSkeleton": FileDoc(skeleton_ref,skeleton)} # The first one is the name of the image Dict, The second to the name of the file
+          "BossSkeleton": FileDoc(skeleton_ref,skeleton)}
+           # The first one is the name of the image Dict, The second to the name of the file
 
 all_sprites = pygame.sprite.Group()
 

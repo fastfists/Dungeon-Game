@@ -1,7 +1,9 @@
-from classydungeon import *
+import classydungeon
 import random
 import pygame
 import characters
+import utils
+
 
 
 class Room:
@@ -100,9 +102,10 @@ class DungeonElement:
         Blits the element onto the screen
         """
         if size:
-            temp_img = pygame.transform.scale(self.image, (size, size))
+            pass
+            """temp_img = pygame.transform.scale(self.image, (size, size))
             temp_img.set_alpha(100)
-            self.display.blit(temp_img, (self.x * size, self.y * size))
+            self.display.blit(temp_img, (self.x * size, self.y * size))"""
         else:
             # self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
             temp_img = pygame.transform.scale(self.image, (self.size, self.size))
@@ -160,3 +163,5 @@ class Door(DungeonElement):
         elif direction[1] == 0:
             # side to side
             self.image = pygame.transform.rotate(self.image, 270)"""
+
+ 
