@@ -1,8 +1,9 @@
 .idea/*
 .vscode/*
-src/__pycache__/*
-*.py[cod]
+*/__pycache__/*
+*.cpython.pyc
 C:\Users\474932\Desktop\Python stuff\Dungeon_Game\.vscode
 *.txt
-*.json
+.vscode/settings.json
 venv/*
+.idea/*
