@@ -1,10 +1,10 @@
 ''' Contains Dungeon object and Room objects '''
+import dungeon_utils
 import random
 import utils
 import pygame
 import character
-from dungeon_utils import *
-
+ 
 
 class Dungeon:
     """
@@ -63,7 +63,7 @@ class Dungeon:
         while not works:
             x, y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
             if self._format(3, x, y):
-                self.allrooms.append(Room(3, self.currenType, x, y, self, is_boss=True))
+                self.allrooms.append(dungeon_utils.Room(3, self.currenType, x, y, self, is_boss=True))
                 x, y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                 self.update(3, self.currenType, x, y)
                 self.add_walls()
@@ -84,12 +84,12 @@ class Dungeon:
                         else:
                             size = 2
                     if self._format(size, newX, newY):
-                        self.allrooms.append(Room(size, self.currenType, newX, newY, self))
+                        self.allrooms.append(dungeon_utils.Room(size, self.currenType, newX, newY, self))
                         newX, newY = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                         self.update(size, self.currenType, newX, newY)
                         self.add_walls()
                         self.Idtbl[x][y] = -1
-                        self.doors.append(Door(x, y, self, (moveX, moveY)))
+                        self.doors.append(dungeon_utils.Door(x, y, self, (moveX, moveY)))
             except IndexError:
                 pass
         self.make_start_room()
@@ -220,7 +220,7 @@ class Dungeon:
                     try:
                         if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
                             self.Idtbl[neighborX][neighborY] = 1
-                            temp_wall = Wall((neighborX, neighborY), self, (nx, ny))
+                            temp_wall = dungeon_utils.Wall((neighborX, neighborY), self, (nx, ny))
                             self.walls.append(temp_wall)
                             self.notnull.append((neighborX, neighborY))
                     except IndexError:
@@ -233,10 +233,10 @@ class Dungeon:
         try:
             if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3 and newX > 0 and newY > 0:
                 self.start_pos = (newX, newY)
-                self.start_room = Room(1, 1, newX, newY, self)
+                self.start_room = dungeon_utils.Room(1, 1, newX, newY, self)
                 self.Idtbl[newX][newY] = 5
                 self.Idtbl[x][y] = -1
-                self.doors.append(Door(x, y, self, (moveX, moveY)))
+                self.doors.append(dungeon_utils.Door(x, y, self, (moveX, moveY)))
             else:
                 self.make_start_room()
         except IndexError:
@@ -244,16 +244,14 @@ class Dungeon:
 
     def add_border(self):
         for i in range(self.WIDTH):
-            # Top row TODO Dont let them get overwritten
-            Wall((i, 0), self, 0)
+            dungeon_utils.Wall((i, 0), self, 0)
             self.Idtbl[i][0] = 1
-            Wall((i, self.HEIGHT - 1), self, 3)
+            dungeon_utils.Wall((i, self.HEIGHT - 1), self, 3)
             self.Idtbl[i][-1] = 1
         for i in range(self.HEIGHT):
-            # Top row TODO Dont let them get overwritten
-            Wall((0, i), self, (1, 0))
+            dungeon_utils.Wall((0, i), self, (1, 0))
             self.Idtbl[-1][i] = 1
-            Wall((self.WIDTH - 1, i), self, (-1, 0))
+            dungeon_utils.Wall((self.WIDTH - 1, i), self, (-1, 0))
             self.Idtbl[0][i] = 1
 
     @property

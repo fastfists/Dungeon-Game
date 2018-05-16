@@ -1,5 +1,6 @@
-import pygame
-from src.classydungeon import *
-from src.game import *
-from src.charcters import *
-
+import classydungeon
+import character
+import dungeon_utils
+import maps
+import game
+import utils

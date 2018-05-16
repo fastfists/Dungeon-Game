@@ -1,12 +1,11 @@
 ''' Contains the Game class'''
 
-
 from utils import *
 import pygame
-import characters
+import character
 import classydungeon as dun 
-
-
+import time
+ 
 '''
 Whats broken:
     Need better tiles (make them?)
@@ -16,7 +15,7 @@ Need to implement:
     Sprite interactions
     Chests/ reward system
 '''
-
+x = BLACK
 class Game():
     
     def __init__(self, screen_size:tuple, tilesize=16):
@@ -37,12 +36,15 @@ class Game():
         # Set Up Dungeon
         try: self.display = pygame.display.set_mode(self.SIZE) # TODO add fullscreen
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
-        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 10, self, seed=54545)
+        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 5, self)
 
     def setup(self):
+        start = time.time()
         self.dungeon.make()
+        end = time.time()
+        print(start - end)
         pygame.display.set_caption('Dungoen')
-        self.player = characters.Player(self.dungeon.start_pos, self)
+        self.player = character.Player(self.dungeon)
         pygame.mixer.music.play()
 
     def __enter__(self):
@@ -51,7 +53,7 @@ class Game():
             self.draw()
             self.update()
             self.events()
-            self.clock.tick(60)
+            self.clock.tick(20)
 
     def draw(self):
         self.display.fill(GRAY, rect=None, special_flags=0)
@@ -59,7 +61,7 @@ class Game():
 
         self.dungeon._draw(tilesize=10) # draws the mini map
 
-        self.player.show()
+        self.player.draw()
         for room in self.dungeon.allrooms:
             room.activate()
 

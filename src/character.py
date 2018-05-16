@@ -1,5 +1,4 @@
-"""
-More structered implementation
+"""More structered implementation
 of my sprites
 """
 import pygame
@@ -15,31 +14,31 @@ class Sprite(pygame.sprite.Sprite):
     of states for a sprite object
     """
     health = 100
-    possible_states = ['Idle',
-                       'Emote',
-                       'Walk',
-                       'Attack',
-                       'Death']
-    default_state = 'Idle'
+    possible_states =  {"Idle",
+                       "Emote",
+                       "Walk",
+                       "Attack",
+                       "Death"}
+    default_state = "Idle"
     animation_speed = 1
     speed = 0.5
     frame = 0
     counter = 0
-    unstopable_states = ['Attacking', 'Dying', 'Dead']
+    unstopable_states = {"Attacking",
+                         "Dying",
+                         "Dead"}
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # create the _state instance
         self._state = {self.default_state: True}
-        for option in self.possible_states:
+        for option in self.possible_states | self.unstopable_states:
             if option == self.default_state:
                 continue
             self._state[option] = False
-        self._images = utils.get_all_images(self.__class__.__name__)
-        self.images = self._images[self.state]
-
+        self._images = utils.get_all_images(self.__class__.__name__) # returns a dict
 
     def __repr__(self):
-        return super().__repr__() + " I am also a sprite"
+        return super().__repr__()
 
     def animate(self):
         """ Changes the frame of the image """
@@ -68,20 +67,22 @@ class Sprite(pygame.sprite.Sprite):
             if value:
                 return key
 
+    @state.setter
+    def state(self, new_state):
+        if not self.state in self.unstopable_states and self.state != new_state:
+            self.reset_animations()
+            for key in self._state.keys():
+                self._state[key] = False
+            self._state[new_state] = True
+
+    @property
+    def images(self):
+        return self._images[self.state]
+
     @property
     def rect(self):
         return self.image.get_rect()
 
-    @state.setter
-    def state(self, new_state):
-        print("Changing state")
-        if not state in self.unstopable_states:
-            self._state[new_state] = True
-            self.reset_animations()
-            for key, value in self._state.items():
-                if value and key != new_state:
-                    value = False
-        self.images = self._images[self.state]
 
     @property
     def image(self) -> pygame.surface.Surface:
@@ -109,8 +110,9 @@ class Monster(Sprite, DungeonElement):
 
 
 class Skeleton(Monster):
+    unstopable_states = set()
     default_state = 'Walk'
-    possible_states = ['Walk']
+    possible_states = {'Walk', 'Attack'}
     animation_speed = 0.33
     speed = 0.01
     flip = False
@@ -159,14 +161,16 @@ class Player(Sprite, DungeonElement):
     x:float
     y:float
     flip = False
-    def __init__(self, dungeon, start_pos: tuple):
-        Sprite.__init__(self)
-        DungeonElement.__init__(self, self.position, dungeon)
+    def __init__(self, dungeon):
+        self.position = dungeon.start_pos
         self.dungeon = dungeon
-        self.position = start_pos
-    
+        Sprite.__init__(self)
+        DungeonElement.__init__(self, self.position, self.dungeon)
+        self.size //= 5
+        self.size*=4
+
     def update(self):
-        pass
+        self.move()
     
     def draw(self, *args, **kwargs):
         super().animate()
@@ -198,7 +202,10 @@ class Player(Sprite, DungeonElement):
 
         if move_x != 0 or move_y != 0:
             self.state = 'Walk'
-        
+        else:
+            self.state = 'Idle'
+
+
         if move_x < 0:
             self.flip = True
         elif move_x > 0:
