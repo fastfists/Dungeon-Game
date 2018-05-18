@@ -1,7 +1,6 @@
 import classydungeon
 import random
 import pygame
-import characters
 import utils
 
 
@@ -47,14 +46,7 @@ class Room:
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.activate()
-
-    def room_draw(self):
-        for tile in self.blocks:
-            tile.draw()
-        if not self.monsters == None:
-            for monster in self.monsters:
-                monster.draw()
-
+                
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
 
@@ -102,16 +94,19 @@ class DungeonElement:
         Blits the element onto the screen
         """
         if size:
-            pass
-            """temp_img = pygame.transform.scale(self.image, (size, size))
+            
+            temp_img = pygame.transform.scale(self.image, (size, size))
             temp_img.set_alpha(100)
-            self.display.blit(temp_img, (self.x * size, self.y * size))"""
+            self.display.blit(temp_img, (self.x * size, self.y * size))
         else:
             # self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
             temp_img = pygame.transform.scale(self.image, (self.size, self.size))
             temp_img = pygame.transform.flip(temp_img, flip, False)
             # temp_img.set_alpha(100)
-            self.display.blit(temp_img, (self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
+            target = self.dungeon.focus
+            x = -target.x + self.dungeon.game.GRIDWIDTH // 2
+            y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
+            self.display.blit(temp_img, ((x+self.x) * self.dungeon.TILESIZE, (y + self.y) * self.dungeon.TILESIZE))
 
 
 import character

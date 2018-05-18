@@ -170,6 +170,7 @@ class Player(Sprite, DungeonElement):
         self.size*=4
 
     def update(self):
+        print(self.x)
         self.move()
     
     def draw(self, *args, **kwargs):

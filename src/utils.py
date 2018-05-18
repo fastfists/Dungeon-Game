@@ -26,10 +26,11 @@ WHITE = (255, 255, 255)
 package_path = path.dirname(path.dirname(__file__))
 img_direc = package_path + "\img"
 song_direc = package_path + "\music"
-
+db = package_path + "\data"
 if 'home' in package_path:
     img_direc = package_path + "/img"
     song_direc = package_path + "/music"
+    db = package_path + "/data"
 
 
 errors = 0

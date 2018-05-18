@@ -4,6 +4,7 @@ import random
 import utils
 import pygame
 import character
+import json
  
 
 class Dungeon:
@@ -28,14 +29,14 @@ class Dungeon:
         - Roomcount as an int
     '''
 
-    def __init__(self, resolution:tuple, roomCount, game, specialWeigth=2, seed=random.randint(0, 879190747)):
+    def __init__(self, resolution, room_count, game, specialWeigth=2, seed=random.randint(0, 879190747)):
         self.game = game
         self.display = game.display
         self.prngNum = seed
         self.seed = self.prngNum
         self.RESOLUTION = resolution
         self.WIDTH, self.HEIGHT = self.RESOLUTION
-        self.roomCount = roomCount
+        self.room_count = room_count
         self.cantouch = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
         self.weight = specialWeigth
@@ -44,13 +45,20 @@ class Dungeon:
         self.allrooms = []
         self.currenType = -1
         self.walls = []
-        self.elements = []
         self.doors = []
-        self.border = []
+        self.elements = []
         self.TILESIZE = game.TILESIZE
+
+
 
     def __repr__(self):
         return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}"
+
+    @classmethod
+    def from_json(cls, file_name, game, **extras):
+        data = json.load(open(file_name))
+        data["game"] = game
+        return cls(**data)
 
     def _Prng(self, limit, wantBool=False):
         self.prngNum = (self.prngNum * 154687469 + 879190747) % 67280421310721
@@ -68,7 +76,7 @@ class Dungeon:
                 self.update(3, self.currenType, x, y)
                 self.add_walls()
                 works = True
-        while len(self.allrooms) != self.roomCount:
+        while len(self.allrooms) != self.room_count:
             self.works = False
             x, y = self.walls[self._Prng(len(self.walls))].position  # finds a random wall and gets the x and y
             moveX, moveY = self.__findDir(self._Prng(4))
@@ -95,6 +103,15 @@ class Dungeon:
         self.make_start_room()
         self.update_all()
         self.add_walls(corners=True)
+        self._finalize()
+
+    def _finalize(self):
+        """ This method sets all variables
+        for the main game loop
+        """ 
+        self.player = character.Player(self)
+        self.elements.append(self.player)
+        self.focus = self.player
 
     @staticmethod
     def __startVal(room):
@@ -175,9 +192,9 @@ class Dungeon:
                     _pass = False
                     break
             if _pass == True and self.cantouch[x][y] == 0:
-                try:
-                    self.cantouch[x][y] = 1
-                except IndexError:
+                try: 
+                    self.cantouch[x ][y] = 1
+                except IndexError: 
                     pass
             else:
                 self.cantouch[x][y] = 0
@@ -257,6 +274,11 @@ class Dungeon:
     @property
     def monsters(self):
         return [element for element in self.elements if isinstance(element, character.Monster)]
-
+    
     def _draw(self, tilesize=None):
-        [element.draw(tilesize) for element in self.elements]
+        """ The draw and update method for the dungeon
+        """
+        self.player.draw()
+        [element.draw(tilesize) for element in sorted(self.elements)]
+        self.player.update()
+

@@ -36,7 +36,7 @@ class Game():
         # Set Up Dungeon
         try: self.display = pygame.display.set_mode(self.SIZE) # TODO add fullscreen
         except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
-        self.dungeon = dun.Dungeon((self.GRIDWIDTH, self.GRIDHEIGHT), 5, self)
+        self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
 
     def setup(self):
         start = time.time()
@@ -44,7 +44,6 @@ class Game():
         end = time.time()
         print(start - end)
         pygame.display.set_caption('Dungoen')
-        self.player = character.Player(self.dungeon)
         pygame.mixer.music.play()
 
     def __enter__(self):
@@ -61,14 +60,11 @@ class Game():
 
         self.dungeon._draw(tilesize=10) # draws the mini map
 
-        self.player.draw()
         for room in self.dungeon.allrooms:
             room.activate()
 
     def update(self):
             pygame.display.update()
-            self.player.update()
-
 
     def events(self):
         for event in pygame.event.get():
@@ -90,6 +86,6 @@ class Game():
 
 
 if __name__ == '__main__':
-    game = Game((1366,768), tilesize=64)
+    game = Game((1920,1080), tilesize=64)
     with game:
         print("We Made It")
