@@ -113,8 +113,8 @@ class Skeleton(Monster):
     unstopable_states = set()
     default_state = 'Walk'
     possible_states = {'Walk', 'Attack'}
-    animation_speed = 0.33
-    speed = 0.01
+    animation_speed = 0.88
+    speed = 0.03
     flip = False
 
     def __init__(self, *args, **kwargs):
@@ -146,6 +146,13 @@ class Skeleton(Monster):
         elif self.direction == 'West':
             self.x -= self.speed
             self.flip = True
+        
+        choice = random.choice([self.speed, -self.speed])
+        self.y += choice
+        if self.y < self.y_limit[0] or self.y > self.y_limit[1]:
+            # if out of bounds
+            self.y -= choice
+
 
 
 class BossSkeleton(Skeleton):
@@ -170,7 +177,6 @@ class Player(Sprite, DungeonElement):
         self.size*=4
 
     def update(self):
-        print(self.x)
         self.move()
     
     def draw(self, *args, **kwargs):

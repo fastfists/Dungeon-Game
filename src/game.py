@@ -11,11 +11,12 @@ Whats broken:
     Need better tiles (make them?)
 
 Need to implement:
-    sprite dictionary state
+    sprite dictionary state 
     Sprite interactions
     Chests/ reward system
 '''
-x = BLACK
+
+
 class Game():
     
     def __init__(self, screen_size:tuple, tilesize=16):

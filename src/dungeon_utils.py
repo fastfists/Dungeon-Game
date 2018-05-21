@@ -24,7 +24,6 @@ class Room:
         elif how == 3:
             self.blocks = [Tile((sx + x, sy - y), self) for y in range(self.height) for x in range(self.width)]
         self.blocks.sort()
-
         # Adds its information to the dungeon ID table
         for tile in self.blocks:
             # this does the "dirty work" for me instead of handling it in the dungeon
@@ -34,7 +33,6 @@ class Room:
 
         if (sx, sy) != self.dungeon.start_pos:
             if is_boss:
-                pass
                 # self.monsters = [characters.BossMonster(self, 1)]
                 self.monsters = [character.BossSkeleton(self)]
             else:
@@ -122,7 +120,20 @@ class Tile(DungeonElement):
         self.type = self.room.size
 
     def __lt__(self, other):
-        return self.position < other.position
+        if self.y < other.y:
+            return True
+        elif self.y == other.y:
+            if self.x < other.x:
+                return True
+        return False
+    
+    def __gt__(self, other):
+        if self.y > other.y:
+            return True
+        elif self.y == other.y:
+            if self.x > other.x:
+                return True
+        return False        
 
 
 class Wall(DungeonElement):
