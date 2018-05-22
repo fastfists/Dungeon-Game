@@ -108,10 +108,16 @@ class Dungeon:
     def _finalize(self):
         """ This method sets all variables
         for the main game loop
-        """ 
+        """
+        for door in self.doors:
+            for wall in self.walls:
+                if hash(door) == hash(wall):
+                    del wall
+
         self.player = character.Player(self)
         self.elements.append(self.player)
         self.focus = self.player
+        self.elements.sort()
 
     @staticmethod
     def __startVal(room):
@@ -279,6 +285,6 @@ class Dungeon:
         """ The draw and update method for the dungeon
         """
         self.player.draw()
-        [element.draw(tilesize) for element in sorted(self.elements)]
+        [element.draw(tilesize) for element in self.elements]
         self.player.update()
 

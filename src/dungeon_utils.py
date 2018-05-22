@@ -1,52 +1,6 @@
-import classydungeon
 import random
 import pygame
 import utils
-
-
-
-class Room:
-    ''' A class that contains its own pair of blocks and monsters'''
-
-    def __init__(self, size, how, sx, sy, dungeon, is_boss=False):
-        self.dungeon = dungeon
-        try:
-            self.width, self.height = size
-        except:
-            self.width, self.height = size, size
-        self.size = size
-        if how == 0:
-            self.blocks = [Tile((sx + x, sy + y), self) for y in range(self.height) for x in range(self.width)]
-        elif how == 1:
-            self.blocks = [Tile((sx - x, sy + y), self) for y in range(self.height) for x in range(self.width)]
-        elif how == 2:
-            self.blocks = [Tile((sx - x, sy - y), self) for y in range(self.height) for x in range(self.width)]
-        elif how == 3:
-            self.blocks = [Tile((sx + x, sy - y), self) for y in range(self.height) for x in range(self.width)]
-        self.blocks.sort()
-        # Adds its information to the dungeon ID table
-        for tile in self.blocks:
-            # this does the "dirty work" for me instead of handling it in the dungeon
-            x, y = tile.position
-            self.dungeon.notnull.append((x, y))
-            self.dungeon.Idtbl[x][y] = size
-
-        if (sx, sy) != self.dungeon.start_pos:
-            if is_boss:
-                # self.monsters = [characters.BossMonster(self, 1)]
-                self.monsters = [character.BossSkeleton(self)]
-            else:
-                self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
-        else:
-            self.monsters = []
-
-    def activate(self):
-        if not self.monsters == None:
-            for monster in self.monsters:
-                monster.activate()
-                
-    def __repr__(self):
-        return "Room: {},{}".format(self.width, self.height)
 
 
 class DungeonElement:
@@ -108,6 +62,50 @@ class DungeonElement:
 
 
 import character
+
+
+class Room:
+    ''' A class that contains its own pair of blocks and monsters'''
+
+    def __init__(self, size, how, sx, sy, dungeon, is_boss=False):
+        self.dungeon = dungeon
+        try:
+            self.width, self.height = size
+        except:
+            self.width, self.height = size, size
+        self.size = size
+        if how == 0:
+            self.blocks = [Tile((sx + x, sy + y), self) for y in range(self.height) for x in range(self.width)]
+        elif how == 1:
+            self.blocks = [Tile((sx - x, sy + y), self) for y in range(self.height) for x in range(self.width)]
+        elif how == 2:
+            self.blocks = [Tile((sx - x, sy - y), self) for y in range(self.height) for x in range(self.width)]
+        elif how == 3:
+            self.blocks = [Tile((sx + x, sy - y), self) for y in range(self.height) for x in range(self.width)]
+        self.blocks.sort()
+        # Adds its information to the dungeon ID table
+        for tile in self.blocks:
+            # this does the "dirty work" for me instead of handling it in the dungeon
+            x, y = tile.position
+            self.dungeon.notnull.append((x, y))
+            self.dungeon.Idtbl[x][y] = size
+
+        if (sx, sy) != self.dungeon.start_pos:
+            if is_boss:
+                # self.monsters = [characters.BossMonster(self, 1)]
+                self.monsters = [character.BossSkeleton(self)]
+            else:
+                self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
+        else:
+            self.monsters = []
+
+    def activate(self):
+        if not self.monsters == None:
+            for monster in self.monsters:
+                monster.activate()
+                
+    def __repr__(self):
+        return "Room: {},{}".format(self.width, self.height)
 
 
 class Tile(DungeonElement):
