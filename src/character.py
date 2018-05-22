@@ -95,10 +95,12 @@ class Sprite(pygame.sprite.Sprite):
 
 class Monster(Sprite, DungeonElement):
 
-    def __init__(self, room):
+    def __init__(self, room, position=None):
         self.room = room
+        if not position:
+            position = random.choice(self.room.blocks).position
         Sprite.__init__(self)  # Calls the sprite class
-        DungeonElement.__init__(self, random.choice(self.room.blocks).position, self.room.dungeon)
+        DungeonElement.__init__(self, position, self.room.dungeon)
 
     def draw(self, *args, **kwargs):
         super().animate()
