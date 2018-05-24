@@ -8,3 +8,4 @@ C:\Users\474932\Desktop\Python stuff\Dungeon_Game\.vscode
 venv/*
 .idea/*
 *.swp
+.pytest_cache
