@@ -1,6 +1,7 @@
-import classydungeon
-import character
-import dungeon_utils
-import maps
-import game
-import utils
+from . import classydungeon
+from . import character
+from . import dungeon_utils
+from . import maps
+from . import game
+from . import utils
+from . import artifacts

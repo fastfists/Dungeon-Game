@@ -1,10 +1,8 @@
 """ Dungeon Object Testing """
 
-import unittest
 import unittest.mock
-import src.artifacts
+import importlib
+from ..src import artifiacts
 
-class TestEmitter(unittest.TestCase):
-
-    def test_init(self):
-        self.
+def test_init():
+    assert True
