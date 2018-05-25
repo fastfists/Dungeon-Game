@@ -45,6 +45,7 @@ class Dungeon:
         self.allrooms = []
         self.currenType = -1
         self.walls = []
+        self.border = []
         self.doors = []
         self.elements = []
         self.TILESIZE = game.TILESIZE
@@ -74,7 +75,7 @@ class Dungeon:
                 self.allrooms.append(dungeon_utils.Room(3, self.currenType, x, y, self, is_boss=True))
                 x, y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                 self.update(3, self.currenType, x, y)
-                self.add_walls()
+                self.addwalls()
                 works = True
         while len(self.allrooms) != self.room_count:
             self.works = False
@@ -95,25 +96,26 @@ class Dungeon:
                         self.allrooms.append(dungeon_utils.Room(size, self.currenType, newX, newY, self))
                         newX, newY = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                         self.update(size, self.currenType, newX, newY)
-                        self.add_walls()
+                        self.addwalls()
                         self.Idtbl[x][y] = -1
                         self.doors.append(dungeon_utils.Door(x, y, self, (moveX, moveY)))
+                        self.remove_wall_at(x,y)
             except IndexError:
                 pass
         self.make_start_room()
         self.update_all()
-        self.add_walls(corners=True)
+        self.addwalls(corners=True)
         self._finalize()
+
+    def remove_wall_at(self, x, y):
+        for i, wall in enumerate(self.walls):
+            if wall.position == (x,y):
+                del self.walls[i]
 
     def _finalize(self):
         """ This method sets all variables
         for the main game loop
         """
-        for door in self.doors:
-            for wall in self.walls:
-                if hash(door) == hash(wall):
-                    del wall
-
         self.player = character.Player(self)
         self.elements.append(self.player)
         self.focus = self.player
@@ -158,7 +160,7 @@ class Dungeon:
             if works:
                 self.currenType = typ
                 return works
-        return False  # returns False because none of the types work
+        return False  # retdoorurns False because none of the types work
 
     def update(self, size, how, startX, startY):
         for y in range(startY + 2):
@@ -226,7 +228,7 @@ class Dungeon:
         if dir_index == 7:
             return (1, 1)
 
-    def add_walls(self, corners=False):
+    def addwalls(self, corners=False):
         if not corners:
             dir_index = 4
             checkVals = [(x, y) for x, y in self.notnull if
@@ -260,6 +262,7 @@ class Dungeon:
                 self.Idtbl[newX][newY] = 5
                 self.Idtbl[x][y] = -1
                 self.doors.append(dungeon_utils.Door(x, y, self, (moveX, moveY)))
+                self.remove_wall_at(x, y)
             else:
                 self.make_start_room()
         except IndexError:
@@ -267,14 +270,14 @@ class Dungeon:
 
     def add_border(self):
         for i in range(self.WIDTH):
-            dungeon_utils.Wall((i, 0), self, 0)
+            self.border.append(dungeon_utils.Wall((i, 0), self, 0))
             self.Idtbl[i][0] = 1
-            dungeon_utils.Wall((i, self.HEIGHT - 1), self, 3)
+            self.border.append(dungeon_utils.Wall((i, self.HEIGHT - 1), self, 3))
             self.Idtbl[i][-1] = 1
         for i in range(self.HEIGHT):
-            dungeon_utils.Wall((0, i), self, (1, 0))
+            self.border.append(dungeon_utils.Wall((0, i), self, (1, 0)))
             self.Idtbl[-1][i] = 1
-            dungeon_utils.Wall((self.WIDTH - 1, i), self, (-1, 0))
+            self.border.append(dungeon_utils.Wall((self.WIDTH - 1, i), self, (-1, 0)))
             self.Idtbl[0][i] = 1
 
     @property
@@ -283,8 +286,13 @@ class Dungeon:
     
     def _draw(self, tilesize=None):
         """ The draw and update method for the dungeon
-        """
+        
+        [room.draw(tilesize) for room in self.allrooms]
+        [wall.draw() for wall in self.border + self.walls]
+        self.start_room.draw()
+        [door.draw() for door in self.doors]
         self.player.draw()
+        self.player.update()
+        """
         [element.draw(tilesize) for element in self.elements]
         self.player.update()
-
