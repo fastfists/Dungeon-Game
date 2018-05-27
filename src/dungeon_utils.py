@@ -51,6 +51,10 @@ class DungeonElement:
     def __repr__(self):
         return f"{self.__class__.__name__}: located at {self.x} , {self.y}"
 
+    def kill(self):
+        super().kill() # for sprites
+        self.dungeon.elements.remove(self)
+
     def draw(self, size=None, flip=False):
         """
         Blits the element onto the screen
