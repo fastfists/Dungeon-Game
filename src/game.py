@@ -45,7 +45,7 @@ class Game():
         end = time.time()
         print(start - end)
         pygame.display.set_caption('Dungoen')
-        pygame.mixer.music.play()
+        #pygame.mixer.music.play()
 
     def __enter__(self):
         self.setup()

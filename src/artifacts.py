@@ -8,6 +8,7 @@
 import pygame
 import collections
 import numpy as np
+import utils
 from dungeon_utils import DungeonElement 
 
 stored_class = collections.namedtuple("stored_class",['inst', 'end_cond', 'start_time'])
@@ -20,41 +21,51 @@ class Emitter():
     this shouod return True if it wants to end the drawing else false
     leave *args **kwargs for the update adn draw functions to give flexibility to the parents
 
-    The final positional argument is the ammount of frames between each 
+    One optional argument is the ammount of frames between each iteration that is allowed 
     """
-    x:int
-    y:int
-    def __init__(self, element, stop_condition, *element_args, **element_kwargs):        
+
+    def __init__(self, element, stop_condition, cooldown=25, element_args=[], element_kwargs={}):        
         if not hasattr(element,'update') or not hasattr(element, 'draw'):
             raise NotImplementedError("Need to add an update and draw method to this class")
         self.element = lambda *args, **kwargs: element(*element_args, *args, **element_kwargs, **kwargs) ## returns a new class instance
         self.stop_condition = stop_condition
         self.elements = []
+        self.frames_passed = 0
+        self.frame_limit = cooldown
 
-    def queue(self, *args, stop_condition=None, **kwargs):
-        """
-        Adds an element additional element arguments
-        can be added
-        """
+    @property
+    def ready(self):
+        return self.frames_passed >= self.frame_limit
 
-        if not stop_condition:
-            stop_condition = self.stop_condition
+    def load(self, additional_args=[], stop_condition=None, additional_kwargs={}):
+        """
+        Adds an element additional element arguments can be added before construction of the arugment such as an x and y value
+        """
+        if self.ready:
             if not stop_condition:
-                raise AttributeError("Missing stop_condition")
-        ## TODO  Make a stopper
-        self.elements.append(stored_class(self.element(*args, **kwargs), stop_condition, pygame.time.get_ticks()))
+                stop_condition = self.stop_condition
+                if not stop_condition:
+                    raise AttributeError("Missing stop_condition")
+            ## TODO  Make a stopper
+            self.elements.append(stored_class(self.element(*additional_args, **additional_kwargs), stop_condition, pygame.time.get_ticks()))
+            self.frames_passed = 0
+
+    def __repr__(self):
+        return f"Emmiter object with {len(self.elements)} objects"
 
     @property
     def elements_instances(self):
         return [element.inst for element in self.elements]
 
-    def update(self, *args, **kwargs):
+    def update(self, cond_args=[], cond_kwargs={}):
         """Updates and removes any elements as well as the timer
-        Needs to be called every frame"""
-        [element.update() for element in self.elements_instances]
+        Needs to be called every frame
+        Also recieves args that can be passed to the element"""
 
+        [element.update() for element in self.elements_instances]
+        self.frames_passed +=1
         ## calls each of the conditions and if the end condition is there it is deleted
-        self.elements = [element for element in self.elements if element.end_cond(element.inst, *args, **kwargs)]
+        self.elements = [element for element in self.elements if element.end_cond(element.inst, *cond_args, **cond_kwargs)]
 
     def emit(self, all=True):
         """ Draws all elements to the screen"""
@@ -65,24 +76,33 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
 
     """Object that moves and is deleted on a condition
     Has to have a dungeon element that controls it
+    treat Projectiles as vectors
     """
-    def __init__(self, start_pos:tuple, image: pygame.Surface.Surface, master:DungeonElement, speed, direction:tuple):
+    def __init__(self, *, start_pos:tuple, image, master:DungeonElement, speed:float, direction:tuple, max_dist=5):
+        self.speed = speed if type(speed) is tuple else speed,speed
         self.image = image
-        self.speed = speed if type(self.speed) is tuple else speed,speed
+        self.image.set_colorkey(utils.BLACK)
         self.rect = self.image.get_rect()
-        DungeonElement.__init__(self, start_pos, master.dungeon)
+        DungeonElement.__init__(self, start_pos, master.dungeon) ## init surface and x, y
+        self.image = pygame.transform.scale(self.image, (self.size, self.size))
+        self.start_pos = self.position
         pygame.sprite.Sprite.__init__(self)
         self.direction = np.array(direction)
+        self.dead = False
 
     def __repr__(self):
         return "Projcetile object moving {tuple(self.direction)}"
 
     def update(self):
-        pos = np.aray(self.position)
-        self.position = tuple(pos+ self.speed * self.direction) 
+        pos = np.array(self.position)
+        self.position = tuple((pos + self.speed) * self.direction)
+
+    def draw(self, *args, **kwargs):
+        super().draw(*args, **kwargs)
 
     def end_if(self):
-        pass
+        return not self.dead
+        
 
 if __name__ == '__main__':
     class MockDungeonElement():
@@ -93,11 +113,12 @@ if __name__ == '__main__':
             print("Updated and moved a bit")
         
         def end_if(self, *args, **kwargs):
-            print("Checked and retruned false")
+            print(args, kwargs)
+            print("Checked and returned false")
             return False
-        
+    
     emmiter = Emitter(MockDungeonElement, MockDungeonElement.end_if)
-    emmiter.queue()
+    emmiter.load()
     emmiter.emit()
-    emmiter.update()
+    emmiter.update() ## calls both end_if and update methods
     emmiter.emit()

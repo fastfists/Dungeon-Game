@@ -4,6 +4,7 @@ of my sprites
 import pygame
 import random
 import utils
+import artifacts
 from dungeon_utils import DungeonElement
 
 
@@ -15,10 +16,9 @@ class Sprite(pygame.sprite.Sprite):
     """
     health = 100
     possible_states =  {"Idle",
-                       "Emote",
-                       "Walk",
-                       "Attack",
-                       "Death"}
+                        "Emote",
+                        "Walk",
+                        "Death"}
     default_state = "Idle"
     animation_speed = 1
     speed = 0.5
@@ -36,6 +36,7 @@ class Sprite(pygame.sprite.Sprite):
                 continue
             self._state[option] = False
         self._images = utils.get_all_images(self.__class__.__name__) # returns a dict
+        self._end = False
 
     def __repr__(self):
         return super().__repr__()
@@ -48,9 +49,11 @@ class Sprite(pygame.sprite.Sprite):
             self.frame += 1
             if self.frame > len(self.images) - 1:
                 if self.state in self.unstopable_states:
-                    self.state = default_state
+                    self._end = True
+                    self.state = self.default_state
+                    self._end = False
                 self.reset_animations()
-
+                
     def reset_animations(self):
         """Sets the frame counters to 0"""
         self.frame, self.counter = 0, 0
@@ -69,7 +72,7 @@ class Sprite(pygame.sprite.Sprite):
 
     @state.setter
     def state(self, new_state):
-        if not self.state in self.unstopable_states and self.state != new_state:
+        if (not self.state in self.unstopable_states and self.state != new_state) or self._end:
             self.reset_animations()
             for key in self._state.keys():
                 self._state[key] = False
@@ -177,21 +180,28 @@ class Player(Sprite, DungeonElement):
         DungeonElement.__init__(self, self.position, self.dungeon)
         self.size //= 5
         self.size*=4
+        weapon_dict = dict(master=self, image=utils.get_whole_img('sword_slash'))
+        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict)
 
     def update(self):
-        self.move()
+        self.get_keys()
+        self.shooter.update()
     
     def draw(self, *args, **kwargs):
         super().animate()
         self.image.set_colorkey(utils.BLACK)
         super().draw(*args, flip=self.flip, **kwargs)
-    
-    def move(self):
+        #self.shooter.emit()
+
+    def get_keys(self):
         """
         Moves the Charcter across the board
         TODO fix the changing of states to match my better one
         """
         key = pygame.key.get_pressed()
+        #########################
+        #  Moving of character  #
+        #########################
         move_x, move_y = 0,0
         if key[pygame.K_DOWN]:
             move_y = self.speed
@@ -201,22 +211,23 @@ class Player(Sprite, DungeonElement):
             move_x = -self.speed
         if key[pygame.K_RIGHT]:
             move_x = self.speed
-
         self.x += move_x
         self.y += move_y
-
         if self.dungeon.Idtbl[round(self.x )][round(self.y)] == 1:
             self.x -= move_x
             self.y -= move_y
-
         if move_x != 0 or move_y != 0:
             self.state = 'Walk'
         else:
             self.state = 'Idle'
-
-
         if move_x < 0:
             self.flip = True
         elif move_x > 0:
             self.flip = False
 
+        #################
+        #  Get actions  #
+        #################
+        if key[pygame.K_SPACE]:
+            self.state = 'Attacking'
+            self.shooter.load(additional_kwargs=dict(start_pos=self.position, speed=self.speed, direction=(1,0)))

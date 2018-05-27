@@ -39,12 +39,13 @@ try:
     rouge = pygame.image.load(path.join(img_direc, "rouge.png"))
     skeleton = pygame.image.load(path.join(img_direc,"skeleton.png"))
     door = pygame.image.load(path.join(img_direc, "Doors.jpg"))
+    sword_slash= pygame.image.load(path.join(img_direc, "sword_slash.jpg"))
 except TypeError:
     tiles = pygame.image.load(img_direc + "dungeon_floor.png")
     rouge = pygame.image.load(img_direc + "rouge.png")
     skeleton = pygame.image.load(img_direc + "skeleton.png")
     door = pygame.image.load(img_direc + "Doors.jpg")
-
+    sword_slash= pygame.image.load(img_direc + "sword_slash.jpg")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 
@@ -55,10 +56,13 @@ Sheets = {"Tile": FileDoc(Tiles_and_ceil_ref, tiles),
           "Player":FileDoc(rouge_ref, rouge),
           "Monster": FileDoc(skeleton_ref,skeleton),
           "Skeleton": FileDoc(skeleton_ref,skeleton),
-          "BossSkeleton": FileDoc(skeleton_ref,skeleton)}
+          "BossSkeleton": FileDoc(skeleton_ref,skeleton),
+          "sword_slash": FileDoc(None,sword_slash)}
            # The first one is the name of the image Dict, The second to the name of the file
 
 all_sprites = pygame.sprite.Group()
+def get_whole_img(name):
+    return Sheets[name].Picture
 
 def get_img(key_name, sprite_number):
     ref = Sheets[key_name].Reference[sprite_number]
@@ -74,14 +78,13 @@ def get_all_images(class_name: str) -> dict:
         for j in range(1,11):
             surface_list.append(get_img(class_name,(i*10)+j))
         image_dict[transform(i)] = surface_list
-
     return image_dict
     
 def transform(thing:int):
     if thing == 0: return 'Idle'
     if thing == 1: return 'Emote'
     if thing == 2: return 'Walk'
-    if thing == 3: return 'Attack'
+    if thing == 3: return 'Attacking'
     if thing == 4: return 'Death'
 
 class Camera():

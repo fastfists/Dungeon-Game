@@ -1,7 +1,7 @@
 import random
 import pygame
 import utils
-
+import numpy as np
 
 class DungeonElement:
     """ Abstract class that is for all elements of the dungeon """
@@ -15,12 +15,22 @@ class DungeonElement:
         self.size = dungeon.TILESIZE
         self.dungeon = dungeon
         # debuging reasons
+    @property
+    def true_pos(self):
+        pos = np.array(self.position)
+        dungeon_scale = np.array([self.dungeon.TILESIZE, self.dungeon.TILESIZE])
+        return tuple(pos * dungeon_scale) 
 
     def __lt__(self, other):
         meInstance = isinstance(self, character.Sprite)
         otherInstance = isinstance(other, character.Sprite)
         if not meInstance and otherInstance:
             return True
+        elif not meInstance and not otherInstance:
+            meInstance = isinstance(self, Door)
+            otherInstance = isinstance(other, Door)
+            if not meInstance and otherInstance:
+                return True
 
     def __hash__(self):
         # TODO Change this hashing for Sprite elements
@@ -103,7 +113,11 @@ class Room:
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.activate()
-                
+    
+    def draw(self, *args, **kwargs):
+        [tile.draw(*args, **kwargs) for tile in self.blocks]
+        [monster.draw(*args, **kwargs) for monster in self.monsters]
+
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
 
