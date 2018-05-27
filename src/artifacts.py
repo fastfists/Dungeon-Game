@@ -100,10 +100,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
 
     def update(self):
         pos = np.array(self.position)
-        print(type(self.x))
-        print('before:', self.position, end="after: ")
         self.position = (pos + (self.speed * self.direction)).tolist()
-        print(type(self.x))
         x, y = self.graph_position
         if self.dungeon.Idtbl[x][y] == 1:
             self.dead = True

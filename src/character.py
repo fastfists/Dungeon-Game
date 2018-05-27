@@ -232,4 +232,3 @@ class Player(Sprite, DungeonElement):
         if key[pygame.K_SPACE]:
             self.state = 'Attacking'
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, speed=self.speed, direction=direction))
-            print(self.shooter)
