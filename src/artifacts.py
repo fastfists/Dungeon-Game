@@ -77,6 +77,8 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
     """Object that moves and is deleted on a condition
     Has to have a dungeon element that controls it
     treat Projectiles as vectors
+    The direction parameter is a tuple value with the first
+    value being the x direction and the second is the y direction
     """
     def __init__(self, *, start_pos:tuple, image, master:DungeonElement, speed:float, direction:tuple, max_dist=5):
         self.speed = speed if type(speed) is tuple else speed,speed
@@ -89,16 +91,18 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.direction = np.array(direction)
         self.dead = False
-
+        self.flip = self.direction[0] < 0
     def __repr__(self):
         return "Projcetile object moving {tuple(self.direction)}"
 
+    def draw(self, *args, **kwargs):
+        super().draw(*args, **kwargs, flip=self.flip)
+
     def update(self):
         pos = np.array(self.position)
-        self.position = tuple((pos + self.speed) * self.direction)
-
-    def draw(self, *args, **kwargs):
-        super().draw(*args, **kwargs)
+        print('before:', self.position, end="after: ")
+        self.position = pos + (self.speed * self.direction)
+        print(self.position)
 
     def end_if(self):
         return not self.dead

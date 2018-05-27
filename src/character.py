@@ -224,10 +224,12 @@ class Player(Sprite, DungeonElement):
             self.flip = True
         elif move_x > 0:
             self.flip = False
-
-        #################
-        #  Get actions  #
-        #################
+        
+        #########################
+        #      Get actions      #
+        #########################
+        direction = (-1,0) if self.flip else (1,0)
         if key[pygame.K_SPACE]:
             self.state = 'Attacking'
-            self.shooter.load(additional_kwargs=dict(start_pos=self.position, speed=self.speed, direction=(1,0)))
+            self.shooter.load(additional_kwargs=dict(start_pos=self.position, speed=self.speed, direction=direction))
+            print(self.shooter)
