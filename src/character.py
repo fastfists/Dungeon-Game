@@ -5,6 +5,8 @@ import pygame
 import random
 import utils
 import artifacts
+import json
+from os import path
 from dungeon_utils import DungeonElement
 
 
@@ -35,8 +37,14 @@ class Sprite(pygame.sprite.Sprite):
             if option == self.default_state:
                 continue
             self._state[option] = False
-        self._images = utils.get_all_images(self.__class__.__name__) # returns a dict
+        if not hasattr(self, "_images"):
+            self._images = utils.get_all_images(self.__class__.__name__) # returns a dict
         self._end = False
+
+    def __init_subclass__(cls, picture_name:str= None, **kwargs):
+        if picture_name:
+            cls._images = utils.get_all_images(picture_name)
+        super().__init_subclass__(**kwargs)
 
     def __repr__(self):
         return super().__repr__()
@@ -139,7 +147,7 @@ class Skeleton(Monster):
     def y_limit(self):
         return self.room.blocks[0].y, self.room.blocks[-1].y
 
-    def activate(self):
+    def update(self):
         if self.x >= self.x_limit[1]:
             self.direction = 'West'
         elif self.x <= self.x_limit[0]:
@@ -160,14 +168,32 @@ class Skeleton(Monster):
 
 
 
-class BossSkeleton(Skeleton):
-    def __init__(self, *args, **kwargs):
+class BossSkeleton(Skeleton, picture_name="Skeleton"):
+    def __init__(self, *args,level=1, **kwargs):
         super().__init__(*args, **kwargs)
-        self.size *=4
-        self.size //=3
+        self.size *=4 *4
+        self.size //=2*2
+        self.max_skeletons = self.levels(level)
+        self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50, element_args=[self.room])
+    
+    @staticmethod
+    def levels(level:int) -> int:
+        """ Method that returns the limit of skeletons to spawn based on level """
+        with open(path.join(utils.db,"boss_skeleton.json")) as f:
+            data = json.load(f)
+            return data[f"Level {level}"]
+
+    def update(self):
+        super().update()
+            
+        if len(self.skelton_spawner) != self.max_skeletons:
+            if self.skelton_spawner.ready:
+                self.state = "Attacking"
+            self.skelton_spawner.load(additional_kwargs={'position':self.position})
+        self.skelton_spawner.update()
 
 
-class Player(Sprite, DungeonElement):
+class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
     speed = 0.05
     x:float

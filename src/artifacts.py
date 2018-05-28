@@ -53,6 +53,9 @@ class Emitter():
     def __repr__(self):
         return f"Emmiter object with {len(self.elements)} objects"
 
+    def __len__(self):
+        return len(self.elements)
+
     @property
     def elements_instances(self):
         return [element.inst for element in self.elements]
