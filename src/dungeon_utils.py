@@ -116,7 +116,7 @@ class Room:
     def activate(self):
         if not self.monsters == None:
             for monster in self.monsters:
-                monster.activate()
+                monster.update()
     
     def draw(self, *args, **kwargs):
         [tile.draw(*args, **kwargs) for tile in self.blocks]

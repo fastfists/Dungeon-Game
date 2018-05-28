@@ -119,7 +119,7 @@ class Dungeon:
         self.player = character.Player(self)
         self.elements.append(self.player)
         self.focus = self.player
-        self.elements.sort()
+        self.sort_elements()
 
     @staticmethod
     def __startVal(room):
@@ -284,6 +284,20 @@ class Dungeon:
     def monsters(self):
         return [element for element in self.elements if isinstance(element, character.Monster)]
     
+    def sort_elements(self):
+        self.elements = []
+        ## Add background
+        for room in self.allrooms:
+            [self.elements.append(tile) for tile in room.blocks]
+        [self.elements.append(wall)  for wall in self.walls]
+        [self.elements.append(border) for border in self.border]
+        [self.elements.append(door)  for door in self.doors]
+        self.elements.append(self.start_room)
+        ## Add Sprites
+        for room in self.allrooms:
+            [self.elements.append(monster) for monster in room.monsters]
+        self.elements.append(self.player)
+
     def _draw(self, tilesize=None):
         """ The draw and update method for the dungeon
         
