@@ -1,5 +1,5 @@
 ''' A moudle of dictionaries that have tuples (TopX,TopY,width,height) '''
- 
+
 # 17 is a floor tile, the rest are wall tiles.
 Tiles_and_ceil_ref = {  1 : (0,0,32,32),
                         2 : (32,0,32,32),
@@ -119,7 +119,7 @@ rouge_ref ={1 : (0,0,32,32),
             98 : (224,288,32,32),
             99 : (256,288,32,32),
             100 : (288,288,32,32)}
-      
+
 skeleton_ref = {1 : (0,0,32,32),
                 2 : (32,0,32,32),
                 3 : (64,0,32,32),

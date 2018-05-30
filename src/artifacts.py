@@ -87,14 +87,15 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         self.speed = speed if type(speed) is tuple else speed,speed
         self.image = image
         self.image.set_colorkey(utils.BLACK)
-        self.rect = self.image.get_rect()
         DungeonElement.__init__(self, start_pos, master.dungeon) ## init surface and x, y
+        self.scale(self.size)
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.start_pos = self.position
         pygame.sprite.Sprite.__init__(self)
         self.direction = np.array(direction)
         self.dead = False
         self.flip = self.direction[0] < 0
+        
     def __repr__(self):
         return "Projcetile object moving {tuple(self.direction)}"
 
@@ -112,6 +113,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
     def end_if(self):
         return not self.dead
         
+
 
 if __name__ == '__main__':
     class MockDungeonElement():

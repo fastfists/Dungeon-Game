@@ -14,12 +14,14 @@ class DungeonElement:
         dungeon.elements.append(self)
         self.size = dungeon.TILESIZE
         self.dungeon = dungeon
+        self.rect = self.image.get_rect()
         # debuging reasons
+
     @property
     def true_pos(self):
         pos = np.array(self.position)
         dungeon_scale = np.array([self.dungeon.TILESIZE, self.dungeon.TILESIZE])
-        return tuple(pos * dungeon_scale) 
+        return tuple(pos * dungeon_scale)
 
     def __lt__(self, other):
         meInstance = isinstance(self, character.Sprite)
@@ -43,7 +45,7 @@ class DungeonElement:
     @position.setter
     def position(self, new_position:tuple):
         self.x, self.y = new_position
-    
+
     @property
     def graph_position(self):
         return round(self.x), round(self.y)
@@ -55,25 +57,33 @@ class DungeonElement:
         super().kill() # for sprites
         self.dungeon.elements.remove(self)
 
+    def transform(self, x, y):
+        self.rect.x, self.rect.y = ((x+self.x) * self.dungeon.TILESIZE, (y + self.y) * self.dungeon.TILESIZE)
+
+    def scale(self, size:tuple):
+        self.image = pygame.transform.scale(self.image, size)
+        self.rect = self.image.get_rect()
+
     def draw(self, size=None, flip=False):
         """
         Blits the element onto the screen
         """
         if size:
-            
+
             temp_img = pygame.transform.scale(self.image, (size, size))
             temp_img.set_alpha(100)
             self.display.blit(temp_img, (self.x * size, self.y * size))
         else:
             # self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
-            temp_img = pygame.transform.scale(self.image, (self.size, self.size))
-            temp_img = pygame.transform.flip(temp_img, flip, False)
+            self.scale((self.size, self.size))
+            self.image = pygame.transform.flip(self.image, flip, False)
             # temp_img.set_alpha(100)
             target = self.dungeon.focus
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
-            self.display.blit(temp_img, ((x+self.x) * self.dungeon.TILESIZE, (y + self.y) * self.dungeon.TILESIZE))
-
+            self.transform(x, y)
+            pygame.draw.rect(self.display, utils.RED, self.rect)
+            self.display.blit(self.image, self.rect)
 
 import character
 
@@ -117,7 +127,7 @@ class Room:
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.update()
-    
+
     def draw(self, *args, **kwargs):
         [tile.draw(*args, **kwargs) for tile in self.blocks]
         [monster.draw(*args, **kwargs) for monster in self.monsters]
@@ -126,12 +136,13 @@ class Room:
         return "Room: {},{}".format(self.width, self.height)
 
 
-class Tile(DungeonElement):
+class Tile(DungeonElement, pygame.sprite.Sprite):
     def __init__(self, position, Room):
         """Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple"""
         self.image = utils.get_img("Tile", 17)
         super().__init__(position, Room.dungeon)
-        self.image = pygame.transform.scale(self.image, (self.size, self.size))
+        pygame.sprite.Sprite.__init__(self)
+        self.scale((self.size, self.size))
         self.room = Room
         self.type = self.room.size
 
@@ -142,17 +153,17 @@ class Tile(DungeonElement):
             if self.x < other.x:
                 return True
         return False
-    
+
     def __gt__(self, other):
         if self.y > other.y:
             return True
         elif self.y == other.y:
             if self.x > other.x:
                 return True
-        return False        
+        return False
 
 
-class Wall(DungeonElement):
+class Wall(DungeonElement, pygame.sprite.Sprite):
     image = utils.get_img("Tile", 5)
 
     def __init__(self, position, Dungeon, direction):
@@ -160,7 +171,7 @@ class Wall(DungeonElement):
         Recieves an X and Y position and the dungeon instance
         """
         super().__init__(position, Dungeon)
-
+        pygame.sprite.Sprite.__init__(self)
         if direction == (0, 1):
             self.image = pygame.transform.rotate(self.image, 180)
         elif direction == (1, 0):
@@ -170,20 +181,19 @@ class Wall(DungeonElement):
         elif direction == (0, -1):
             self.image = utils.get_img("Tile", 1)
 
-        self.image = pygame.transform.scale(self.image, (self.size, self.size))
+        self.scale((self.size, self.size))
 
 
-class Door(DungeonElement):
+class Door(DungeonElement, pygame.sprite.Sprite):
     def __init__(self, x, y, dungeon, direction):
         self.image = utils.get_img("Door", 59)
         super().__init__((x, y), dungeon)
-        self.image = pygame.transform.scale(self.image, (self.size, self.size))
-
-        """if direction[0] == 0: 
+        self.scale((self.size, self.size))
+        pygame.sprite.Sprite.__init__(self)
+        """if direction[0] == 0:
             # Up and down
             self.image = pygame.transform.rotate(self.image, 90)
         elif direction[1] == 0:
             # side to side
             self.image = pygame.transform.rotate(self.image, 270)"""
 
- 

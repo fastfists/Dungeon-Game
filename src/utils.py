@@ -7,13 +7,13 @@ Animations Each row has 10 animations
 3: Walk 21-30
 4: Attack 31-40
 5: Death 41-50
-''' 
+'''
 
 from os import path
 import pygame
 from collections import namedtuple
 from maps import *
- 
+
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
@@ -79,7 +79,7 @@ def get_all_images(class_name: str) -> dict:
             surface_list.append(get_img(class_name,(i*10)+j))
         image_dict[transform(i)] = surface_list
     return image_dict
-    
+
 def transform(thing:int):
     if thing == 0: return 'Idle'
     if thing == 1: return 'Emote'
@@ -94,4 +94,3 @@ class Camera():
     def __init__(self, width, height):
         self.Camera = pygame.Rect(0, 0, width, height)
         self.width, self.height = width, heigh
-    

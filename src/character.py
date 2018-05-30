@@ -61,7 +61,7 @@ class Sprite(pygame.sprite.Sprite):
                     self.state = self.default_state
                     self._end = False
                 self.reset_animations()
-                
+
     def reset_animations(self):
         """Sets the frame counters to 0"""
         self.frame, self.counter = 0, 0
@@ -89,11 +89,6 @@ class Sprite(pygame.sprite.Sprite):
     @property
     def images(self):
         return self._images[self.state]
-
-    @property
-    def rect(self):
-        return self.image.get_rect()
-
 
     @property
     def image(self) -> pygame.surface.Surface:
@@ -159,7 +154,7 @@ class Skeleton(Monster):
         elif self.direction == 'West':
             self.x -= self.speed
             self.flip = True
-        
+
         choice = random.choice([self.speed, -self.speed])
         self.y += choice
         if self.y < self.y_limit[0] or self.y > self.y_limit[1]:
@@ -171,11 +166,11 @@ class Skeleton(Monster):
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
     def __init__(self, *args,level=1, **kwargs):
         super().__init__(*args, **kwargs)
-        self.size *=4 *4
-        self.size //=2*2
         self.max_skeletons = self.levels(level)
+        self.size *= 8
+        self.size //= 2
         self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50, element_args=[self.room])
-    
+
     @staticmethod
     def levels(level:int) -> int:
         """ Method that returns the limit of skeletons to spawn based on level """
@@ -185,7 +180,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 
     def update(self):
         super().update()
-            
+
         if len(self.skelton_spawner) != self.max_skeletons:
             if self.skelton_spawner.ready:
                 self.state = "Attacking"
@@ -204,15 +199,15 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         self.dungeon = dungeon
         Sprite.__init__(self)
         DungeonElement.__init__(self, self.position, self.dungeon)
+        self.size *= 4
         self.size //= 5
-        self.size*=4
-        weapon_dict = dict(master=self, image=utils.get_whole_img('sword_slash'))
+        weapon_dict = dict(master=self, image=utils.get_whole_img('sword_slash'), speed=self.speed *3)
         self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict)
 
     def update(self):
         self.get_keys()
         self.shooter.update()
-    
+
     def draw(self, *args, **kwargs):
         super().animate()
         self.image.set_colorkey(utils.BLACK)
@@ -250,11 +245,11 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
             self.flip = True
         elif move_x > 0:
             self.flip = False
-        
+
         #########################
         #      Get actions      #
         #########################
         direction = (-1,0) if self.flip else (1,0)
         if key[pygame.K_SPACE]:
             self.state = 'Attacking'
-            self.shooter.load(additional_kwargs=dict(start_pos=self.position, speed=self.speed, direction=direction))
+            self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))

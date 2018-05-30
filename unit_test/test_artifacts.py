@@ -1,8 +1,10 @@
 """ Dungeon Object Testing """
 
-import unittest.mock
-import importlib
-from ..src import artifiacts
+import src
+from src.artifacts import *
 
-def test_init():
+#####################################
+#          Test Emmiter             #
+#####################################
+def test_Emmiter():
     assert True

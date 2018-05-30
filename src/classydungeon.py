@@ -5,21 +5,21 @@ import utils
 import pygame
 import character
 import json
- 
+
 
 class Dungeon:
     """
     The dungeon uses a method of Procedual generation that I created without any outside info on the topic
     It operates using Room Identies and "Touchable blocks" The Identity list is as follows:
-    
-      5 -     Refers to the Starting room for the player, Is unique and created at the end of the function 
+
+      5 -     Refers to the Starting room for the player, Is unique and created at the end of the function
       4 -     Refers to a 4X4 room this is chosen randomly between the 2X2 and 4X2
       3 -     Refers to the Boss room, Is unique and created at the begining of the algorithim
       2 -     Refers to a 3 X 3 room this is chosen randomly between the 4X4 and 4X2
       1 -     Refers to a Wall
       (4,2) - Refers to a 4*2 room this is chosen randomly between the 4X4 and 2X2
       0 -     Any null block
-      -1 -    Door blocks  
+      -1 -    Door blocks
       I would have set up constants, but forgot to and now its a bit to late / I am lazy and want to move on the the game
     """
 
@@ -71,10 +71,10 @@ class Dungeon:
         works = False
         while not works:
             x, y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
-            if self._format(3, x, y):
-                self.allrooms.append(dungeon_utils.Room(3, self.currenType, x, y, self, is_boss=True))
+            if self._format(6, x, y):
+                self.allrooms.append(dungeon_utils.Room(6, self.currenType, x, y, self, is_boss=True))
                 x, y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
-                self.update(3, self.currenType, x, y)
+                self.update(6, self.currenType, x, y)
                 self.addwalls()
                 works = True
         while len(self.allrooms) != self.room_count:
@@ -85,14 +85,14 @@ class Dungeon:
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
                     if self._Prng(self.weight, wantBool=True):
-                        size = (4, 2)
+                        size = (8, 4)
                         self.weight *= 8
                     else:
                         if self._Prng(2, wantBool=True):  # 50/50 chance
-                            size = 4
+                            size = 8
                         else:
-                            size = 2
-                    if self._format(size, newX, newY):
+                            size = 4
+                    if self._format(size, newX, newY):  
                         self.allrooms.append(dungeon_utils.Room(size, self.currenType, newX, newY, self))
                         newX, newY = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                         self.update(size, self.currenType, newX, newY)
@@ -200,9 +200,9 @@ class Dungeon:
                     _pass = False
                     break
             if _pass == True and self.cantouch[x][y] == 0:
-                try: 
+                try:
                     self.cantouch[x ][y] = 1
-                except IndexError: 
+                except IndexError:
                     pass
             else:
                 self.cantouch[x][y] = 0
@@ -283,7 +283,7 @@ class Dungeon:
     @property
     def monsters(self):
         return [element for element in self.elements if isinstance(element, character.Monster)]
-    
+
     def sort_elements(self):
         self.elements = []
         ## Add background
@@ -300,7 +300,7 @@ class Dungeon:
 
     def _draw(self, tilesize=None):
         """ The draw and update method for the dungeon
-        
+
         [room.draw(tilesize) for room in self.allrooms]
         [wall.draw() for wall in self.border + self.walls]
         self.start_room.draw()

@@ -3,22 +3,22 @@
 from utils import *
 import pygame
 import character
-import classydungeon as dun 
+import classydungeon as dun
 import time
- 
+
 '''
 Whats broken:
     Need better tiles (make them?)
 
 Need to implement:
-    sprite dictionary state 
+    sprite dictionary state
     Sprite interactions
     Chests/ reward system
 '''
 
 
 class Game():
-    
+
     def __init__(self, screen_size:tuple, tilesize=16):
         # Set Constants
         self.SIZE = screen_size
@@ -78,7 +78,7 @@ class Game():
                     self.__exit__()
                 if event.key == pygame.K_ESCAPE:
                     self.__exit__()
-        
+
 
 
     def __exit__(self):
@@ -89,4 +89,4 @@ class Game():
 if __name__ == '__main__':
     game = Game((1920,1080), tilesize=64)
     with game:
-        print("We Made It")
+        pass
