@@ -162,7 +162,6 @@ class Skeleton(Monster):
             self.y -= choice
 
 
-
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
     def __init__(self, *args,level=1, **kwargs):
         super().__init__(*args, **kwargs)

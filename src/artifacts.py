@@ -30,7 +30,7 @@ class Emitter():
         self.element = lambda *args, **kwargs: element(*element_args, *args, **element_kwargs, **kwargs) ## returns a new class instance
         self.stop_condition = stop_condition
         self.elements = []
-        self.frames_passed = 0
+        self.frames_passed = cooldown # set it to ready first 
         self.frame_limit = cooldown
 
     @property
@@ -46,7 +46,6 @@ class Emitter():
                 stop_condition = self.stop_condition
                 if not stop_condition:
                     raise AttributeError("Missing stop_condition")
-            ## TODO  Make a stopper
             self.elements.append(stored_class(self.element(*additional_args, **additional_kwargs), stop_condition, pygame.time.get_ticks()))
             self.frames_passed = 0
 
@@ -88,7 +87,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(utils.BLACK)
         DungeonElement.__init__(self, start_pos, master.dungeon) ## init surface and x, y
-        self.scale(self.size)
+        self.scale((self.size, self.size))
         self.image = pygame.transform.scale(self.image, (self.size, self.size))
         self.start_pos = self.position
         pygame.sprite.Sprite.__init__(self)
@@ -97,7 +96,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         self.flip = self.direction[0] < 0
         
     def __repr__(self):
-        return "Projcetile object moving {tuple(self.direction)}"
+        return f"Projcetile object moving {tuple(self.direction)}"
 
     def draw(self, *args, **kwargs):
         super().draw(*args, **kwargs, flip=self.flip)

@@ -76,14 +76,14 @@ class DungeonElement:
         else:
             # self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
             self.scale((self.size, self.size))
-            self.image = pygame.transform.flip(self.image, flip, False)
+            temp_img = pygame.transform.flip(self.image, flip, False)
             # temp_img.set_alpha(100)
             target = self.dungeon.focus
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
             self.transform(x, y)
             pygame.draw.rect(self.display, utils.RED, self.rect)
-            self.display.blit(self.image, self.rect)
+            self.display.blit(temp_img, self.rect)
 
 import character
 
