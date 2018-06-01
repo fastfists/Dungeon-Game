@@ -121,9 +121,17 @@ class Room:
                 self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
         else:
             self.monsters = []
+    
+    @property
+    def active(self):
+        return self.dungeon.focus.graph_position in self.block_positions
+
+    @property
+    def block_positions(self):
+        return [block.position for block in self.blocks]
 
     def activate(self):
-        if not self.monsters == None:
+        if not self.monsters == None and self.active:
             for monster in self.monsters:
                 monster.update()
 

@@ -285,11 +285,13 @@ class Dungeon:
         return [element for element in self.elements if isinstance(element, character.Monster)]
 
     def make_order(self) -> list:
+        elements = []
         [elements.append(room) for room in self.allrooms]
         [elements.append(wall) for wall in self.border + self.walls]
         elements.append(self.start_room)
         [elements.append(door) for door in self.doors]
         elements.append(self.player)
+        return elements
 
 
     def _draw(self, tilesize=None):

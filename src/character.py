@@ -107,14 +107,14 @@ class Monster(Sprite, DungeonElement):
             position = random.choice(self.room.blocks).position
         Sprite.__init__(self)  # Calls the sprite class
         DungeonElement.__init__(self, position, self.room.dungeon)
+        self.image.set_colorkey(utils.BLACK)
 
     def draw(self, *args, **kwargs):
-        super().animate()
-        self.image.set_colorkey(utils.BLACK)
         super().draw(*args, **kwargs)
 
-    def activate(self):
-        pass
+    def update(self):
+        super().animate()
+        self.image.set_colorkey(utils.BLACK)
 
 
 class Skeleton(Monster):
@@ -143,6 +143,7 @@ class Skeleton(Monster):
         return self.room.blocks[0].y, self.room.blocks[-1].y
 
     def update(self):
+        super().update()
         if self.x >= self.x_limit[1]:
             self.direction = 'West'
         elif self.x <= self.x_limit[0]:
