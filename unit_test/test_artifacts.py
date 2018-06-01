@@ -4,7 +4,7 @@ import src
 from unittest.mock import Mock
 import src.artifacts as artifacts
 import pytest
-import src.classydungeon as dun
+from src.classydungeon import Dungeon
 #####################################
 #          Test Emmiter             #
 #####################################

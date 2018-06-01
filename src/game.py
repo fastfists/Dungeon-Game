@@ -43,9 +43,9 @@ class Game():
         start = time.time()
         self.dungeon.make()
         end = time.time()
-        print(start - end)
+        print(end- start)
         pygame.display.set_caption('Dungoen')
-        #pygame.mixer.music.play()
+        pygame.mixer.music.play()
 
     def __enter__(self):
         self.setup()
@@ -68,6 +68,7 @@ class Game():
             pygame.display.update()
 
     def events(self):
+        """ The event handler for the Game object """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__exit__()
