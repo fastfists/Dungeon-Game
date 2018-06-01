@@ -1,4 +1,3 @@
-
 '''
 Animations Each row has 10 animations
 
@@ -40,12 +39,12 @@ try:
     skeleton = pygame.image.load(path.join(img_direc,"skeleton.png"))
     door = pygame.image.load(path.join(img_direc, "Doors.jpg"))
     sword_slash= pygame.image.load(path.join(img_direc, "sword_slash.jpg"))
-except TypeError:
-    tiles = pygame.image.load(img_direc + "dungeon_floor.png")
-    rouge = pygame.image.load(img_direc + "rouge.png")
-    skeleton = pygame.image.load(img_direc + "skeleton.png")
-    door = pygame.image.load(img_direc + "Doors.jpg")
-    sword_slash= pygame.image.load(img_direc + "sword_slash.jpg")
+except pygame.error:
+    tiles = pygame.image.load(img_direc + "/dungeon_floor.png")
+    rouge = pygame.image.load(img_direc + "/rouge.png")
+    skeleton = pygame.image.load(img_direc + "/skeleton.png")
+    door = pygame.image.load(img_direc + "/Doors.jpg")
+    sword_slash= pygame.image.load(img_direc + "/sword_slash.jpg")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 
@@ -53,10 +52,8 @@ FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 Sheets = {"Tile": FileDoc(Tiles_and_ceil_ref, tiles),
           "Door": FileDoc(doors_ref, door),
           "Rouge":FileDoc(rouge_ref, rouge),
-          "Player":FileDoc(rouge_ref, rouge),
           "Monster": FileDoc(skeleton_ref,skeleton),
           "Skeleton": FileDoc(skeleton_ref,skeleton),
-          "BossSkeleton": FileDoc(skeleton_ref,skeleton),
           "sword_slash": FileDoc(None,sword_slash)}
            # The first one is the name of the image Dict, The second to the name of the file
 
@@ -87,10 +84,20 @@ def transform(thing:int):
     if thing == 3: return 'Attacking'
     if thing == 4: return 'Death'
 
-class Camera():
+def parametrized(dec):
+    def layer(*args, **kwargs):
+        def repl(f):
+            return dec(f, *args, **kwargs)
+        return repl
+    return layer
+
+@parametrized
+def collides_with(func, sprite_1, sprite_group):
+    """ function wrapper of that determines if two sprites collide
+        Should recieve a sprite and as sprite group 
     """
-    This allows for simple parallax scrolling
-    """
-    def __init__(self, width, height):
-        self.Camera = pygame.Rect(0, 0, width, height)
-        self.width, self.height = width, heigh
+    def wrapper(*args, **kwargs):
+        collided =  pygame.sprite.spritecollide(sprite_1, sprite_group, False, collided = None)
+        if pygame.sprite.spritecollide(sprite_1, sprite_group, False, collided = None):
+            return func(*args, **kwargs, hit = collided)
+    return wrapper
