@@ -112,14 +112,6 @@ class Dungeon:
             if wall.position == (x,y):
                 del self.walls[i]
 
-    def _finalize(self):
-        """ This method sets all variables
-        for the main game loop
-        """
-        self.player = character.Player(self)
-        self.elements.append(self.player)
-        self.focus = self.player
-        self.sort_elements()
 
     @staticmethod
     def __startVal(room):
@@ -268,6 +260,14 @@ class Dungeon:
         except IndexError:
             self.make_start_room()
 
+    def _finalize(self):
+        """ This method sets all variables
+        for the main game loop
+        """
+        self.player = character.Player(self)
+        self.elements.append(self.player)
+        self.focus = self.player
+
     def add_border(self):
         for i in range(self.WIDTH):
             self.border.append(dungeon_utils.Wall((i, 0), self, 0))
@@ -284,29 +284,18 @@ class Dungeon:
     def monsters(self):
         return [element for element in self.elements if isinstance(element, character.Monster)]
 
-    def sort_elements(self):
-        self.elements = []
-        ## Add background
-        for room in self.allrooms:
-            [self.elements.append(tile) for tile in room.blocks]
-        [self.elements.append(wall)  for wall in self.walls]
-        [self.elements.append(border) for border in self.border]
-        [self.elements.append(door)  for door in self.doors]
-        self.elements.append(self.start_room)
-        ## Add Sprites
-        for room in self.allrooms:
-            [self.elements.append(monster) for monster in room.monsters]
-        self.elements.append(self.player)
+    def make_order(self) -> list:
+        [elements.append(room) for room in self.allrooms]
+        [elements.append(wall) for wall in self.border + self.walls]
+        elements.append(self.start_room)
+        [elements.append(door) for door in self.doors]
+        elements.append(self.player)
+
 
     def _draw(self, tilesize=None):
-        """ The draw and update method for the dungeon
-
-        [room.draw(tilesize) for room in self.allrooms]
-        [wall.draw() for wall in self.border + self.walls]
-        self.start_room.draw()
-        [door.draw() for door in self.doors]
-        self.player.draw()
-        self.player.update()
+        """The draw and update method for the dungeon
         """
-        [element.draw(tilesize) for element in self.elements]
+        elements = self.make_order()
+
+        [element.draw(tilesize) for element in elements]
         self.player.update()

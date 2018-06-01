@@ -11,7 +11,6 @@ class DungeonElement:
         assert self.image, "Dont forget to apply an image"
         self.display = dungeon.game.display
         self.x, self.y = position
-        dungeon.elements.append(self)
         self.size = dungeon.TILESIZE
         self.dungeon = dungeon
         self.rect = self.image.get_rect()
