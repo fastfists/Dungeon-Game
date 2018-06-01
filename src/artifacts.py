@@ -9,6 +9,7 @@ import pygame
 import collections
 import numpy as np
 import utils
+from typing import List
 from dungeon_utils import DungeonElement 
 
 stored_class = collections.namedtuple("stored_class",['inst', 'end_cond', 'start_time'])
@@ -113,6 +114,23 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         return not self.dead
         
 
+class Chest(DungeonElement):
+    """
+    The Chest class is a class that only emmits an object once and stays open
+    """
+
+    def __init__(self, pos:tuple, images:tuple, dungeon, *contains:List[DungeonElement]):
+        self.images = image
+        super().__init__(pos, dungeon)
+        self.containers = contains
+
+    def open(self):
+        emmiter().load()
+    
+    def interact(self):
+        self.open()
+
+
 
 if __name__ == '__main__':
     class MockDungeonElement():
@@ -127,7 +145,7 @@ if __name__ == '__main__':
             print("Checked and returned false")
             return False
     
-    emmiter = Emitter(MockDungeonElement, MockDungeonElement.end_if)
+    emmiter = Emitter(MockDungeonElement, MockDungeonElement.end_if, cooldown=0)
     emmiter.load()
     emmiter.emit()
     emmiter.update() ## calls both end_if and update methods
