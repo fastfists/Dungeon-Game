@@ -28,7 +28,7 @@ song_direc = path.join(package_path, "music")
 db = path.join(package_path, "data")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
-sprite_sheet_names =["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png"]
+sprite_sheet_names =["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png", "sci_fi.png"]
 sheets = {}
 for name in sprite_sheet_names:
     name, ext = name.split('.')
