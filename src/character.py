@@ -271,6 +271,6 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         #      Get actions      #
         #########################
         direction = (-1,0) if self.flip else (1,0)
-        if key[pygame.K_SPACE]:
+        if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))

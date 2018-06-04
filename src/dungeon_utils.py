@@ -28,6 +28,22 @@ class DungeonElement(pygame.sprite.Sprite):
         return hash((self.x, self.y))
 
     @property
+    def width(self):
+        return self.size // 2
+
+    @property
+    def height(self):
+        return self.size
+    
+    @width.setter
+    def width(self, new_width):
+        self.size = new_width * 2 # mulitply by 2 to adjust for the getter method
+
+    @height.setter
+    def height(self, new_height):
+        self.size = new_height
+
+    @property
     def position(self):
         return self.x, self.y
 
@@ -63,14 +79,14 @@ class DungeonElement(pygame.sprite.Sprite):
             self.display.blit(temp_img, (self.x * size, self.y * size))
         else:
             # self.display.blit(self.text,(self.x * self.dungeon.TILESIZE, self.y * self.dungeon.TILESIZE))
-            self.scale((self.size, self.size))
+            self.scale((self.width, self.height))
             temp_img = pygame.transform.flip(self.image, flip, False)
             # temp_img.set_alpha(100)
             target = self.dungeon.focus
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
             self.transform(x, y)
-            #pygame.draw.rect(self.display, utils.RED, self.rect)            
+            pygame.draw.rect(self.display, utils.RED, self.rect)            
             self.display.blit(temp_img, self.rect)
 
 import character
@@ -137,7 +153,19 @@ class Room:
         return "Room: {},{}".format(self.width, self.height)
 
 
-class Tile(DungeonElement):
+class Backgorund(DungeonElement):
+    """
+    Just a class to modify all background elements
+    """
+    @property
+    def width(self):
+        return self.size
+
+    @property
+    def height(self):
+        return self.size
+
+class Tile(Backgorund):
     def __init__(self, position, Room):
         """Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple"""
         self.image = utils.get_img("Tile", 17)
@@ -164,7 +192,7 @@ class Tile(DungeonElement):
         return False
 
 
-class Wall(DungeonElement):
+class Wall(Backgorund):
     image = utils.get_img("Tile", 5)
 
     def __init__(self, position, Dungeon, direction):
@@ -185,7 +213,7 @@ class Wall(DungeonElement):
         self.scale((self.size, self.size))
 
 
-class Door(DungeonElement):
+class Door(Backgorund):
     def __init__(self, x, y, dungeon, direction):
         self.image = utils.get_img("Door", 59)
         super().__init__((x, y), dungeon)
