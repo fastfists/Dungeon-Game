@@ -47,7 +47,7 @@ class Dungeon:
         self.walls = []
         self.border = []
         self.doors = []
-        self.elements = []
+        self.elements = pygame.sprite.Group()
         self.TILESIZE = game.TILESIZE
 
 
@@ -265,8 +265,9 @@ class Dungeon:
         for the main game loop
         """
         self.player = character.Player(self)
-        self.elements.append(self.player)
         self.focus = self.player
+        self.make_order()
+
 
     def add_border(self):
         for i in range(self.WIDTH):
@@ -284,20 +285,17 @@ class Dungeon:
     def monsters(self):
         return [element for element in self.elements if isinstance(element, character.Monster)]
 
-    def make_order(self) -> list:
-        elements = []
-        [elements.append(room) for room in self.allrooms]
-        [elements.append(wall) for wall in self.border + self.walls]
-        elements.append(self.start_room)
-        [elements.append(door) for door in self.doors]
-        elements.append(self.player)
-        return elements
+    def make_order(self):
+        [self.elements.add(room.all_elements()) for room in self.allrooms]
+        [self.elements.add(wall) for wall in self.border + self.walls]
+        self.elements.add(self.start_room.all_elements())
+        [self.elements.add(door) for door in self.doors]
+        self.elements.add(self.player)
+
 
 
     def _draw(self, tilesize=None):
         """The draw and update method for the dungeon
         """
-        elements = self.make_order()
-
-        [element.draw(tilesize) for element in elements]
+        [element.draw(tilesize) for element in self.elements]
         self.player.update()

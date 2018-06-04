@@ -70,7 +70,7 @@ def get_img(key_name, sprite_number):
 def get_all_images(class_name: str) -> dict:
     """ Runs get image for a whole person"""
     image_dict = {}
-    for i in range(0,4):
+    for i in range(0,5):
         surface_list = []
         for j in range(1,11):
             surface_list.append(get_img(class_name,(i*10)+j))
@@ -82,7 +82,7 @@ def transform(thing:int):
     if thing == 1: return 'Emote'
     if thing == 2: return 'Walk'
     if thing == 3: return 'Attacking'
-    if thing == 4: return 'Death'
+    if thing == 4: return 'Dying'
 
 def parametrized(dec):
     def layer(*args, **kwargs):
@@ -101,3 +101,6 @@ def collides_with(func, sprite_1, sprite_group):
         if pygame.sprite.spritecollide(sprite_1, sprite_group, False, collided = None):
             return func(*args, **kwargs, hit = collided)
     return wrapper
+
+def send_messgage():
+    pass

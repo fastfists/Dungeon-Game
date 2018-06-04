@@ -8,6 +8,7 @@ import artifacts
 import json
 from os import path
 from dungeon_utils import DungeonElement
+from contextlib import contextmanager
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -29,6 +30,8 @@ class Sprite(pygame.sprite.Sprite):
     unstopable_states = {"Attacking",
                          "Dying",
                          "Dead"}
+    _end = False
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # create the _state instance
@@ -39,28 +42,39 @@ class Sprite(pygame.sprite.Sprite):
             self._state[option] = False
         if not hasattr(self, "_images"):
             self._images = utils.get_all_images(self.__class__.__name__) # returns a dict
-        self._end = False
+        self._images["Dead"] = [self._images["Dying"][-1]] # passes the last index
 
     def __init_subclass__(cls, picture_name:str= None, **kwargs):
         if picture_name:
             cls._images = utils.get_all_images(picture_name)
         super().__init_subclass__(**kwargs)
 
-    def __repr__(self):
-        return super().__repr__()
-
     def animate(self):
         """ Changes the frame of the image """
-        self.counter += self.animation_speed
-        if self.counter >= 1:
-            self.counter = 0
-            self.frame += 1
-            if self.frame > len(self.images) - 1:
-                if self.state in self.unstopable_states:
-                    self._end = True
-                    self.state = self.default_state
-                    self._end = False
-                self.reset_animations()
+        if not self.dead:
+            self.counter += self.animation_speed
+            if self.counter >= 1:
+                self.counter = 0
+                self.frame += 1
+                if self.frame > len(self.images) - 1:
+                    if self.state in self.unstopable_states:
+                        with self.end_of_animation():
+                            self.state = self.default_state
+                        if self.state == "Dying":
+                            super().kill()
+                            with self.end_of_animation():
+                                self.state = "Dead"
+                    self.reset_animations()
+
+    @property
+    def dead(self):
+        return self.state == "Dead"
+
+    @contextmanager
+    def end_of_animation(self):
+        self._end = True
+        yield
+        self._end = False
 
     def reset_animations(self):
         """Sets the frame counters to 0"""
@@ -69,7 +83,7 @@ class Sprite(pygame.sprite.Sprite):
     def damgage(self, dmg):
         """ Reduces the health"""
         self.health -= dmg
-        if self.health < 0:
+        if self.health <= 0:
             self.state = "Dying"
 
     @property
@@ -109,16 +123,13 @@ class Monster(Sprite, DungeonElement):
         DungeonElement.__init__(self, position, self.room.dungeon)
         self.image.set_colorkey(utils.BLACK)
 
-    def draw(self, *args, **kwargs):
-        super().draw(*args, **kwargs)
-
     def update(self):
-        super().animate()
-        self.image.set_colorkey(utils.BLACK)
+        if not self.dead:
+            super().animate()
+            self.image.set_colorkey(utils.BLACK)
 
 
 class Skeleton(Monster):
-    unstopable_states = set()
     default_state = 'Walk'
     possible_states = {'Walk', 'Attack'}
     animation_speed = 0.88
@@ -128,8 +139,6 @@ class Skeleton(Monster):
     def __init__(self, *args, **kwargs):
         self.direction = random.choice(['West', 'East'])
         super().__init__(*args, **kwargs)
-        self.size //= 4
-        self.size *=2
 
     def draw(self, *args, **kwargs):
         super().draw(*args, flip=self.flip, **kwargs)
@@ -142,26 +151,30 @@ class Skeleton(Monster):
     def y_limit(self):
         return self.room.blocks[0].y, self.room.blocks[-1].y
 
-    def update(self):
-        super().update()
-        if self.x >= self.x_limit[1]:
-            self.direction = 'West'
-        elif self.x <= self.x_limit[0]:
-            self.direction = 'East'
+    def update(self, active:bool):
+        if not self.dead:
+            super().update()
+            if active:
+                self.state = "Walk"
+                if self.x >= self.x_limit[1]:
+                    self.direction = 'West'
+                elif self.x <= self.x_limit[0]:
+                    self.direction = 'East'
 
-        if self.direction == 'East':
-            self.x += self.speed
-            self.flip = False
-        elif self.direction == 'West':
-            self.x -= self.speed
-            self.flip = True
+                if self.direction == 'East':
+                    self.x += self.speed
+                    self.flip = False
+                elif self.direction == 'West':
+                    self.x -= self.speed
+                    self.flip = True
 
-        choice = random.choice([self.speed, -self.speed])
-        self.y += choice
-        if self.y < self.y_limit[0] or self.y > self.y_limit[1]:
-            # if out of bounds
-            self.y -= choice
-
+                choice = random.choice([self.speed, -self.speed])
+                self.y += choice
+                if self.y < self.y_limit[0] or self.y > self.y_limit[1]:
+                    # if out of bounds
+                    self.y -= choice
+            else:
+                self.state = "Emote"
 
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
     def __init__(self, *args,level=1, **kwargs):
@@ -178,15 +191,21 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
             data = json.load(f)
             return data[f"Level {level}"]
 
-    def update(self):
-        super().update()
+    def draw(self, *args, **kwargs):
+        super().draw()
+        self.skelton_spawner.emit()
 
-        if len(self.skelton_spawner) != self.max_skeletons:
-            if self.skelton_spawner.ready:
-                self.state = "Attacking"
-            self.skelton_spawner.load(additional_kwargs={'position':self.position})
-        self.skelton_spawner.update()
-
+    def update(self, active):
+        super().update(active)
+        if active:
+            if len(self.skelton_spawner) != self.max_skeletons:
+                if self.skelton_spawner.ready:
+                    self.state = "Attacking"
+                    x,y = self.position
+                    start_pos = x + random.uniform(.5,.10), y + random.uniform(.5,.10)
+                    self.skelton_spawner.load(additional_kwargs={'position':start_pos})
+            self.skelton_spawner.update(active)
+            self.dungeon.elements.add(self.skelton_spawner[-1])
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
@@ -195,14 +214,15 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
     y:float
     flip = False
     def __init__(self, dungeon):
-        self.position = dungeon.start_pos
         self.dungeon = dungeon
+        self.position = dungeon.start_pos
         Sprite.__init__(self)
         DungeonElement.__init__(self, self.position, self.dungeon)
         self.size *= 4
         self.size //= 5
         weapon_dict = dict(master=self, image=utils.get_whole_img('sword_slash'), speed=self.speed *3)
-        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict)
+
+        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict, cooldown=50)
 
     def update(self):
         self.get_keys()
@@ -211,8 +231,8 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
     def draw(self, *args, **kwargs):
         super().animate()
         self.image.set_colorkey(utils.BLACK)
+        self.shooter.emit()
         super().draw(*args, flip=self.flip, **kwargs)
-        #self.shooter.emit()
 
     def get_keys(self):
         """

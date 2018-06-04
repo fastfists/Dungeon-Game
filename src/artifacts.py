@@ -10,6 +10,7 @@ import collections
 import numpy as np
 import utils
 from typing import List
+import character
 from dungeon_utils import DungeonElement 
 
 stored_class = collections.namedtuple("stored_class",['inst', 'end_cond', 'start_time'])
@@ -43,12 +44,13 @@ class Emitter():
         Adds an element additional element arguments can be added before construction of the arugment such as an x and y value
         """
         if self.ready:
+            print("loaded")
             if not stop_condition:
                 stop_condition = self.stop_condition
                 if not stop_condition:
                     raise AttributeError("Missing stop_condition")
-            self.elements.append(stored_class(self.element(*additional_args, **additional_kwargs), stop_condition, pygame.time.get_ticks()))
             self.frames_passed = 0
+            self.elements.append(stored_class(self.element(*additional_args, **additional_kwargs), stop_condition, pygame.time.get_ticks()))
 
     def __repr__(self):
         return f"Emmiter object with {len(self.elements)} objects"
@@ -60,15 +62,21 @@ class Emitter():
     def elements_instances(self):
         return [element.inst for element in self.elements]
 
-    def update(self, cond_args=[], cond_kwargs={}):
+    def __getitem__(self, index):
+        return self.elements_instances[index]
+    
+    def __iter__(self):
+        return iter(self.elements_instances)
+
+    def update(self, *update_args, **update_kwargs):
         """Updates and removes any elements as well as the timer
         Needs to be called every frame
-        Also recieves args that can be passed to the element"""
+        Also recieves args that can be passed to the element for the update"""
 
-        [element.update() for element in self.elements_instances]
+        [element.update(*update_args, **update_kwargs) for element in self.elements_instances]
         self.frames_passed +=1
         ## calls each of the conditions and if the end condition is there it is deleted
-        self.elements = [element for element in self.elements if element.end_cond(element.inst, *cond_args, **cond_kwargs)]
+        self.elements = [element for element in self.elements if element.end_cond(element.inst)]
 
     def emit(self, all=True):
         """ Draws all elements to the screen"""
@@ -84,6 +92,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
     value being the x direction and the second is the y direction
     """
     def __init__(self, *, start_pos:tuple, image, master:DungeonElement, speed:float, direction:tuple, max_dist=5):
+        print(direction)
         self.speed = speed if type(speed) is tuple else speed,speed
         self.image = image
         self.image.set_colorkey(utils.BLACK)
@@ -95,20 +104,33 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         self.direction = np.array(direction)
         self.dead = False
         self.flip = self.direction[0] < 0
-        
+        self.image = self.image if not self.flip else pygame.transform.flip(self.image, True, False)
+    
     def __repr__(self):
-        return f"Projcetile object moving {tuple(self.direction)}"
+        emmiter().load()
 
-    def draw(self, *args, **kwargs):
-        super().draw(*args, **kwargs, flip=self.flip)
+    def hits(self) -> bool:
+        collided =  pygame.sprite.spritecollide(self, self.dungeon.elements, False, collided = None)
+        kill = False
+        if collided:
+            for thing in collided:
+                if isinstance(thing, character.Monster):
+                    kill = True
+                    thing.damgage(100)
+                    self.dead = True
+        if kill: self.kill()
 
     def update(self):
         pos = np.array(self.position)
+        self.hits()
         self.position = (pos + (self.speed * self.direction)).tolist()
         x, y = self.graph_position
         if self.dungeon.Idtbl[x][y] == 1:
             self.dead = True
-            self.kill()
+    
+    def kill(self):
+        super().kill()
+        self.dead = True
 
     def end_if(self):
         return not self.dead
@@ -122,15 +144,8 @@ class Chest(DungeonElement):
     def __init__(self, pos:tuple, images:tuple, dungeon, *contains:List[DungeonElement]):
         self.images = image
         super().__init__(pos, dungeon)
-        self.containers = contains
-
-    def open(self):
-        emmiter().load()
-    
-    def interact(self):
-        self.open()
-
-
+        self.things = contains
+        self.opened = False
 
 if __name__ == '__main__':
     class MockDungeonElement():

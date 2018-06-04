@@ -3,12 +3,13 @@ import pygame
 import utils
 import numpy as np
 
-class DungeonElement:
+class DungeonElement(pygame.sprite.Sprite):
     """ Abstract class that is for all elements of the dungeon """
     image = None
 
     def __init__(self, position, dungeon):
         assert self.image, "Dont forget to apply an image"
+        super().__init__()
         self.display = dungeon.game.display
         self.x, self.y = position
         self.size = dungeon.TILESIZE
@@ -21,17 +22,6 @@ class DungeonElement:
         pos = np.array(self.position)
         dungeon_scale = np.array([self.dungeon.TILESIZE, self.dungeon.TILESIZE])
         return tuple(pos * dungeon_scale)
-
-    def __lt__(self, other):
-        meInstance = isinstance(self, character.Sprite)
-        otherInstance = isinstance(other, character.Sprite)
-        if not meInstance and otherInstance:
-            return True
-        elif not meInstance and not otherInstance:
-            meInstance = isinstance(self, Door)
-            otherInstance = isinstance(other, Door)
-            if not meInstance and otherInstance:
-                return True
 
     def __hash__(self):
         # TODO Change this hashing for Sprite elements
@@ -52,10 +42,6 @@ class DungeonElement:
     def __repr__(self):
         return f"{self.__class__.__name__}: located at {self.x} , {self.y}"
 
-    def kill(self):
-        super().kill() # for sprites
-        self.dungeon.elements.remove(self)
-
     def transform(self, x, y):
         self.rect.x, self.rect.y = ((x+self.x) * self.dungeon.TILESIZE, (y + self.y) * self.dungeon.TILESIZE)
 
@@ -63,12 +49,15 @@ class DungeonElement:
         self.image = pygame.transform.scale(self.image, size)
         self.rect = self.image.get_rect()
 
+    def kill(self):
+        self.dungeon.elements.remove(self)
+        super().kill()
+
     def draw(self, size=None, flip=False):
         """
         Blits the element onto the screen
         """
         if size:
-
             temp_img = pygame.transform.scale(self.image, (size, size))
             temp_img.set_alpha(100)
             self.display.blit(temp_img, (self.x * size, self.y * size))
@@ -81,7 +70,7 @@ class DungeonElement:
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
             self.transform(x, y)
-            pygame.draw.rect(self.display, utils.RED, self.rect)
+            #pygame.draw.rect(self.display, utils.RED, self.rect)            
             self.display.blit(temp_img, self.rect)
 
 import character
@@ -122,6 +111,10 @@ class Room:
         else:
             self.monsters = []
     
+    def all_elements(self):
+        for element in self.blocks + self.monsters:
+            yield element
+
     @property
     def active(self):
         return self.dungeon.focus.graph_position in self.block_positions
@@ -131,9 +124,10 @@ class Room:
         return [block.position for block in self.blocks]
 
     def activate(self):
-        if not self.monsters == None and self.active:
+        if not self.monsters == None:
             for monster in self.monsters:
-                monster.update()
+                monster.update(self.active)
+        
 
     def draw(self, *args, **kwargs):
         [tile.draw(*args, **kwargs) for tile in self.blocks]
@@ -143,7 +137,7 @@ class Room:
         return "Room: {},{}".format(self.width, self.height)
 
 
-class Tile(DungeonElement, pygame.sprite.Sprite):
+class Tile(DungeonElement):
     def __init__(self, position, Room):
         """Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple"""
         self.image = utils.get_img("Tile", 17)
@@ -170,7 +164,7 @@ class Tile(DungeonElement, pygame.sprite.Sprite):
         return False
 
 
-class Wall(DungeonElement, pygame.sprite.Sprite):
+class Wall(DungeonElement):
     image = utils.get_img("Tile", 5)
 
     def __init__(self, position, Dungeon, direction):
@@ -191,7 +185,7 @@ class Wall(DungeonElement, pygame.sprite.Sprite):
         self.scale((self.size, self.size))
 
 
-class Door(DungeonElement, pygame.sprite.Sprite):
+class Door(DungeonElement):
     def __init__(self, x, y, dungeon, direction):
         self.image = utils.get_img("Door", 59)
         super().__init__((x, y), dungeon)
