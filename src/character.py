@@ -17,6 +17,9 @@ class Sprite(pygame.sprite.Sprite):
     handles the animation and changing
     of states for a sprite object
     """
+    def __hash__(self):
+        return pygame.sprite.Sprite.__hash__(self)
+    
     health = 100
     possible_states =  {"Idle",
                         "Emote",
@@ -58,12 +61,13 @@ class Sprite(pygame.sprite.Sprite):
                 self.frame += 1
                 if self.frame > len(self.images) - 1:
                     if self.state in self.unstopable_states:
-                        with self.end_of_animation():
-                            self.state = self.default_state
                         if self.state == "Dying":
                             super().kill()
                             with self.end_of_animation():
                                 self.state = "Dead"
+                        else:
+                            with self.end_of_animation():
+                                self.state = self.default_state
                     self.reset_animations()
 
     @property
@@ -175,7 +179,7 @@ class Skeleton(Monster):
                     self.y -= choice
                 
             else:
-                self.state = "Emote"
+                self.state = "Idle"
 
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
     def __init__(self, *args,level=1, **kwargs):
@@ -198,7 +202,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 
     def update(self, active):
         super().update(active)
-        if active:
+        if active and not self.dead:
             if len(self.skelton_spawner) != self.max_skeletons:
                 if self.skelton_spawner.ready:
                     self.state = "Attacking"
@@ -207,6 +211,8 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
                     self.skelton_spawner.load(additional_kwargs={'position':start_pos})
             self.skelton_spawner.update(active)
             self.dungeon.elements.add(self.skelton_spawner[-1])
+        self.skelton_spawner.update(active)
+
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
@@ -273,4 +279,4 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         direction = (-1,0) if self.flip else (1,0)
         if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
-            self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
+            self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction), delay=7)
