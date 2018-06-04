@@ -167,12 +167,13 @@ class Skeleton(Monster):
                 elif self.direction == 'West':
                     self.x -= self.speed
                     self.flip = True
-
+                
                 choice = random.choice([self.speed, -self.speed])
                 self.y += choice
                 if self.y < self.y_limit[0] or self.y > self.y_limit[1]:
                     # if out of bounds
                     self.y -= choice
+                
             else:
                 self.state = "Emote"
 
@@ -220,7 +221,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         DungeonElement.__init__(self, self.position, self.dungeon)
         self.size *= 4
         self.size //= 5
-        weapon_dict = dict(master=self, image=utils.get_whole_img('sword_slash'), speed=self.speed *3)
+        weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed *3)
 
         self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict, cooldown=50)
 

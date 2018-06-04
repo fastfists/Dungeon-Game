@@ -23,49 +23,32 @@ BLACK = (0,0,0)
 WHITE = (255, 255, 255)
 
 package_path = path.dirname(path.dirname(__file__))
-img_direc = package_path + "\img"
-song_direc = package_path + "\music"
-db = package_path + "\data"
-if 'home' in package_path:
-    img_direc = package_path + "/img"
-    song_direc = package_path + "/music"
-    db = package_path + "/data"
-
-
-errors = 0
-try:
-    tiles = pygame.image.load(path.join(img_direc ,"dungeon_floor.png"))
-    rouge = pygame.image.load(path.join(img_direc, "rouge.png"))
-    skeleton = pygame.image.load(path.join(img_direc,"skeleton.png"))
-    door = pygame.image.load(path.join(img_direc, "Doors.jpg"))
-    sword_slash= pygame.image.load(path.join(img_direc, "sword_slash.jpg"))
-except pygame.error:
-    tiles = pygame.image.load(img_direc + "/dungeon_floor.png")
-    rouge = pygame.image.load(img_direc + "/rouge.png")
-    skeleton = pygame.image.load(img_direc + "/skeleton.png")
-    door = pygame.image.load(img_direc + "/Doors.jpg")
-    sword_slash= pygame.image.load(img_direc + "/sword_slash.jpg")
+img_direc = path.join(package_path, "img")
+song_direc = path.join(package_path, "music")
+db = path.join(package_path, "data")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
+sprite_sheet_names =["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png"]
+sheets = {}
+for name in sprite_sheet_names:
+    name, ext = name.split('.')
+    exec(f"{name} = pygame.image.load(path.join(img_direc ,'{name +'.' +ext}'))")
+    exec(f"sheets[name] = FileDoc({name}_ref, {name})")
 
-# Range not implemented yet
-Sheets = {"Tile": FileDoc(Tiles_and_ceil_ref, tiles),
-          "Door": FileDoc(doors_ref, door),
-          "Rouge":FileDoc(rouge_ref, rouge),
-          "Monster": FileDoc(skeleton_ref,skeleton),
-          "Skeleton": FileDoc(skeleton_ref,skeleton),
-          "sword_slash": FileDoc(None,sword_slash)}
-           # The first one is the name of the image Dict, The second to the name of the file
+
+
 
 all_sprites = pygame.sprite.Group()
-def get_whole_img(name):
-    return Sheets[name].Picture
+def get_single_img(name):
+    if name in sheets.keys():
+        return sheets[name].Picture
 
 def get_img(key_name, sprite_number):
-    ref = Sheets[key_name].Reference[sprite_number]
-    img = pygame.Surface((ref[2], ref[3]))
-    img.blit(Sheets[key_name].Picture, (0,0),ref)
-    return img
+    if name in sheets.keys():
+        ref = sheets[key_name].Reference[sprite_number]
+        img = pygame.Surface((ref[2], ref[3]))
+        img.blit(sheets[key_name].Picture, (0,0),ref)
+        return img
 
 def get_all_images(class_name: str) -> dict:
     """ Runs get image for a whole person"""
