@@ -91,8 +91,9 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
     The direction parameter is a tuple value with the first
     value being the x direction and the second is the y direction
     """
-    def __init__(self, *, start_pos:tuple, image, master:DungeonElement, speed:float, direction:tuple, max_dist=5):
+    def __init__(self, *, start_pos:tuple, image, master:DungeonElement, speed:float, direction:tuple, max_dist=5, delay=0):
         print(direction)
+        self.dealy = 7
         self.speed = speed if type(speed) is tuple else speed,speed
         self.image = image
         self.image.set_colorkey(utils.BLACK)
@@ -120,13 +121,16 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
                     self.dead = True
         if kill: self.kill()
 
+    def draw(self, *a):
+        super().draw(*a)
+
     def update(self):
         pos = np.array(self.position)
         self.hits()
         self.position = (pos + (self.speed * self.direction)).tolist()
         x, y = self.graph_position
         if self.dungeon.Idtbl[x][y] == 1:
-            self.dead = True
+            self.kill()
     
     def kill(self):
         super().kill()

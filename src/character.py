@@ -242,10 +242,6 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         super().draw(*args, flip=self.flip, **kwargs)
 
     def get_keys(self):
-        """
-        Moves the Charcter across the board
-        TODO fix the changing of states to match my better one
-        """
         key = pygame.key.get_pressed()
         #########################
         #  Moving of character  #
@@ -279,4 +275,4 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         direction = (-1,0) if self.flip else (1,0)
         if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
-            self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction), delay=7)
+            self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
