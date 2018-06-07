@@ -221,14 +221,11 @@ class Wall(Background):
 
 class Door(Background):
     def __init__(self, x, y, dungeon, direction):
-        self.image = utils.get_img("Door", 59)
+        self.image = utils.get_img("Tile", 18)
         super().__init__((x, y), dungeon)
         self.scale((self.size, self.size))
         pygame.sprite.Sprite.__init__(self)
-        """if direction[0] == 0:
-            # Up and down
-            self.image = pygame.transform.rotate(self.image, 90)
-        elif direction[1] == 0:
+        if direction[1] == 0:
             # side to side
-            self.image = pygame.transform.rotate(self.image, 270)"""
+            self.image = pygame.transform.rotate(self.image, 270)
 

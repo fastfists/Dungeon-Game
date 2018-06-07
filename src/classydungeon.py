@@ -4,6 +4,7 @@ import random
 import utils
 import pygame
 import character
+import numpy as np
 import json
 from collections import namedtuple
 
@@ -82,7 +83,7 @@ class Dungeon:
             moveX, moveY = self.__findDir(self._Prng(4))
             newX, newY = x + moveX, y + moveY
             try:
-                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
+                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.door_fits((x,y), (moveX, moveY)):
                     if self._Prng(self.weight, wantBool=True):
                         size = (8, 4)
                         self.weight *= 8
@@ -91,7 +92,7 @@ class Dungeon:
                             size = 8
                         else:
                             size = 4
-                    if self._format(size, newX, newY):  
+                    if self._format(size, newX, newY):
                         self.allrooms.append(dungeon_utils.Room(size, self.currenType, newX, newY, self))
                         newX, newY = self.__startVal(self.allrooms[len(self.allrooms) - 1])
                         self.update(size, self.currenType, newX, newY)
@@ -111,6 +112,27 @@ class Dungeon:
             if wall.position == (x,y):
                 del self.walls[i]
 
+
+    def door_fits(self, positon, move_vector)->bool:
+        ### Find closet room/block ###
+        def check(old_direc, new_direc):
+            old, new = np.array(old_direc), np.array(new_direc)
+            result = (old + new).tolist()
+            return result == [0,0]
+
+        x, y =positon
+        for move_x, move_y in map(self.__findDir, range(4)):
+            if (move_x, move_y) == move_vector:
+                continue
+            block = self.Idtbl[x+move_x][y+move_y]
+            print(block)
+            if block != 0 and block != 1 and block != -1:
+                ## We have reched a tile
+                direction = move_x, move_y
+                break
+        print(self.allrooms)
+        print("--------------------")
+        return check(move_vector, direction)
 
     @staticmethod
     def __startVal(room):
@@ -297,7 +319,7 @@ class Dungeon:
         for room in self.allrooms+ [self.start_room]:
             print(room)
             [tile.draw(display=background, target=target(0,0), background=True) for tile in room.blocks]
-        
+#        background.set_colorkey(utils.BLACK)
         return background
 
     def make_order(self):
@@ -307,14 +329,19 @@ class Dungeon:
         [self.elements.add(door) for door in self.doors]
         self.elements.add(self.player)
 
-    def _draw(self, tilesize=None):
+    def _draw(self, tile_size=None):
         """The draw and update method for the dungeon
         """
-
+        """        if tile_size:
+            background_img = pygame.transform.scale(self.background, (tile_size, tile_size))
+            background_img.set_alpha(100)
+        else:
+            background_img = self.background"""
         self.focus = self.player
         x = -self.focus.x + self.game.GRIDWIDTH // 2
         y = -self.focus.y + self.game.GRIDHEIGHT// 2
         self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
+        
         for room in self.allrooms:
             [monster.draw() for monster in room.monsters]
         self.player.draw()
