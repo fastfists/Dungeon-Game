@@ -28,7 +28,7 @@ class Game():
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        pygame.mixer.music.load(song_direc + '/skeletons.mp3')
+        pygame.mixer.music.load(path.join(song_direc ,'skeletons_remix.mp3'))
 
 
         self.clock = pygame.time.Clock()
@@ -44,7 +44,7 @@ class Game():
         self.dungeon.make()
         end = time.time()
         print(end- start)
-        pygame.display.set_caption('Dungoen')
+        pygame.display.set_caption('Dungeon')
         pygame.mixer.music.play()
 
     def __enter__(self):
@@ -56,11 +56,8 @@ class Game():
             self.clock.tick(20)
 
     def draw(self):
-        self.display.fill(GRAY, rect=None, special_flags=0)
-        self.dungeon._draw()
-
-        self.dungeon._draw(tilesize=10) # draws the mini map
-
+        self.display.fill(BLACK, rect=None, special_flags=0)
+        self.dungeon._draw()      
         for room in self.dungeon.allrooms:
             room.activate()
 

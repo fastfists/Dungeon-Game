@@ -117,7 +117,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
             for thing in collided:
                 if isinstance(thing, character.Monster):
                     kill = True
-                    thing.damgage(100)
+                    thing.damgage(50)
                     self.dead = True
         if kill: self.kill()
 

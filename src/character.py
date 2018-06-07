@@ -188,6 +188,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
         self.size *= 8
         self.size //= 2
         self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50, element_args=[self.room])
+        self.health = 200
 
     @staticmethod
     def levels(level:int) -> int:
@@ -216,7 +217,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
-    speed = 0.05
+    speed = 0.1
     x:float
     y:float
     flip = False
@@ -229,7 +230,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         self.size //= 5
         weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed *3)
 
-        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict, cooldown=50)
+        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict, cooldown=25)
 
     def update(self):
         self.get_keys()
