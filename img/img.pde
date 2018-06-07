@@ -1,4 +1,4 @@
-String[] SPRITE_FILES = {"Skeleton.png"}; //enter path to pic here
+String[] SPRITE_FILES = {"sci_fi.png"}; //enter path to pic here
 int cellWidth = 32;
 int cellHeight = 32;
 import java.util.Scanner;
