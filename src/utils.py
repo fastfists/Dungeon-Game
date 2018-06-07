@@ -35,9 +35,6 @@ for name in sprite_sheet_names:
     exec(f"{name} = pygame.image.load(path.join(img_direc ,'{name +'.' +ext}'))")
     exec(f"sheets[name] = FileDoc({name}_ref, {name})")
 
-
-
-
 all_sprites = pygame.sprite.Group()
 def get_single_img(name):
     if name in sheets.keys():

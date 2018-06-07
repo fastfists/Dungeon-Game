@@ -5,7 +5,7 @@ import utils
 import pygame
 import character
 import json
-
+from collections import namedtuple
 
 class Dungeon:
     """
@@ -49,8 +49,7 @@ class Dungeon:
         self.doors = []
         self.elements = pygame.sprite.Group()
         self.TILESIZE = game.TILESIZE
-
-
+        self.background = pygame.surface.Surface((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
 
     def __repr__(self):
         return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}"
@@ -260,20 +259,12 @@ class Dungeon:
         except IndexError:
             self.make_start_room()
 
-    def _finalize(self):
-        """ This method sets all variables
-        for the main game loop
-        """
-        self.player = character.Player(self)
-        self.focus = self.player
-        self.make_order()
-
 
     def add_border(self):
         for i in range(self.WIDTH):
-            self.border.append(dungeon_utils.Wall((i, 0), self, 0))
+            self.border.append(dungeon_utils.Wall((i, 0), self, (0,0)))
             self.Idtbl[i][0] = 1
-            self.border.append(dungeon_utils.Wall((i, self.HEIGHT - 1), self, 3))
+            self.border.append(dungeon_utils.Wall((i, self.HEIGHT - 1), self, (0,0)))
             self.Idtbl[i][-1] = 1
         for i in range(self.HEIGHT):
             self.border.append(dungeon_utils.Wall((0, i), self, (1, 0)))
@@ -285,6 +276,30 @@ class Dungeon:
     def monsters(self):
         return [element for element in self.elements if isinstance(element, character.Monster)]
 
+    def _finalize(self):
+        """ This method sets all variables
+        for the main game loop
+        """
+        self.player = character.Player(self)
+        self.make_order()
+        self.background = self.make_background(self.background)
+
+    def make_background(self, background:pygame.surface.Surface):
+        class target:
+            def __init__(self, x, y):
+                self.x = x
+                self.y = y            
+        draw_args = dict()
+        [wall.draw(display=background, target=target(0,0), background=True) for wall in self.walls]
+        [wall.draw(display=background, target=target(0,0), background=True) for wall in self.border]
+        [door.draw(display=background, target=target(0,0), background=True) for door in self.doors]
+        
+        for room in self.allrooms+ [self.start_room]:
+            print(room)
+            [tile.draw(display=background, target=target(0,0), background=True) for tile in room.blocks]
+        
+        return background
+
     def make_order(self):
         [self.elements.add(room.all_elements()) for room in self.allrooms]
         [self.elements.add(wall) for wall in self.border + self.walls]
@@ -292,10 +307,15 @@ class Dungeon:
         [self.elements.add(door) for door in self.doors]
         self.elements.add(self.player)
 
-
-
     def _draw(self, tilesize=None):
         """The draw and update method for the dungeon
         """
-        [element.draw(tilesize) for element in self.elements]
+
+        self.focus = self.player
+        x = -self.focus.x + self.game.GRIDWIDTH // 2
+        y = -self.focus.y + self.game.GRIDHEIGHT// 2
+        self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
+        for room in self.allrooms:
+            [monster.draw() for monster in room.monsters]
+        self.player.draw()
         self.player.update()

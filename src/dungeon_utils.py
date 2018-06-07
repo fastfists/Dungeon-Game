@@ -69,10 +69,15 @@ class DungeonElement(pygame.sprite.Sprite):
         self.dungeon.elements.remove(self)
         super().kill()
 
-    def draw(self, size=None, flip=False):
+    def draw(self, size=None, flip=False, display=None, target=None, background=False):
         """
         Blits the element onto the screen
         """
+        if display: self.display = display
+
+        if not target:
+            target = self.dungeon.focus
+
         if size:
             temp_img = pygame.transform.scale(self.image, (size, size))
             temp_img.set_alpha(100)
@@ -82,12 +87,15 @@ class DungeonElement(pygame.sprite.Sprite):
             self.scale((self.width, self.height))
             temp_img = pygame.transform.flip(self.image, flip, False)
             # temp_img.set_alpha(100)
-            target = self.dungeon.focus
+            if background:
+                target.x = self.dungeon.game.GRIDWIDTH //2  - target.x
+                target.y = self.dungeon.game.GRIDHEIGHT //2 - target.y
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
             self.transform(x, y)
-            pygame.draw.rect(self.display, utils.RED, self.rect)            
+            #pygame.draw.rect(self.display, utils.RED, self.rect)
             self.display.blit(temp_img, self.rect)
+
 
 import character
 
@@ -153,7 +161,7 @@ class Room:
         return "Room: {},{}".format(self.width, self.height)
 
 
-class Backgorund(DungeonElement):
+class Background(DungeonElement):
     """
     Just a class to modify all background elements
     """
@@ -165,7 +173,7 @@ class Backgorund(DungeonElement):
     def height(self):
         return self.size
 
-class Tile(Backgorund):
+class Tile(Background):
     def __init__(self, position, Room):
         """Recieves its room, the type of tile it is, and the X,Y coordinates as a tuple"""
         self.image = utils.get_img("Tile", 17)
@@ -192,7 +200,7 @@ class Tile(Backgorund):
         return False
 
 
-class Wall(Backgorund):
+class Wall(Background):
     image = utils.get_img("Tile", 5)
 
     def __init__(self, position, Dungeon, direction):
@@ -201,19 +209,17 @@ class Wall(Backgorund):
         """
         super().__init__(position, Dungeon)
         pygame.sprite.Sprite.__init__(self)
-        if direction == (0, 1):
-            self.image = pygame.transform.rotate(self.image, 180)
-        elif direction == (1, 0):
-            self.image = pygame.transform.rotate(self.image, 270)
-        elif direction == (-1, 0):
-            self.image = pygame.transform.rotate(self.image, 90)
-        elif direction == (0, -1):
+        if direction == (1, 0) or direction == (-1,0):
             self.image = utils.get_img("Tile", 1)
+        elif direction[0] and direction[1]:
+            
+            self.image = utils.get_img("Tile", 1)
+            if direction == (-1,1) or direction == (1,1):
+                self.image = utils.get_img("Tile", 5)
 
         self.scale((self.size, self.size))
 
-
-class Door(Backgorund):
+class Door(Background):
     def __init__(self, x, y, dungeon, direction):
         self.image = utils.get_img("Door", 59)
         super().__init__((x, y), dungeon)
