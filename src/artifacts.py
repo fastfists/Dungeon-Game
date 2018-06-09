@@ -92,8 +92,6 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
     value being the x direction and the second is the y direction
     """
     def __init__(self, *, start_pos:tuple, image, master:DungeonElement, speed:float, direction:tuple, max_dist=5, delay=0):
-        print(direction)
-        self.dealy = 7
         self.speed = speed if type(speed) is tuple else speed,speed
         self.image = image
         self.image.set_colorkey(utils.BLACK)
@@ -106,6 +104,12 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         self.dead = False
         self.flip = self.direction[0] < 0
         self.image = self.image if not self.flip else pygame.transform.flip(self.image, True, False)
+        self.dealy = delay
+        self.counter = 0
+
+    @property
+    def ready(self):
+        return self.dealy <= self.counter
     
     def __repr__(self):
         emmiter().load()
@@ -122,15 +126,18 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         if kill: self.kill()
 
     def draw(self, *a):
-        super().draw(*a)
+        if self.ready:
+            super().draw(*a)
 
     def update(self):
-        pos = np.array(self.position)
-        self.hits()
-        self.position = (pos + (self.speed * self.direction)).tolist()
-        x, y = self.graph_position
-        if self.dungeon.Idtbl[x][y] == 1:
-            self.kill()
+        if self.ready:
+            pos = np.array(self.position)
+            self.hits()
+            self.position = (pos + (self.speed * self.direction)).tolist()
+            x, y = self.graph_position
+            if self.dungeon.Idtbl[x][y] == 1:
+                self.kill()
+        self.counter += 1
     
     def kill(self):
         super().kill()
@@ -145,11 +152,20 @@ class Chest(DungeonElement):
     The Chest class is a class that only emmits an object once and stays open
     """
 
-    def __init__(self, pos:tuple, images:tuple, dungeon, *contains:List[DungeonElement]):
-        self.images = image
+    def __init__(self, pos:tuple, images:tuple, dungeon, *contains):
         super().__init__(pos, dungeon)
-        self.things = contains
+        self.elements = contains
         self.opened = False
+    
+    def interact(self):
+        if not self.opened:
+            self.opened = True
+            self.image = self.images[1]
+
+    def update(self):
+        if self.opened:
+            for element in self.elements:
+                element.update()
 
 if __name__ == '__main__':
     class MockDungeonElement():
