@@ -28,14 +28,21 @@ song_direc = path.join(package_path, "music")
 db = path.join(package_path, "data")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
-sprite_sheet_names =["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png", "sci_fi.png", "Goblin.png"]
+sprite_sheet_names =["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png", "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png"]
 sheets = {}
 for name in sprite_sheet_names:
     name, ext = name.split('.')
     exec(f"{name} = pygame.image.load(path.join(img_direc ,'{name +'.' +ext}'))")
     exec(f"sheets[name] = FileDoc({name}_ref, {name})")
 
-all_sprites = pygame.sprite.Group()
+robot_mouthclosed = pygame.transform.scale(robot_mouthclosed, (180, 100)) 
+robot_mouthopen = pygame.transform.scale(robot_mouthopen, (180, 100)) 
+
+dialouge_box = pygame.image.load(path.join(img_direc,"Dialouge_box.png"))
+pygame.font.init()
+robot_font = pygame.font.Font(path.join(db,"Fonts", "HUMANOID.TTF"), 32)
+
+
 def get_single_img(name):
     if name in sheets.keys():
         return sheets[name].Picture
@@ -64,23 +71,24 @@ def transform(thing:int):
     if thing == 3: return 'Attacking'
     if thing == 4: return 'Dying'
 
-def parametrized(dec):
-    def layer(*args, **kwargs):
-        def repl(f):
-            return dec(f, *args, **kwargs)
-        return repl
-    return layer
-
-@parametrized
-def collides_with(func, sprite_1, sprite_group):
-    """ function wrapper of that determines if two sprites collide
-        Should recieve a sprite and as sprite group 
-    """
-    def wrapper(*args, **kwargs):
-        collided =  pygame.sprite.spritecollide(sprite_1, sprite_group, False, collided = None)
-        if pygame.sprite.spritecollide(sprite_1, sprite_group, False, collided = None):
-            return func(*args, **kwargs, hit = collided)
-    return wrapper
-
-def send_messgage():
+class ignore:
     pass
+robot = 0
+def change_bot(func):
+    def wrapped(*args, **kwargs):
+        global robot
+        if robot % 10 == 0:
+            bot = robot_mouthclosed
+        else:
+            bot = robot_mouthopen
+        robot +=1
+        return func(*args, bot, **kwargs)
+    return wrapped
+
+@change_bot
+def send_messgage(msg, screen, bot:ignore):
+    screen_text = robot_font.render(msg, True, PURPLE)
+    dialouge_box.blit(screen_text, (240, 40))
+    dialouge_box.blit(bot, (0,0))
+    dialouge_box.set_alpha(190)
+    screen.blit(dialouge_box, (864//2, 336*2))

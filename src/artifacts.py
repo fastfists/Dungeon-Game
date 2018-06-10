@@ -126,8 +126,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         if kill: self.kill()
 
     def draw(self, *a):
-        if self.ready:
-            super().draw(*a)
+        super().draw(*a)
 
     def update(self):
         if self.ready:

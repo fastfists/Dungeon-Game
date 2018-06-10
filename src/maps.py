@@ -266,8 +266,6 @@ Door_ref = {1 : (0,0,32,32),
              89 : (224,288,32,32),
              90 : (256,288,32,32)}
 
-sword_slash_ref = None
-
 sci_fi_ref = {  1 : (0, 0, 31, 31),
         2 : (32, 0, 31, 31),
         3 : (64, 0, 31, 31),
@@ -453,3 +451,7 @@ Goblin_ref = {1 : (10, 14, 12, 17),
               98 : (229, 307, 16, 12),
               99 : (261, 308, 16, 11),
               100 : (293, 308, 16, 11)}
+
+sword_slash_ref = None
+robot_mouthopen_ref = None
+robot_mouthclosed_ref = None
