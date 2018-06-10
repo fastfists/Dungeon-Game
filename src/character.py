@@ -187,7 +187,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
         self.max_skeletons = self.levels(level)
         self.size *= 8
         self.size //= 2
-        self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50, element_args=[self.room], element_kwargs={"delay":7})
+        self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50, element_args=[self.room])
         self.health = 200
 
     @staticmethod
@@ -228,18 +228,25 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         DungeonElement.__init__(self, self.position, self.dungeon)
         self.size *= 4
         self.size //= 5
-        weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed *3, delay=20)
-        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict, cooldown=25)
+        weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed *3, delay=30)
+        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict, cooldown=10)
 
     def update(self):
         self.get_keys()
         self.shooter.update()
-
+            
     def draw(self, *args, **kwargs):
         super().animate()
         self.image.set_colorkey(utils.BLACK)
         self.shooter.emit()
         super().draw(*args, flip=self.flip, **kwargs)
+        if self.state == "Attacking":
+            utils.send_messgage("Face my wrath", self.display)
+
+    def speed_up(self):
+        self.animation_speed += 0.01
+        self.speed += 0.05
+        self.shooter.frame_limit -= 0.05
 
     def get_keys(self):
         key = pygame.key.get_pressed()
@@ -257,7 +264,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
             move_x = self.speed
         self.x += move_x
         self.y += move_y
-        if self.dungeon.Idtbl[round(self.x )][round(self.y)] == 1:
+        if self.dungeon.Idtbl[round(self.x)][round(self.y)] == 1:
             self.x -= move_x
             self.y -= move_y
         if move_x != 0 or move_y != 0:
@@ -275,4 +282,5 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         direction = (-1,0) if self.flip else (1,0)
         if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
+            #self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
