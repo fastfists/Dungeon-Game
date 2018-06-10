@@ -1,8 +1,7 @@
-''' Contains the Game class'''
+""" Contains the Game class"""
 
 from utils import *
 import pygame
-import character
 import classydungeon as dun
 import time
 
@@ -17,9 +16,9 @@ Need to implement:
 '''
 
 
-class Game():
+class Game:
 
-    def __init__(self, screen_size:tuple, tilesize=16):
+    def __init__(self, screen_size: tuple, tilesize=16):
         # Set Constants
         self.SIZE = screen_size
         self.WIDTH, self.HEIGHT = self.SIZE
@@ -28,22 +27,23 @@ class Game():
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        pygame.mixer.music.load(path.join(song_direc ,'skeletons_remix.mp3'))
-
+        pygame.mixer.music.load(path.join(song_direc, 'skeletons_remix.mp3'))
 
         self.clock = pygame.time.Clock()
         # Set game variables
         self.game_over = False
         # Set Up Dungeon
-        try: self.display = pygame.display.set_mode(self.SIZE) # TODO add fullscreen
-        except pygame.error: self.display = pygame.display.set_mode(self.SIZE)
+        try:
+            self.display = pygame.display.set_mode(self.SIZE)  # TODO add full screen
+        except pygame.error:
+            self.display = pygame.display.set_mode(self.SIZE)
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
 
     def setup(self):
         start = time.time()
         self.dungeon.make()
         end = time.time()
-        print(end- start)
+        print(end - start)
         pygame.display.set_caption('Dungeon')
         pygame.mixer.music.play()
 
@@ -57,12 +57,12 @@ class Game():
 
     def draw(self):
         self.display.fill(BLACK, rect=None, special_flags=0)
-        self.dungeon._draw()      
+        self.dungeon._draw()
         for room in self.dungeon.allrooms:
             room.activate()
 
     def update(self):
-            pygame.display.update()
+        pygame.display.update()
 
     def events(self):
         """ The event handler for the Game object """
@@ -77,14 +77,12 @@ class Game():
                 if event.key == pygame.K_ESCAPE:
                     self.__exit__()
 
-
-
     def __exit__(self):
         pygame.quit()
         quit()
 
 
 if __name__ == '__main__':
-    game = Game((1920,1080), tilesize=64)
+    game = Game((1920, 1080), tilesize=64)
     with game:
         pass

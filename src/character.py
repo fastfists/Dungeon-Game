@@ -17,14 +17,15 @@ class Sprite(pygame.sprite.Sprite):
     handles the animation and changing
     of states for a sprite object
     """
+
     def __hash__(self):
         return pygame.sprite.Sprite.__hash__(self)
-    
+
     health = 100
-    possible_states =  {"Idle",
-                        "Emote",
-                        "Walk",
-                        "Death"}
+    possible_states = {"Idle",
+                       "Emote",
+                       "Walk",
+                       "Death"}
     default_state = "Idle"
     animation_speed = 1
     speed = 0.5
@@ -44,10 +45,10 @@ class Sprite(pygame.sprite.Sprite):
                 continue
             self._state[option] = False
         if not hasattr(self, "_images"):
-            self._images = utils.get_all_images(self.__class__.__name__) # returns a dict
-        self._images["Dead"] = [self._images["Dying"][-1]] # passes the last index
+            self._images = utils.get_all_images(self.__class__.__name__)  # returns a dict
+        self._images["Dead"] = [self._images["Dying"][-1]]  # passes the last index
 
-    def __init_subclass__(cls, picture_name:str= None, **kwargs):
+    def __init_subclass__(cls, picture_name: str = None, **kwargs):
         if picture_name:
             cls._images = utils.get_all_images(picture_name)
         super().__init_subclass__(**kwargs)
@@ -155,7 +156,7 @@ class Skeleton(Monster):
     def y_limit(self):
         return self.room.blocks[0].y, self.room.blocks[-1].y
 
-    def update(self, active:bool):
+    def update(self, active: bool):
         if not self.dead:
             super().update()
             if active:
@@ -171,29 +172,31 @@ class Skeleton(Monster):
                 elif self.direction == 'West':
                     self.x -= self.speed
                     self.flip = True
-                
+
                 choice = random.choice([self.speed, -self.speed])
                 self.y += choice
                 if self.y < self.y_limit[0] or self.y > self.y_limit[1]:
                     # if out of bounds
                     self.y -= choice
-                
+
             else:
                 self.state = "Idle"
 
+
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
-    def __init__(self, *args,level=1, **kwargs):
+    def __init__(self, *args, level=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.max_skeletons = self.levels(level)
         self.size *= 8
         self.size //= 2
-        self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50, element_args=[self.room])
+        self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50,
+                                                 element_args=[self.room])
         self.health = 200
 
     @staticmethod
-    def levels(level:int) -> int:
+    def levels(level: int) -> int:
         """ Method that returns the limit of skeletons to spawn based on level """
-        with open(path.join(utils.db,"boss_skeleton.json")) as f:
+        with open(path.join(utils.db, "boss_skeleton.json")) as f:
             data = json.load(f)
             return data[f"Level {level}"]
 
@@ -207,9 +210,9 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
             if len(self.skelton_spawner) != self.max_skeletons:
                 if self.skelton_spawner.ready:
                     self.state = "Attacking"
-                    x,y = self.position
-                    start_pos = x + random.uniform(.5,.10), y + random.uniform(.5,.10)
-                    self.skelton_spawner.load(additional_kwargs={'position':start_pos})
+                    x, y = self.position
+                    start_pos = x + random.uniform(.5, .10), y + random.uniform(.5, .10)
+                    self.skelton_spawner.load(additional_kwargs={'position': start_pos})
             self.skelton_spawner.update(active)
             self.dungeon.elements.add(self.skelton_spawner[-1])
         self.skelton_spawner.update(active)
@@ -218,9 +221,10 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
     speed = 0.1
-    x:float
-    y:float
+    x: float
+    y: float
     flip = False
+
     def __init__(self, dungeon):
         self.dungeon = dungeon
         self.position = dungeon.start_pos
@@ -228,20 +232,21 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         DungeonElement.__init__(self, self.position, self.dungeon)
         self.size *= 4
         self.size //= 5
-        weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed *3, delay=30)
-        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict, cooldown=10)
+        weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed * 3, delay=30)
+        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict,
+                                         cooldown=10)
 
     def update(self):
         self.get_keys()
         self.shooter.update()
-            
+
     def draw(self, *args, **kwargs):
         super().animate()
         self.image.set_colorkey(utils.BLACK)
         self.shooter.emit()
         super().draw(*args, flip=self.flip, **kwargs)
         if self.state == "Attacking":
-            utils.send_messgage("Face my wrath", self.display)
+            utils.send_message("Face my wrath", self.display)
 
     def speed_up(self):
         self.animation_speed += 0.01
@@ -253,7 +258,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         #########################
         #  Moving of character  #
         #########################
-        move_x, move_y = 0,0
+        move_x, move_y = 0, 0
         if key[pygame.K_DOWN]:
             move_y = self.speed
         if key[pygame.K_UP]:
@@ -279,8 +284,8 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         #########################
         #      Get actions      #
         #########################
-        direction = (-1,0) if self.flip else (1,0)
+        direction = (-1, 0) if self.flip else (1, 0)
         if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
-            #self.speed_up()
+            # self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))

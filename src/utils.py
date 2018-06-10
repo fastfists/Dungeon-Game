@@ -1,4 +1,4 @@
-'''
+"""
 Animations Each row has 10 animations
 
 1: Idle 1-10
@@ -6,8 +6,8 @@ Animations Each row has 10 animations
 3: Walk 21-30
 4: Attack 31-40
 5: Death 41-50
-'''
-
+"""
+import functools
 from os import path
 import pygame
 from collections import namedtuple
@@ -19,7 +19,7 @@ BLUE = (0, 0, 255)
 GRAY = (50, 50, 50)
 PURPLE = (145, 57, 92)
 ORANGE = (255, 98, 0)
-BLACK = (0,0,0)
+BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
 package_path = path.dirname(path.dirname(__file__))
@@ -28,52 +28,61 @@ song_direc = path.join(package_path, "music")
 db = path.join(package_path, "data")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
-sprite_sheet_names =["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png", "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png"]
+sprite_sheet_names = ["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png",
+                      "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png"]
 sheets = {}
 for name in sprite_sheet_names:
     name, ext = name.split('.')
     exec(f"{name} = pygame.image.load(path.join(img_direc ,'{name +'.' +ext}'))")
     exec(f"sheets[name] = FileDoc({name}_ref, {name})")
 
-robot_mouthclosed = pygame.transform.scale(robot_mouthclosed, (180, 100)) 
-robot_mouthopen = pygame.transform.scale(robot_mouthopen, (180, 100)) 
+robot_mouthclosed = pygame.transform.scale(robot_mouthclosed, (180, 100))
+robot_mouthopen = pygame.transform.scale(robot_mouthopen, (180, 100))
 
-dialouge_box = pygame.image.load(path.join(img_direc,"Dialouge_box.png"))
+dialouge_box: pygame.surface.Surface = pygame.image.load(path.join(img_direc, "Dialouge_box.png"))
 pygame.font.init()
-robot_font = pygame.font.Font(path.join(db,"Fonts", "HUMANOID.TTF"), 32)
+robot_font = pygame.font.Font(path.join(db, "Fonts", "HUMANOID.TTF"), 32)
 
 
 def get_single_img(name):
     if name in sheets.keys():
         return sheets[name].Picture
 
+
 def get_img(key_name, sprite_number):
     if name in sheets.keys():
         ref = sheets[key_name].Reference[sprite_number]
         img = pygame.Surface((ref[2], ref[3]))
-        img.blit(sheets[key_name].Picture, (0,0),ref)
+        img.blit(sheets[key_name].Picture, (0, 0), ref)
         return img
+
 
 def get_all_images(class_name: str) -> dict:
     """ Runs get image for a whole person"""
     image_dict = {}
-    for i in range(0,5):
+    for i in range(0, 5):
         surface_list = []
-        for j in range(1,11):
-            surface_list.append(get_img(class_name,(i*10)+j))
+        for j in range(1, 11):
+            surface_list.append(get_img(class_name, (i * 10) + j))
         image_dict[transform(i)] = surface_list
     return image_dict
 
-def transform(thing:int):
+
+def transform(thing: int):
     if thing == 0: return 'Idle'
     if thing == 1: return 'Emote'
     if thing == 2: return 'Walk'
     if thing == 3: return 'Attacking'
     if thing == 4: return 'Dying'
 
-class ignore:
+
+class Ignore:
     pass
+
+
 robot = 0
+
+
 def change_bot(func):
     def wrapped(*args, **kwargs):
         global robot
@@ -81,14 +90,16 @@ def change_bot(func):
             bot = robot_mouthclosed
         else:
             bot = robot_mouthopen
-        robot +=1
+        robot += 1
         return func(*args, bot, **kwargs)
+
     return wrapped
 
+
 @change_bot
-def send_messgage(msg, screen, bot:ignore):
+def send_message(msg, screen, bot: Ignore):
     screen_text = robot_font.render(msg, True, PURPLE)
     dialouge_box.blit(screen_text, (240, 40))
-    dialouge_box.blit(bot, (0,0))
+    dialouge_box.blit(bot, (0, 0))
     dialouge_box.set_alpha(190)
-    screen.blit(dialouge_box, (864//2, 336*2))
+    screen.blit(dialouge_box, (screen.width - dialouge_box.width // 2, 336 * 2))

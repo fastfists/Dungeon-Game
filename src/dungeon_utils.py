@@ -3,6 +3,7 @@ import pygame
 import utils
 import numpy as np
 
+
 class DungeonElement(pygame.sprite.Sprite):
     """ Abstract class that is for all elements of the dungeon """
     image = None
@@ -34,10 +35,10 @@ class DungeonElement(pygame.sprite.Sprite):
     @property
     def height(self):
         return self.size
-    
+
     @width.setter
     def width(self, new_width):
-        self.size = new_width * 2 # mulitply by 2 to adjust for the getter method
+        self.size = new_width * 2  # multiply by 2 to adjust for the getter method
 
     @height.setter
     def height(self, new_height):
@@ -48,7 +49,7 @@ class DungeonElement(pygame.sprite.Sprite):
         return self.x, self.y
 
     @position.setter
-    def position(self, new_position:tuple):
+    def position(self, new_position: tuple):
         self.x, self.y = new_position
 
     @property
@@ -59,9 +60,9 @@ class DungeonElement(pygame.sprite.Sprite):
         return f"{self.__class__.__name__}: located at {self.x} , {self.y}"
 
     def transform(self, x, y):
-        self.rect.x, self.rect.y = ((x+self.x) * self.dungeon.TILESIZE, (y + self.y) * self.dungeon.TILESIZE)
+        self.rect.x, self.rect.y = ((x + self.x) * self.dungeon.TILESIZE, (y + self.y) * self.dungeon.TILESIZE)
 
-    def scale(self, size:tuple):
+    def scale(self, size: tuple):
         self.image = pygame.transform.scale(self.image, size)
         self.rect = self.image.get_rect()
 
@@ -88,12 +89,12 @@ class DungeonElement(pygame.sprite.Sprite):
             temp_img = pygame.transform.flip(self.image, flip, False)
             # temp_img.set_alpha(100)
             if background:
-                target.x = self.dungeon.game.GRIDWIDTH //2  - target.x
-                target.y = self.dungeon.game.GRIDHEIGHT //2 - target.y
+                target.x = self.dungeon.game.GRIDWIDTH // 2 - target.x
+                target.y = self.dungeon.game.GRIDHEIGHT // 2 - target.y
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
             self.transform(x, y)
-            #pygame.draw.rect(self.display, utils.RED, self.rect)
+            # pygame.draw.rect(self.display, utils.RED, self.rect)
             self.display.blit(temp_img, self.rect)
 
 
@@ -101,7 +102,7 @@ import character
 
 
 class Room:
-    ''' A class that contains its own pair of blocks and monsters'''
+    """ A class that contains its own pair of blocks and monsters"""
 
     def __init__(self, size, how, sx, sy, dungeon, is_boss=False):
         self.dungeon = dungeon
@@ -134,7 +135,7 @@ class Room:
                 self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
         else:
             self.monsters = []
-    
+
     def all_elements(self):
         for element in self.blocks + self.monsters:
             yield element
@@ -151,7 +152,6 @@ class Room:
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.update(self.active)
-        
 
     def draw(self, *args, **kwargs):
         [tile.draw(*args, **kwargs) for tile in self.blocks]
@@ -165,6 +165,7 @@ class Background(DungeonElement):
     """
     Just a class to modify all background elements
     """
+
     @property
     def width(self):
         return self.size
@@ -172,6 +173,7 @@ class Background(DungeonElement):
     @property
     def height(self):
         return self.size
+
 
 class Tile(Background):
     def __init__(self, position, Room):
@@ -209,15 +211,16 @@ class Wall(Background):
         """
         super().__init__(position, Dungeon)
         pygame.sprite.Sprite.__init__(self)
-        if direction == (1, 0) or direction == (-1,0):
+        if direction == (1, 0) or direction == (-1, 0):
             self.image = utils.get_img("Tile", 1)
         elif direction[0] and direction[1]:
-            
+
             self.image = utils.get_img("Tile", 1)
-            if direction == (-1,1) or direction == (1,1):
+            if direction == (-1, 1) or direction == (1, 1):
                 self.image = utils.get_img("Tile", 5)
 
         self.scale((self.size, self.size))
+
 
 class Door(Background):
     def __init__(self, x, y, dungeon, direction):
@@ -228,4 +231,3 @@ class Door(Background):
         if direction[1] == 0:
             # side to side
             self.image = pygame.transform.rotate(self.image, 270)
-
