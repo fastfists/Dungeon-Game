@@ -81,25 +81,30 @@ class Ignore:
 
 
 robot = 0
-
+bot = None
 
 def change_bot(func):
     def wrapped(*args, **kwargs):
-        global robot
-        if robot % 10 == 0:
-            bot = robot_mouthclosed
-        else:
-            bot = robot_mouthopen
+        global robot, bot
+        if robot % 5 == 0:
+            if bot is robot_mouthclosed:
+                bot = robot_mouthopen
+            else:
+                bot = robot_mouthclosed
         robot += 1
         return func(*args, bot, **kwargs)
-
     return wrapped
 
 
 @change_bot
 def send_message(msg, screen, bot: Ignore):
+    box = dialouge_box
+
     screen_text = robot_font.render(msg, True, PURPLE)
-    dialouge_box.blit(screen_text, (240, 40))
-    dialouge_box.blit(bot, (0, 0))
-    dialouge_box.set_alpha(190)
-    screen.blit(dialouge_box, (screen.width - dialouge_box.width // 2, 336 * 2))
+    box.blit(screen_text, (240, 40))
+    box.blit(bot, (0, 0))
+
+    box = pygame.transform.scale(box, (int(screen.get_width() * .60) ,int(screen.get_height() * .20)))
+
+    box.set_alpha(190)
+    screen.blit(box, (int((screen.get_width() - box.get_width()) // 2), int((screen.get_height() - box.get_height()) *0.80)))

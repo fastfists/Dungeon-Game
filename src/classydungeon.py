@@ -319,7 +319,7 @@ class Dungeon:
         for room in self.allrooms+ [self.start_room]:
             print(room)
             [tile.draw(display=background, target=target(0,0), background=True) for tile in room.blocks]
-#        background.set_colorkey(utils.BLACK)
+        background.set_colorkey(utils.BLACK)
         return background
 
     def make_order(self):
