@@ -2,12 +2,14 @@
    - Projectiles
    - Chests
 """
-
-import pygame
 import collections
+import json
+
 import numpy as np
-import utils
+import pygame
+
 import character
+import utils
 from dungeon_utils import DungeonElement
 
 stored_class = collections.namedtuple("stored_class", ['inst', 'end_cond', 'start_time'])
@@ -168,6 +170,28 @@ class Chest(DungeonElement):
             for element in self.elements:
                 element.update()
 
+class Potion(DungeonElement):
+    def Heal(self, target):
+        target.health += self.power
+
+    def Increase_Damage(self, target):
+        target.damgage += self.power
+
+    def Increase_Defense(self, target):
+        target.debuff += self.power # Not ready to be added
+
+    def update(self):
+        with character.collides_with(self, character.Player) as player:
+            [effect(player) for effect in self.effects]
+
+    def __init__(self, *, name:str, power=10, pos:tuple, image=None, dungeon, *effects):
+        self.image = image
+        super().__init__(pos, dungeon)
+        self.name = name
+        self.power = power
+        self.effects = effects
+
+        # vairalbes for hover
 
 if __name__ == '__main__':
     class MockDungeonElement():

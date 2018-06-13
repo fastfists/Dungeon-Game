@@ -29,7 +29,7 @@ db = path.join(package_path, "data")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 sprite_sheet_names = ["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png",
-                      "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png"]
+                      "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png", "Containers.png"]
 sheets = {}
 for name in sprite_sheet_names:
     name, ext = name.split('.')

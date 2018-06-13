@@ -1,0 +1,5 @@
+{
+    "name": "Health Potion",
+    "effect": "Heal",
+    "Description": "Heals the player for some health"
+}
