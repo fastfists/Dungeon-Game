@@ -29,7 +29,8 @@ db = path.join(package_path, "data")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 sprite_sheet_names = ["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png",
-                      "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png", "Containers.png"]
+                      "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png", "Containers.png",
+                      "Potions.png"]
 sheets = {}
 for name in sprite_sheet_names:
     name, ext = name.split('.')
@@ -84,6 +85,7 @@ robot = 0
 bot = None
 
 def change_bot(func):
+    @functools.wraps(func)
     def wrapped(*args, **kwargs):
         global robot, bot
         if robot % 5 == 0:

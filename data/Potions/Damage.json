@@ -1,5 +1,6 @@
 {
     "name": "Damage Potion",
-    "effect": "Increase_Damage",
-    "Description": "Increaese the ammount of Damage dealt"
+    "effects":["Increase_Damage"],
+    "Description": "Increaese the ammount of Damage dealt",
+    "lookup_number": 7
 }

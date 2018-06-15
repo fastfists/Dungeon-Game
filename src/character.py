@@ -220,7 +220,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
-    speed = 0.1
+    speed = 0.15
     x: float
     y: float
     flip = False

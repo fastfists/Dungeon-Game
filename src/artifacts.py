@@ -4,6 +4,7 @@
 """
 import collections
 import json
+from os import path
 
 import numpy as np
 import pygame
@@ -81,9 +82,9 @@ class Emitter():
         ## calls each of the conditions and if the end condition is there it is deleted
         self.elements = [element for element in self.elements if element.end_cond(element.inst)]
 
-    def emit(self, all=True):
+    def emit(self,*draw_args, **draw_kwargs):
         """ Draws all elements to the screen"""
-        [element.draw() for element in self.elements_instances]
+        [element.draw(*draw_args, **draw_kwargs) for element in self.elements_instances]
 
 
 class Projectile(DungeonElement, pygame.sprite.Sprite):
@@ -171,6 +172,16 @@ class Chest(DungeonElement):
                 element.update()
 
 class Potion(DungeonElement):
+
+    @classmethod
+    def from_db(cls, lookup_name:str, dungeon, pos:tuple):
+        f = path.join(utils.db, "Potions", lookup_name+".json")
+        result = json.load(open(f))
+        result["dungeon"] = dungeon
+        result["pos"] = pos
+        result["image"] = utils.get_img(lookup_name, result.pop("lookup_number"))
+        return cls(**result)
+
     def Heal(self, target):
         target.health += self.power
 
@@ -181,20 +192,27 @@ class Potion(DungeonElement):
         target.debuff += self.power # Not ready to be added
 
     def update(self):
-        with character.collides_with(self, character.Player) as player:
-            [effect(player) for effect in self.effects]
+        with character.collides_with(self, character.Player) as players:
+            [getattr(self, effect)(player) for effect in self.effects for player in players]
 
-    def __init__(self, *, name:str, power=10, pos:tuple, image=None, dungeon, *effects):
+    def __init__(self, name:str, pos:tuple, dungeon, image=None, effects=[], power=10, Description=""):
         self.image = image
+        print("hji")
         super().__init__(pos, dungeon)
         self.name = name
         self.power = power
+        assert effects, "Effects needed to initialize"
         self.effects = effects
-
+        self.description = Description
+        self.size = self.size //2
+        self.width = self.height = self.size
+        self.image.set_colorkey(utils.BLACK)
+        #self.scale(())
         # vairalbes for hover
 
 if __name__ == '__main__':
-    class MockDungeonElement():
+    class MockDungeonElement:
+
         def draw(self):
             print("Drawn")
 
