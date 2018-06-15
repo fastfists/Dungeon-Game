@@ -4,22 +4,23 @@ import random
 import utils
 import pygame
 import character
+import numpy as np
 import json
- 
+from collections import namedtuple
 
 class Dungeon:
     """
     The dungeon uses a method of Procedual generation that I created without any outside info on the topic
     It operates using Room Identies and "Touchable blocks" The Identity list is as follows:
-    
-      5 -     Refers to the Starting room for the player, Is unique and created at the end of the function 
+
+      5 -     Refers to the Starting room for the player, Is unique and created at the end of the function
       4 -     Refers to a 4X4 room this is chosen randomly between the 2X2 and 4X2
       3 -     Refers to the Boss room, Is unique and created at the begining of the algorithim
       2 -     Refers to a 3 X 3 room this is chosen randomly between the 4X4 and 4X2
       1 -     Refers to a Wall
       (4,2) - Refers to a 4*2 room this is chosen randomly between the 4X4 and 2X2
       0 -     Any null block
-      -1 -    Door blocks  
+      -1 -    Door blocks
       I would have set up constants, but forgot to and now its a bit to late / I am lazy and want to move on the the game
     """
 
@@ -47,10 +48,9 @@ class Dungeon:
         self.walls = []
         self.border = []
         self.doors = []
-        self.elements = []
+        self.elements = pygame.sprite.Group()
         self.TILESIZE = game.TILESIZE
-
-
+        self.background = pygame.surface.Surface((self.WIDTH*self.TILESIZE, self.HEIGHT*self.TILESIZE))
 
     def __repr__(self):
         return f"Dungeon: {self.RESOLUTION} , {len(self.allrooms)}"
@@ -76,10 +76,10 @@ class Dungeon:
         works = False
         while not works:
             x, y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
-            if self._format(3, x, y):
-                self.allrooms.append(dungeon_utils.Room(3, self.currenType, x, y, self, is_boss=True))
+            if self._format(6, x, y):
+                self.allrooms.append(dungeon_utils.Room(6, self.currenType, x, y, self, is_boss=True))
                 x, y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
-                self.update(3, self.currenType, x, y)
+                self.update(6, self.currenType, x, y)
                 self.addwalls()
                 works = True
         while len(self.allrooms) != self.room_count:
@@ -88,15 +88,15 @@ class Dungeon:
             moveX, moveY = self.__findDir(self._Prng(4))
             newX, newY = x + moveX, y + moveY
             try:
-                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0:
+                if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.door_fits((x,y), (moveX, moveY)):
                     if self._Prng(self.weight, wantBool=True):
-                        size = (4, 2)
+                        size = (8, 4)
                         self.weight *= 8
                     else:
                         if self._Prng(2, wantBool=True):  # 50/50 chance
-                            size = 4
+                            size = 8
                         else:
-                            size = 2
+                            size = 4
                     if self._format(size, newX, newY):
                         self.allrooms.append(dungeon_utils.Room(size, self.currenType, newX, newY, self))
                         newX, newY = self.__startVal(self.allrooms[len(self.allrooms) - 1])
@@ -117,14 +117,27 @@ class Dungeon:
             if wall.position == (x,y):
                 del self.walls[i]
 
-    def _finalize(self):
-        """ This method sets all variables
-        for the main game loop
-        """
-        self.player = character.Player(self)
-        self.elements.append(self.player)
-        self.focus = self.player
-        self.sort_elements()
+
+    def door_fits(self, positon, move_vector)->bool:
+        ### Find closet room/block ###
+        def check(old_direc, new_direc):
+            old, new = np.array(old_direc), np.array(new_direc)
+            result = (old + new).tolist()
+            return result == [0,0]
+
+        x, y =positon
+        for move_x, move_y in map(self.__findDir, range(4)):
+            if (move_x, move_y) == move_vector:
+                continue
+            block = self.Idtbl[x+move_x][y+move_y]
+            print(block)
+            if block != 0 and block != 1 and block != -1:
+                ## We have reched a tile
+                direction = move_x, move_y
+                break
+        print(self.allrooms)
+        print("--------------------")
+        return check(move_vector, direction)
 
     @staticmethod
     def __startVal(room):
@@ -205,9 +218,9 @@ class Dungeon:
                     _pass = False
                     break
             if _pass == True and self.cantouch[x][y] == 0:
-                try: 
+                try:
                     self.cantouch[x ][y] = 1
-                except IndexError: 
+                except IndexError:
                     pass
             else:
                 self.cantouch[x][y] = 0
@@ -273,11 +286,12 @@ class Dungeon:
         except IndexError:
             self.make_start_room()
 
+
     def add_border(self):
         for i in range(self.WIDTH):
-            self.border.append(dungeon_utils.Wall((i, 0), self, 0))
+            self.border.append(dungeon_utils.Wall((i, 0), self, (0,0)))
             self.Idtbl[i][0] = 1
-            self.border.append(dungeon_utils.Wall((i, self.HEIGHT - 1), self, 3))
+            self.border.append(dungeon_utils.Wall((i, self.HEIGHT - 1), self, (0,0)))
             self.Idtbl[i][-1] = 1
         for i in range(self.HEIGHT):
             self.border.append(dungeon_utils.Wall((0, i), self, (1, 0)))
@@ -288,30 +302,52 @@ class Dungeon:
     @property
     def monsters(self):
         return [element for element in self.elements if isinstance(element, character.Monster)]
-    
-    def sort_elements(self):
-        self.elements = []
-        ## Add background
-        for room in self.allrooms:
-            [self.elements.append(tile) for tile in room.blocks]
-        [self.elements.append(wall)  for wall in self.walls]
-        [self.elements.append(border) for border in self.border]
-        [self.elements.append(door)  for door in self.doors]
-        self.elements.append(self.start_room)
-        ## Add Sprites
-        for room in self.allrooms:
-            [self.elements.append(monster) for monster in room.monsters]
-        self.elements.append(self.player)
 
-    def _draw(self, tilesize=None):
-        """ The draw and update method for the dungeon
-        
-        [room.draw(tilesize) for room in self.allrooms]
-        [wall.draw() for wall in self.border + self.walls]
-        self.start_room.draw()
-        [door.draw() for door in self.doors]
-        self.player.draw()
-        self.player.update()
+    def _finalize(self):
+        """ This method sets all variables
+        for the main game loop
         """
-        [element.draw(tilesize) for element in self.elements]
+        self.player = character.Player(self)
+        self.make_order()
+        self.background = self.make_background(self.background)
+
+    def make_background(self, background:pygame.surface.Surface):
+        class target:
+            def __init__(self, x, y):
+                self.x = x
+                self.y = y            
+        draw_args = dict()
+        [wall.draw(display=background, target=target(0,0), background=True) for wall in self.walls]
+        [wall.draw(display=background, target=target(0,0), background=True) for wall in self.border]
+        [door.draw(display=background, target=target(0,0), background=True) for door in self.doors]
+        
+        for room in self.allrooms+ [self.start_room]:
+            print(room)
+            [tile.draw(display=background, target=target(0,0), background=True) for tile in room.blocks]
+        background.set_colorkey(utils.BLACK)
+        return background
+
+    def make_order(self):
+        [self.elements.add(room.all_elements()) for room in self.allrooms]
+        [self.elements.add(wall) for wall in self.border + self.walls]
+        self.elements.add(self.start_room.all_elements())
+        [self.elements.add(door) for door in self.doors]
+        self.elements.add(self.player)
+
+    def _draw(self, tile_size=None):
+        """The draw and update method for the dungeon
+        """
+        """        if tile_size:
+            background_img = pygame.transform.scale(self.background, (tile_size, tile_size))
+            background_img.set_alpha(100)
+        else:
+            background_img = self.background"""
+        self.focus = self.player
+        x = -self.focus.x + self.game.GRIDWIDTH // 2
+        y = -self.focus.y + self.game.GRIDHEIGHT// 2
+        self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
+        
+        for room in self.allrooms:
+            [monster.draw() for monster in room.monsters]
+        self.player.draw()
         self.player.update()

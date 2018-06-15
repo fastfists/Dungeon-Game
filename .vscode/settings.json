@@ -7,19 +7,11 @@
     ],
     "python.linting.lintOnSave": true,
     "python.autoComplete.addBrackets": false,
-    "python.pythonPath": "${workspaceFolder}\\venv\\Scripts\\python.exe",
-    "python.unitTest.unittestArgs": [
-        "-v",
-        "-s",
-        ".",
-        "-p",
-        "test*.py"
-    ],
+    "python.pythonPath": "${workspaceFolder}/venv/bin/python3",
     "python.unitTest.unittestEnabled": false,
     "python.unitTest.promptToConfigure": false,
-    "python.unitTest.pyTestEnabled": false,
-    "python.unitTest.nosetestsEnabled": false,
-    "python.linting.enabled": false,
+    "python.unitTest.pyTestEnabled": true,
+    "python.linting.enabled": true,
     "code-runner.executorMap": {
         "javascript": "node",
         "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",
@@ -60,5 +52,11 @@
         "d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",
         "haskell": "runhaskell",
         "nim": "nim compile --verbosity:0 --hints:off --run"
-      },
+    },
+    "python.unitTest.pyTestPath": "${workspaceFolder}/unit_test",
+    "python.unitTest.pyTestArgs": [
+        "PYTHONPATH=src",
+        "--exitfirst",
+        "--verbose"
+        ],
 }
