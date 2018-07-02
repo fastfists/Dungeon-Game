@@ -1,0 +1,6 @@
+{
+    "name": "Sheild Potion",
+    "effects": ["Increase_Defense"],
+    "Description": "Decrease the ammount of Damage taken",
+    "lookup_number": 2
+}

@@ -62,6 +62,11 @@ class Dungeon:
         return cls(**data)
 
     def _Prng(self, limit, wantBool=False):
+        """ 
+            Randomizer
+            :param limit: The highest value (2 returns 1 or 0)
+            :returns: int
+        """
         self.prngNum = (self.prngNum * 154687469 + 879190747) % 67280421310721
         if wantBool: return self.prngNum % limit == 0
         return self.prngNum % limit
@@ -319,7 +324,7 @@ class Dungeon:
         for room in self.allrooms+ [self.start_room]:
             print(room)
             [tile.draw(display=background, target=target(0,0), background=True) for tile in room.blocks]
-#        background.set_colorkey(utils.BLACK)
+        background.set_colorkey(utils.BLACK)
         return background
 
     def make_order(self):

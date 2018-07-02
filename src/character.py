@@ -196,7 +196,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
     @staticmethod
     def levels(level: int) -> int:
         """ Method that returns the limit of skeletons to spawn based on level """
-        with open(path.join(utils.db, "boss_skeleton.json")) as f:
+        with open(path.join(utils.db,"Characters", "boss_skeleton.json")) as f:
             data = json.load(f)
             return data[f"Level {level}"]
 
@@ -220,7 +220,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
-    speed = 0.1
+    speed = 0.15
     x: float
     y: float
     flip = False
@@ -289,3 +289,15 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
             self.state = 'Attacking'
             # self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
+
+
+@contextmanager
+def collides_with(self, class_name="any_sprite"):
+    """
+    A context manager that returns what it collides with
+        :param class_name="any_sprite": Defaulted to any sprite, can be changed by adding a sprite class
+    """
+    collides = pygame.sprite.spritecollide(self, self.dungeon.elements, False)
+    if collides and class_name != "any_sprite":
+        collides = [sprite for sprite in collides if isinstance(sprite, class_name)]
+    yield collides

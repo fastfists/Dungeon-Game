@@ -1,0 +1,6 @@
+{
+    "name": "Health Potion",
+    "effects": ["Heal"],
+    "Description": "Heals the player for some health",
+    "lookup_number": 1
+}

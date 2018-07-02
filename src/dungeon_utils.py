@@ -74,7 +74,8 @@ class DungeonElement(pygame.sprite.Sprite):
         """
         Blits the element onto the screen
         """
-        if display: self.display = display
+        if display:
+            self.display = display
 
         if not target:
             target = self.dungeon.focus
