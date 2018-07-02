@@ -44,7 +44,8 @@ class Emitter():
 
     def load(self, additional_args=[], stop_condition=None, additional_kwargs={}):
         """
-        Adds an element additional element arguments can be added before construction of the arugment such as an x and y value
+        Adds an element additional element arguments can be added before 
+        construction of the arugment such as an x and y value
         """
         if self.ready:
             print("loaded")
@@ -53,7 +54,8 @@ class Emitter():
                 if not stop_condition:
                     raise AttributeError("Missing stop_condition")
             self.frames_passed = 0
-            self.elements.append(stored_class(self.element(*additional_args, **additional_kwargs), stop_condition,
+            self.elements.append(stored_class(self.element(*additional_args, **additional_kwargs),
+                                              stop_condition,
                                               pygame.time.get_ticks()))
 
     def __repr__(self):
@@ -95,8 +97,9 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
     value being the x direction and the second is the y direction
     """
 
-    def __init__(self, *, start_pos: tuple, image, master: DungeonElement, speed: float, direction: tuple, max_dist=5,
-                 delay=0):
+    def __init__(self, *, start_pos: tuple, image, master: DungeonElement, 
+                 speed: float, direction: tuple, max_dist=5, delay=0):
+
         self.speed = speed if type(speed) is tuple else speed, speed
         self.image = image
         self.image.set_colorkey(utils.BLACK)
@@ -166,6 +169,12 @@ class Chest(DungeonElement):
             self.opened = True
             self.image = self.images[1]
 
+    def draw(*a, **kw):
+        super().draw(*a, **kw)
+        if self.opened:
+            for element in self.elements:
+                element.update()
+
     def update(self):
         if self.opened:
             for element in self.elements:
@@ -197,7 +206,6 @@ class Potion(DungeonElement):
 
     def __init__(self, name:str, pos:tuple, dungeon, image=None, effects=[], power=10, Description=""):
         self.image = image
-        print("hji")
         super().__init__(pos, dungeon)
         self.name = name
         self.power = power

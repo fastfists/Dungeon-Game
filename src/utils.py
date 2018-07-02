@@ -28,9 +28,9 @@ song_direc = path.join(package_path, "music")
 db = path.join(package_path, "data")
 
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
-sprite_sheet_names = ["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg", "Ranger.png",
-                      "sci_fi.png", "Goblin.png", "robot_mouthopen.png", "robot_mouthclosed.png", "Containers.png",
-                      "Potions.png"]
+sprite_sheet_names = ["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg",
+                      "Ranger.png","sci_fi.png", "Goblin.png", "robot_mouthopen.png",
+                      "robot_mouthclosed.png", "Containers.png","Potions.png"]
 sheets = {}
 for name in sprite_sheet_names:
     name, ext = name.split('.')
@@ -109,4 +109,5 @@ def send_message(msg, screen, bot: Ignore):
     box = pygame.transform.scale(box, (int(screen.get_width() * .60) ,int(screen.get_height() * .20)))
 
     box.set_alpha(190)
-    screen.blit(box, (int((screen.get_width() - box.get_width()) // 2), int((screen.get_height() - box.get_height()) *0.80)))
+    screen.blit(box, (int((screen.get_width() - box.get_width()) // 2),
+                      int((screen.get_height() - box.get_height()) *0.80)))

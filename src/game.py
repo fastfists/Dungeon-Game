@@ -45,7 +45,7 @@ class Game:
         end = time.time()
         print(end - start)
         pygame.display.set_caption('Dungeon')
-        pygame.mixer.music.play()
+        #pygame.mixer.music.play()
 
     def __enter__(self):
         self.setup()
@@ -81,8 +81,10 @@ class Game:
         pygame.quit()
         quit()
 
-
-if __name__ == '__main__':
+def run():
     game = Game((1920, 1080), tilesize=64)
     with game:
         pass
+
+if __name__ == '__main__':
+    run()
