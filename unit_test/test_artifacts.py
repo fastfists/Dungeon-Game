@@ -14,17 +14,19 @@ from src.classydungeon import Dungeon
 def stop_cond(request):
     return request.param
 
+@pytest.fixture
+def loaded_emmiter():
+    """A loaded emmiter with no cooldown and a true stop cond"""
+    e = artifacts.Emitter(test_object, lambda self: True, cooldown=0)
+    e.load()
+    return e
 
-class thing:
-    def draw(self):
-        pass
-
-    def update(self):
-        pass
-
-
+class test_object:
+    draw = Mock()
+    update = Mock()
+    
 def test_emmiter_load(stop_cond):
-    e = artifacts.Emitter(thing, stop_cond, cooldown=0)
+    e = artifacts.Emitter(test_object, stop_cond, cooldown=0)
     assert len(e) == 0
     e.load()
     assert len(e) == 1
@@ -34,10 +36,10 @@ def test_emmiter_load(stop_cond):
 
 
 def test_emmiter_cooldown():
-    e = artifacts.Emitter(thing, lambda obj: True, cooldown=3)
+    e = artifacts.Emitter(test_object, lambda obj: True, cooldown=3)
     e.load()
     e.update()
-    e.load()  # This should not execute due to the cooldown
+    e.load()  # This should not load due to the cooldown
     assert len(e) == 1
     e.update()
     e.update()
@@ -45,20 +47,26 @@ def test_emmiter_cooldown():
     assert len(e) == 2
 
 
-def test_emmiter_remove():
-    e = artifacts.Emitter(thing, lambda obj: False, cooldown=3)
+def test_emmiter_remove_elemetns():
+    e = artifacts.Emitter(test_object, lambda obj: False, cooldown=3)
     e.load()
     assert len(e) == 1
     e.update()  # Shold remove element from list
     assert len(e) == 0
 
 
-def test_emmiter_call_update(stop_cond):
-    pass
+def test_emmiter_calls_draw(loaded_emmiter):
+    e = loaded_emmiter
+    e.update()
+    element = e.elements_instances[0]
+    element.draw.assert_called()
 
+def test_emmiter_calls_draw(loaded_emmiter):
+    e = loaded_emmiter
+    e.emit()
+    element = e.elements_instances[0]
+    element.update.assert_called()
 
-def test_emmiter_call_draw(stop_cond):
-    pass
 
 #####################################
 #         Test Projectiles          #
