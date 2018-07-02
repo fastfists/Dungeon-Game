@@ -189,8 +189,8 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
         self.max_skeletons = self.levels(level)
         self.size *= 8
         self.size //= 2
-        self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead', cooldown=50,
-                                                 element_args=[self.room])
+        self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead',
+                                                 cooldown=50, element_args=[self.room])
         self.health = 200
 
     @staticmethod
@@ -233,8 +233,8 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         self.size *= 4
         self.size //= 5
         weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed * 3, delay=30)
-        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=weapon_dict,
-                                         cooldown=10)
+        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if,
+                                         element_kwargs=weapon_dict, cooldown=10)
 
     def update(self):
         self.get_keys()
@@ -287,17 +287,23 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         direction = (-1, 0) if self.flip else (1, 0)
         if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
-            # self.speed_up()
+            #self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
+        
+        with collides_with(self, class_name=Skeleton) as skeleton:
+            if skeleton:
+                self.damgage(5)
 
 
 @contextmanager
-def collides_with(self, class_name="any_sprite"):
+def collides_with(self, class_name="any_sprite", group=None):
     """
     A context manager that returns what it collides with
+        :param self: Any object that is in dungeon elements and has a rectangle
         :param class_name="any_sprite": Defaulted to any sprite, can be changed by adding a sprite class
     """
-    collides = pygame.sprite.spritecollide(self, self.dungeon.elements, False)
+    group = self.dungeon.elements if not group else group
+    collides = pygame.sprite.spritecollide(self, group, False)
     if collides and class_name != "any_sprite":
         collides = [sprite for sprite in collides if isinstance(sprite, class_name)]
     yield collides
