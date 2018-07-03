@@ -1,25 +1,35 @@
 import socket
+import time
 
+host = "127.0.0.1"
+port = 8081
 
-def Main():
-    host = ''
-    port = 5050
+clients = []
 
-    s = socket.socket()
-    s.bind((host, port))
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((host, port))
+sock.setblocking(0)
 
-    s.listen(1)
-    c, addr = s.accept()
-    print("Connection from:", addr)
-    while True:
-        data = c.recv(1024)
-        if not data:
-            break
-        print("from connected user: ", data)
-        data = data.decode("utf-8").upper()
-        print("sending: ", data)
-        c.send(str.encode(data))
-    c.close()
+ending = False
+print("Server Ready")
 
-if __name__ == '__main__':
-    Main()
+map_data = [[4,1],
+            [2,3]]
+
+while not ending:
+    try:
+        data, addr = sock.recvfrom(1024)
+        print(f"Recieved request for {data.decode('utf-8')}")
+        if addr not in clients:
+            clients.append(addr)
+        if data.decode('utf-8') == "map":
+            return_val = bytes(str(map_data), "utf-8")
+        print(f"sending out data {data} to {addr}: ({return_val})")
+        for client in clients:
+            sock.sendto(return_val, client)
+
+        ending = True
+    except:
+        pass
+
+sock.close()
