@@ -9,6 +9,8 @@ def draw(data):
     master = tk.Tk()
     data = np.array(data)
     dungeon = tk.Canvas(master,width=700,height=700)
+    print(data)
+    print(data.shape)
     resolution = data.shape[0]
 
     for y in range(resolution):
@@ -39,10 +41,12 @@ def draw(data):
             dungeon.pack()
     master.mainloop()    
 
-host = "127.0.0.1"
-port = 0
+def init():
+    global host, port, server
+    host = "127.0.0.1"
+    port = 0
 
-server = (host, 8081)
+    server = (host, 9000)
 
 
 def request(thing:str):
@@ -58,6 +62,7 @@ def request(thing:str):
         return resource
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+        global host, port, server
         sock.bind((host, port))
         sock.setblocking(0)
         sock.sendto(bytes(thing, "utf-8"), server)
@@ -66,6 +71,12 @@ def request(thing:str):
         #time.sleep(0.2)
     return resource
 
-map_data = request("map")
-exec("map_data =" + map_data.decode("utf-8")) # Turn the data into an array
-draw(map_data)
+def execute():
+    init()
+    map_data = request("map")
+    exec("map_data =" + map_data.decode("utf-8")) # Turn the data into an array
+    print(map_data.decode("utf-8"))
+    draw(map_data)
+
+if __name__ == '__main__':
+    exectue()
