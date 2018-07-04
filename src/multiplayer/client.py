@@ -75,8 +75,7 @@ def execute():
     init()
     map_data = request("map")
     exec("map_data =" + map_data.decode("utf-8")) # Turn the data into an array
-    print(map_data.decode("utf-8"))
-    draw(map_data)
+    draw(map_data.decode("utf-8"))
 
 if __name__ == '__main__':
-    exectue()
+    execute()
