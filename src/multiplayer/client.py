@@ -1,6 +1,7 @@
 import socket
 import numpy as np
 import tkinter as tk
+import json
 
 def draw(data):
     """
@@ -41,20 +42,21 @@ def draw(data):
             dungeon.pack()
     master.mainloop()    
 
-def init():
+def init(_host = socket.gethostname(), _port=0 , _server: tuple=None):
     global host, port, server
     host = "127.0.0.1"
     port = 0
+    server = _server
 
-    server = (host, 9000)
+def set_server(_server):
+    global server
+    server = _server
 
-
-def request(thing:str):
+def request(_request:str):
     def get_resource(sock: socket.socket):
         while True:
             try:
                 resource, addr = sock.recvfrom(1024)
-                print(resource)
                 if resource:
                     break
             except:
@@ -67,15 +69,16 @@ def request(thing:str):
         sock.setblocking(0)
         sock.sendto(bytes(thing, "utf-8"), server)
         print(f"bound to port {port}")
-        resource = get_resource(sock)
+        resource = get_resource(sock).decode("utf-8").replace("'",'"')
+        resource = json.loads(resource)[_request]
         #time.sleep(0.2)
     return resource
 
 def execute():
     init()
     map_data = request("map")
-    exec("map_data =" + map_data.decode("utf-8")) # Turn the data into an array
-    draw(map_data.decode("utf-8"))
+    print(map_data)
+    draw(map_data["map"])
 
 if __name__ == '__main__':
     execute()

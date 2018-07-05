@@ -17,8 +17,7 @@ def init():
     ending = False
     print("Server Ready")
 
-map_data = [[4,1],
-            [2,3]]
+resources = {"map":[[4,1],[2,3]]}
 
 def run():
     global ending
@@ -28,16 +27,13 @@ def run():
             print(f"Recieved request for {data.decode('utf-8')}")
             if addr not in clients:
                 clients.append(addr)
-            if data.decode('utf-8') == "map":
-                return_val = bytes(str(map_data), "utf-8")
+            return_val = str(resources).encode()
             print(f"sending out data {data} to {addr}: ({return_val})")
             for client in clients:
                 sock.sendto(return_val, client)
             end()
         except KeyboardInterrupt:
             end()
-        except SyntaxError as e:
-            raise e
         except OSError:
             pass
 
