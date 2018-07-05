@@ -10,8 +10,6 @@ def draw(data):
     master = tk.Tk()
     data = np.array(data)
     dungeon = tk.Canvas(master,width=700,height=700)
-    print(data)
-    print(data.shape)
     resolution = data.shape[0]
 
     for y in range(resolution):
@@ -42,15 +40,17 @@ def draw(data):
             dungeon.pack()
     master.mainloop()    
 
-def init(_host = socket.gethostname(), _port=0 , _server: tuple=None):
-    global host, port, server
-    host = "127.0.0.1"
-    port = 0
-    server = _server
+def init(_host = socket.gethostname(), _port=0 , _host_server: tuple=None):
+    global host, port, host_server
+    host = _host
+    port = _port
+    host_server = _host_server 
+    if host_server is None:
+        host_server = (host, 9000)
 
-def set_server(_server):
-    global server
-    server = _server
+def set_host_server(_host_server):
+    global host_server
+    host_server = _host_server
 
 def request(_request:str):
     def get_resource(sock: socket.socket):
@@ -64,20 +64,21 @@ def request(_request:str):
         return resource
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
-        global host, port, server
+        global host, port, host_server
         sock.bind((host, port))
         sock.setblocking(0)
-        sock.sendto(bytes(thing, "utf-8"), server)
+        sock.sendto(bytes(_request, "utf-8"), host_server)
         print(f"bound to port {port}")
         resource = get_resource(sock).decode("utf-8").replace("'",'"')
-        resource = json.loads(resource)[_request]
+        print(f"resource is: {resource}, type: {type(resource)}")
+        resource = json.loads(resource)
+        print(f"Resource now is {resource}, type: {type(resource)}")
         #time.sleep(0.2)
     return resource
 
 def execute():
     init()
     map_data = request("map")
-    print(map_data)
     draw(map_data["map"])
 
 if __name__ == '__main__':
