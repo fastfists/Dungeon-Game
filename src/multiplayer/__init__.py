@@ -2,10 +2,20 @@
 Currently working on still a work in progress
 """
 
-import client
-import server
+from . import client
+from . import server
+import functools
 
-def init_server(port):
-    pass
-def init_client(port):
-    pass
+inited = False
+
+def choose_one(func):
+    def wrapper(*args, **kwargs):
+        global inited
+        if inited:
+            raise EnvironmentError("Already initiatlzed")
+        inited = True
+        return func(*args, **kwargs)
+    return wrapper
+
+init_server = choose_one(server.init)
+init_client = choose_one(client.init)

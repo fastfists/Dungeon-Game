@@ -4,14 +4,9 @@ from utils import *
 import pygame
 import classydungeon as dun
 import time
-
+import multiplayer
 '''
-Whats broken:
-    Need better tiles (make them?)
-
 Need to implement:
-    sprite dictionary state
-    Sprite interactions
     Chests/ reward system
 '''
 
