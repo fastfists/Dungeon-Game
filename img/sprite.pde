@@ -17,10 +17,12 @@ class Sprite{
   
   void minimize(){
     //LEFT
+    int empty = Integer.valueOf(image.pixels[0]); // feel free to comment this out
+    //int empty = 0;
     for(int i = left; i <= right; i++){
       boolean blank = true;
       for(int j = top; j < bottom; j++){
-        if(Integer.valueOf(image.pixels[index(i,j, image)]) != 0 || Integer.valueOf(image.pixels[index(i,j, image)]) != 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) {
+        if(Integer.valueOf(image.pixels[index(i,j, image)]) != 0 || Integer.valueOf(image.pixels[index(i,j, image)]) != empty) {
           blank = false;
         }
       }
@@ -34,7 +36,7 @@ class Sprite{
     for(int i = right; i >= left; i--){
       boolean blank = true;
       for(int j = top; j < bottom; j++){
-        if(Integer.valueOf(image.pixels[index(i,j, image)]) != 0 || Integer.valueOf(image.pixels[index(i,j, image)]) != 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) {
+        if(Integer.valueOf(image.pixels[index(i,j, image)]) != 0 || Integer.valueOf(image.pixels[index(i,j, image)]) != empty) {
           blank = false;
         }
       }
@@ -48,7 +50,7 @@ class Sprite{
     for(int i = top; i <= bottom; i++){
       boolean blank = true;
       for(int j = left; j < right; j++){
-        if(Integer.valueOf(image.pixels[index(j,i, image)]) != 0 || Integer.valueOf(image.pixels[index(j,i, image)]) != 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) {
+        if(Integer.valueOf(image.pixels[index(j,i, image)]) != 0 || Integer.valueOf(image.pixels[index(j,i, image)]) != empty) {
           blank = false;
         }
       }
@@ -62,7 +64,7 @@ class Sprite{
     for(int i = bottom ; i >= top; i--){
       boolean blank = true;
       for(int j = left; j < right; j++){
-        if(Integer.valueOf(image.pixels[index(j,i, image)]) != 0 || Integer.valueOf(image.pixels[index(j,i, image)]) != 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000) {
+        if(Integer.valueOf(image.pixels[index(j,i, image)]) != 0 || Integer.valueOf(image.pixels[index(j,i, image)]) != empty) {
           blank = false;
         }
 
