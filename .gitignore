@@ -1,8 +1,6 @@
 .idea/*
 .vscode/*
-*/__pycache__/*
 *.cpython.pyc
-C:\Users\474932\Desktop\Python stuff\Dungeon_Game\.vscode
 *.txt
 .vscode/settings.json
 venv/*
@@ -11,3 +9,4 @@ venv/*
 .pytest_cache
 __init__.pyc
 lastfailed
+src/multiplayer/__pycache__
