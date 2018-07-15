@@ -4,7 +4,8 @@ from utils import *
 import pygame
 import classydungeon as dun
 import time
-import multiplayer
+import random
+
 '''
 Need to implement:
     Chests/ reward system
@@ -33,6 +34,7 @@ class Game:
         except pygame.error:
             self.display = pygame.display.set_mode(self.SIZE)
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
+        random.seed(self.dungeon.seed)
 
     def setup(self):
         start = time.time()

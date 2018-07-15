@@ -85,7 +85,7 @@ class Dungeon:
         while len(self.allrooms) != self.room_count:
             self.works = False
             x, y = self.walls[self._Prng(len(self.walls))].position  # finds a random wall and gets the x and y
-            moveX, moveY = self.__findDir(self._Prng(4))
+            moveX, moveY = self._findDir(self._Prng(4))
             newX, newY = x + moveX, y + moveY
             try:
                 if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.door_fits((x,y), (moveX, moveY)):
@@ -112,6 +112,20 @@ class Dungeon:
         self.addwalls(corners=True)
         self._finalize()
 
+    def find_block_at(self, pos:tuple) -> dungeon_utils.Background:
+        """ Recieves a x and y postion as a tuple and returns a Background object"""
+        for room in self.allrooms:
+            for block in room.blocks:
+                if block.position == pos:
+                    return block
+            
+
+    def find_room_at(self, pos:tuple):
+        try:
+            return self.find_block_at(pos).room
+        except AttributeError as e:
+            return None
+
     def remove_wall_at(self, x, y):
         for i, wall in enumerate(self.walls):
             if wall.position == (x,y):
@@ -126,7 +140,7 @@ class Dungeon:
             return result == [0,0]
 
         x, y =positon
-        for move_x, move_y in map(self.__findDir, range(4)):
+        for move_x, move_y in map(self._findDir, range(4)):
             if (move_x, move_y) == move_vector:
                 continue
             block = self.Idtbl[x+move_x][y+move_y]
@@ -185,7 +199,7 @@ class Dungeon:
             for x in range(startX + 2):
                 _pass = True
                 for d in range(4):
-                    dirX, dirY = self.__findDir(d)
+                    dirX, dirY = self._findDir(d)
                     neighborX, neighborY = dirX + x, dirY + y
                     try:
                         self.Idtbl[neighborX][neighborY]
@@ -207,7 +221,7 @@ class Dungeon:
             x, y = tup
             _pass = True
             for d in range(8):
-                dirX, dirY = self.__findDir(d)
+                dirX, dirY = self._findDir(d)
                 neighborX, neighborY = dirX + x, dirY + y
                 try:
                     self.Idtbl[neighborX][neighborY]
@@ -227,7 +241,7 @@ class Dungeon:
                 self.notnull.append((x, y))
 
     @staticmethod
-    def __findDir(dir_index):
+    def _findDir(dir_index):
         ''' A more conventional method to find the x and y positions '''
         if dir_index == 0:
             return (1, 0)
@@ -258,7 +272,7 @@ class Dungeon:
             for tup in checkVals:
                 x, y = tup
                 for direction in range(dir_index):
-                    nx, ny = self.__findDir(direction)
+                    nx, ny = self._findDir(direction)
                     neighborX, neighborY = nx + x, ny + y
                     try:
                         if self.Idtbl[neighborX][neighborY] == 0 and neighborX >= 0 and neighborY >= 0:
@@ -271,7 +285,7 @@ class Dungeon:
 
     def make_start_room(self):
         x, y = self.walls[self._Prng(len(self.walls))].position
-        moveX, moveY = self.__findDir(self._Prng(4))
+        moveX, moveY = self._findDir(self._Prng(4))
         newX, newY = x + moveX, y + moveY
         try:
             if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3 and newX > 0 and newY > 0:
@@ -309,6 +323,7 @@ class Dungeon:
         """
         self.player = character.Player(self)
         self.make_order()
+        [door.find_rooms() for door in self.doors]
         self.background = self.make_background(self.background)
 
     def make_background(self, background:pygame.surface.Surface):
@@ -319,7 +334,6 @@ class Dungeon:
         draw_args = dict()
         [wall.draw(display=background, target=target(0,0), background=True) for wall in self.walls]
         [wall.draw(display=background, target=target(0,0), background=True) for wall in self.border]
-        [door.draw(display=background, target=target(0,0), background=True) for door in self.doors]
         
         for room in self.allrooms+ [self.start_room]:
             print(room)
@@ -333,6 +347,7 @@ class Dungeon:
         self.elements.add(self.start_room.all_elements())
         [self.elements.add(door) for door in self.doors]
         self.elements.add(self.player)
+        print("Im useful still")
 
     def _draw(self, tile_size=None):
         """The draw and update method for the dungeon
@@ -349,5 +364,6 @@ class Dungeon:
         
         for room in self.allrooms:
             [monster.draw() for monster in room.monsters]
+        [door.draw() for door in self.doors]
         self.player.draw()
         self.player.update()

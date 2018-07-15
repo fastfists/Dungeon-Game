@@ -3,7 +3,6 @@ import pygame
 import utils
 import numpy as np
 
-
 class DungeonElement(pygame.sprite.Sprite):
     """ Abstract class that is for all elements of the dungeon """
     image = None
@@ -127,10 +126,9 @@ class Room:
             x, y = tile.position
             self.dungeon.notnull.append((x, y))
             self.dungeon.Idtbl[x][y] = size
-
+        self.doors = []
         if (sx, sy) != self.dungeon.start_pos:
             if is_boss:
-                # self.monsters = [characters.BossMonster(self, 1)]
                 self.monsters = [character.BossSkeleton(self)]
             else:
                 self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
@@ -141,6 +139,9 @@ class Room:
         for element in self.blocks + self.monsters:
             yield element
 
+    def add_door(self, door):
+        self.doors.append(door)
+
     @property
     def active(self):
         return self.dungeon.focus.graph_position in self.block_positions
@@ -150,6 +151,7 @@ class Room:
         return [block.position for block in self.blocks]
 
     def activate(self):
+        # [door.open() for door in self.doors] is possible
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.update(self.active)
@@ -222,13 +224,36 @@ class Wall(Background):
 
         self.scale((self.size, self.size))
 
-
 class Door(Background):
+
     def __init__(self, x, y, dungeon, direction):
+        self._state = "Closed"
         self.image = utils.get_img("Tile", 18)
         super().__init__((x, y), dungeon)
         self.scale((self.size, self.size))
         pygame.sprite.Sprite.__init__(self)
+        self.direction = direction
         if direction[1] == 0:
             # side to side
             self.image = pygame.transform.rotate(self.image, 270)
+        self.rooms = []
+
+    def find_rooms(self):
+        from classydungeon import Dungeon
+        for x_move, y_move in map(Dungeon._findDir, range(4)):
+            block = self.x + x_move, self.y + y_move
+            room = self.dungeon.find_room_at(block)
+            if room:
+                room.add_door(self)
+
+    def open(self):
+        print("open")
+        self.image = utils.get_img("Tile", 17)
+        self.state = "Open"
+
+    def close(self):
+        self.image = utils.get_img("Tile", 18)
+        if self.direction[1] == 0:
+            # side to side
+            self.image = pygame.transform.rotate(self.image, 270)
+        self.state = "Closed"

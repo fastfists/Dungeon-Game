@@ -9,4 +9,4 @@ venv/*
 .pytest_cache
 __init__.pyc
 lastfailed
-src/multiplayer/__pycache__
+src/__pycache__
