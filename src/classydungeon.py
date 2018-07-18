@@ -362,8 +362,8 @@ class Dungeon:
         y = -self.focus.y + self.game.GRIDHEIGHT// 2
         self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
         
+        [door.draw() for door in self.doors]
         for room in self.allrooms:
             [monster.draw() for monster in room.monsters]
-        [door.draw() for door in self.doors]
         self.player.draw()
         self.player.update()

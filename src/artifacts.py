@@ -55,8 +55,7 @@ class Emitter():
                     raise AttributeError("Missing stop_condition")
             self.frames_passed = 0
             self.elements.append(stored_class(self.element(*additional_args, **additional_kwargs),
-                                              stop_condition,
-                                              pygame.time.get_ticks()))
+                                              stop_condition, pygame.time.get_ticks()))
 
     def __repr__(self):
         return f"Emmiter object with {len(self.elements)} objects"
@@ -157,9 +156,19 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
 class Chest(DungeonElement):
     """
     The Chest class is a class that only emmits an object once and stays open
+    after interacted with
     """
 
-    def __init__(self, pos: tuple, images: tuple, dungeon, *contains):
+    @classmethod
+    def chest_with_health_potion(cls, pos, dungeon):
+        class images:
+            opened = utils.get_img("Containers", 1)
+            closed = utils.get_img("Containers", 2)
+        
+        return cls(pos, images(), dungeon, Potion.from_db("Health", dungeon, pos))
+
+    def __init__(self, pos: tuple, images: collections.namedtuple, dungeon, *contains):
+        self.image = images.closed
         super().__init__(pos, dungeon)
         self.elements = contains
         self.opened = False
@@ -167,13 +176,13 @@ class Chest(DungeonElement):
     def interact(self):
         if not self.opened:
             self.opened = True
-            self.image = self.images[1]
+            self.image = self.images.opened
 
-    def draw(*a, **kw):
+    def draw(self, *a, **kw):
         super().draw(*a, **kw)
         if self.opened:
             for element in self.elements:
-                element.update()
+                element.draw(*a, **kw)
 
     def update(self):
         if self.opened:
@@ -188,7 +197,7 @@ class Potion(DungeonElement):
         result = json.load(open(f))
         result["dungeon"] = dungeon
         result["pos"] = pos
-        result["image"] = utils.get_img(lookup_name, result.pop("lookup_number"))
+        result["image"] = utils.get_img("Potions", result.pop("lookup_number"))
         return cls(**result)
 
     def Heal(self, target):

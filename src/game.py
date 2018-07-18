@@ -42,7 +42,7 @@ class Game:
         end = time.time()
         print(end - start)
         pygame.display.set_caption('Dungeon')
-        #pygame.mixer.music.play()
+        pygame.mixer.music.play()
 
     def __enter__(self):
         self.setup()

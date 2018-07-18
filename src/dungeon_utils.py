@@ -99,7 +99,7 @@ class DungeonElement(pygame.sprite.Sprite):
 
 
 import character
-
+import artifacts
 
 class Room:
     """ A class that contains its own pair of blocks and monsters"""
@@ -132,7 +132,9 @@ class Room:
                 self.monsters = [character.BossSkeleton(self)]
             else:
                 self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
+            self.chest = artifacts.Chest.chest_with_health_potion(self.blocks[0].position, self.dungeon)
         else:
+            # it is the start room
             self.monsters = []
 
     def all_elements(self):
@@ -141,6 +143,9 @@ class Room:
 
     def add_door(self, door):
         self.doors.append(door)
+
+    def is_cleared(self) -> bool:
+        return all([monster.dead for monster in self.monsters])
 
     @property
     def active(self):
@@ -155,11 +160,14 @@ class Room:
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.update(self.active)
+        if self.is_cleared():
+            self.chest.draw()
+            self.chest.update()
 
     def draw(self, *args, **kwargs):
         [tile.draw(*args, **kwargs) for tile in self.blocks]
         [monster.draw(*args, **kwargs) for monster in self.monsters]
-
+        print("We draw")
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
 

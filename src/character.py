@@ -202,19 +202,21 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 
     def draw(self, *args, **kwargs):
         super().draw()
-        self.skelton_spawner.emit()
+
+    def spawn_skeleton(self):
+        if self.skelton_spawner.ready:
+            self.state = "Attacking"
+            x, y = self.position
+            start_pos = x + random.uniform(.5, .10), y + random.uniform(.5, .10)
+            self.skelton_spawner.load(additional_kwargs={'position': start_pos})
+            self.dungeon.elements.add(self.skelton_spawner[-1])
+            self.room.monsters.append(self.skelton_spawner[-1])
 
     def update(self, active):
         super().update(active)
         if active and not self.dead:
             if len(self.skelton_spawner) != self.max_skeletons:
-                if self.skelton_spawner.ready:
-                    self.state = "Attacking"
-                    x, y = self.position
-                    start_pos = x + random.uniform(.5, .10), y + random.uniform(.5, .10)
-                    self.skelton_spawner.load(additional_kwargs={'position': start_pos})
-            self.skelton_spawner.update(active)
-            self.dungeon.elements.add(self.skelton_spawner[-1])
+                self.spawn_skeleton()
         self.skelton_spawner.update(active)
 
 
