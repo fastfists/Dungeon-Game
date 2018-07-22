@@ -225,7 +225,6 @@ class Room:
                 Idtbl[newX][newY]=size
                 notnull.append(packedpos)                
                 self.blocks.append(packedpos)
-        #print(self.blocks)
         update()
     def showMonsters(self):
         pass
