@@ -342,11 +342,9 @@ class Dungeon:
         return background
 
     def make_order(self):
-        [self.elements.add(room.all_elements()) for room in self.allrooms]
-        [self.elements.add(wall) for wall in self.border + self.walls]
-        self.elements.add(self.start_room.all_elements())
-        [self.elements.add(door) for door in self.doors]
-        self.elements.add(self.player)
+        objects = [room.monsters for room in self.allrooms] +\
+                  [door for door in self.doors] + [self.player]
+        self.elements = pygame.sprite.Group(*objects)
         print("Im useful still")
 
     def _draw(self, tile_size=None):
@@ -362,8 +360,7 @@ class Dungeon:
         y = -self.focus.y + self.game.GRIDHEIGHT// 2
         self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
         
-        [door.draw() for door in self.doors]
-        for room in self.allrooms:
-            [monster.draw() for monster in room.monsters]
-        self.player.draw()
+        [element.draw() for element in self.elements]
+    
+    def update_sprites(self):
         self.player.update()
