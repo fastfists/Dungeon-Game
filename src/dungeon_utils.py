@@ -14,6 +14,7 @@ class DungeonElement(pygame.sprite.Sprite):
         self.x, self.y = position
         self.size = dungeon.TILESIZE
         self.dungeon = dungeon
+        self.dungeon.elements.add(self)
         self.rect = self.image.get_rect()
         # debuging reasons
 
@@ -156,7 +157,7 @@ class Room:
         return [block.position for block in self.blocks]
 
     def activate(self):
-        # [door.open() for door in self.doors] is possible
+        #[door.open() for door in self.doors] #is possible
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.update(self.active)
@@ -165,9 +166,9 @@ class Room:
             self.chest.update()
 
     def draw(self, *args, **kwargs):
-        [tile.draw(*args, **kwargs) for tile in self.blocks]
         [monster.draw(*args, **kwargs) for monster in self.monsters]
         print("We draw")
+
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
 

@@ -60,6 +60,7 @@ class Game:
 
     def update(self):
         pygame.display.update()
+        self.dungeon.update_sprites()
 
     def events(self):
         """ The event handler for the Game object """
