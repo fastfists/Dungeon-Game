@@ -81,7 +81,9 @@ class Emitter():
         [element.update(*update_args, **update_kwargs) for element in self.elements_instances]
         self.frames_passed += 1
         ## calls each of the conditions and if the end condition is there it is deleted
-        self.elements = [element for element in self.elements if element.end_cond(element.inst)]
+        new_elements = [element for element in self.elements if element.end_cond(element.inst)]
+        [element.inst.kill() for element in self.elements if element not in new_elements]
+        self.elements = new_elements
 
     def emit(self,*draw_args, **draw_kwargs):
         """ Draws all elements to the screen"""
