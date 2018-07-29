@@ -124,14 +124,11 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         emmiter().load()
 
     def hits(self) -> bool:
-        collided = pygame.sprite.spritecollide(self, self.dungeon.elements, False, collided=None)
-        kill = False
-        if collided:
-            for thing in collided:
-                if isinstance(thing, character.Monster):
-                    kill = True
-                    thing.damgage(50)
-                    self.dead = True
+        with character.collides_with(self, character.Monster) as monsters:
+            for monster in monsters:
+                kill = True
+                monster.damgage(50)
+                self.dead = True
         if kill: self.kill()
 
     def draw(self, *a):

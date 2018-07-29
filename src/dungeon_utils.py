@@ -67,7 +67,6 @@ class DungeonElement(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
     def kill(self):
-        self.dungeon.elements.remove(self)
         super().kill()
 
     def draw(self, size=None, flip=False, display=None, target=None, background=False):
