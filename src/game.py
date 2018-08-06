@@ -52,12 +52,12 @@ class Game:
             self.events()
             self.clock.tick(20)
 
-    def draw(self):
+    def draw(self): 
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
         for room in self.dungeon.allrooms:
             room.activate()
-
+            
     def update(self):
         pygame.display.update()
         self.dungeon.update_sprites()
@@ -80,7 +80,7 @@ class Game:
         quit()
 
 def run():
-    game = Game((1920, 1080), tilesize=64)
+    game = Game((1366,768), tilesize=64)
     with game:
         pass
 
