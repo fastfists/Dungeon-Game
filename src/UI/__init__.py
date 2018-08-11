@@ -3,12 +3,15 @@ from typing import List
 import utils
 import sys
 from time import time
+import numpy as np
+
 class Clickable(pygame.sprite.Sprite):
 
     def __init__(self, pos:tuple, size:tuple, *actions_on_click):
         pygame.sprite.Sprite.__init__(self)
-        self.rect = pygame.Rect(pos, size)
-        self.actions = actions_on_click
+        pos, size = np.array(pos), np.array(size)
+        self.rect = pygame.Rect(pos - (size / 2), size)
+        self.actions = list(actions_on_click)
 
     def update(self, mouse_clicked: bool):
         mouse_pos = pygame.mouse.get_pos()
@@ -20,6 +23,9 @@ class Clickable(pygame.sprite.Sprite):
         else:
             self.off_hover()
 
+    def add_action(self, action) -> None:
+        self.actions.append(action)
+    
     def on_hover(self):
         pass
     
@@ -32,10 +38,10 @@ class Clickable(pygame.sprite.Sprite):
 
 class TextButton(Clickable):
 
-    def __init__(self, pos:tuple, message:str, *actions_on_click):
+    def __init__(self, pos:tuple, message:str, font=utils.robot_font, *actions_on_click):
         self.message = message
         self.color = utils.WHITE
-        self.text = utils.robot_font.render(self.message, True, self.color)
+        self.text = font.render(self.message, True, self.color)
         self.image = self.text
         size = self.text.get_rect().size
         super().__init__(pos, size, *actions_on_click)
@@ -44,6 +50,7 @@ class TextButton(Clickable):
     def image(self):
         return self.text
     
+
     @image.setter
     def image(self, new_image):
         self.text = new_image
@@ -58,32 +65,4 @@ class TextButton(Clickable):
     def off_hover(self):
         self.color = utils.WHITE
 
-def say_hello():
-    print("Hello")
-
-if __name__ == "__main__":
-    pygame.init()
-    pygame.font.init()
-    display = pygame.display.set_mode((600, 400), 0)
-    clock = pygame.time.Clock()
-
-    _break = False
-    Hello = TextButton((300, 200), "Hello, World", say_hello)
-    pause_menu = pygame.sprite.Group(Hello)
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                _break = True
-                break
-
-        if _break:
-            break
-        mouse_clicked = pygame.mouse.get_pressed()[0]        
-        s = time()
-        pause_menu.update(mouse_clicked)
-        e = time()
-        print(s - e)
-        pause_menu.draw(display)
-        pygame.display.update()
-    pygame.quit()
-    sys.exit()
+from . import menus
