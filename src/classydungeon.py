@@ -144,13 +144,10 @@ class Dungeon:
             if (move_x, move_y) == move_vector:
                 continue
             block = self.Idtbl[x+move_x][y+move_y]
-            print(block)
             if block != 0 and block != 1 and block != -1:
                 ## We have reched a tile
                 direction = move_x, move_y
                 break
-        print(self.allrooms)
-        print("--------------------")
         return check(move_vector, direction)
 
     @staticmethod

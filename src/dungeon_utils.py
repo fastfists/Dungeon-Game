@@ -154,19 +154,19 @@ class Room:
     @property
     def block_positions(self):
         return [block.position for block in self.blocks]
+        if self.is_cleared():
+            self.chest.update()
 
-    def activate(self):
-        #[door.open() for door in self.doors] #is possible
+
+    def update(self):
         if not self.monsters == None:
             for monster in self.monsters:
                 monster.update(self.active)
-        if self.is_cleared():
-            self.chest.draw()
-            self.chest.update()
 
     def draw(self, *args, **kwargs):
         [monster.draw(*args, **kwargs) for monster in self.monsters]
-        print("We draw")
+        if self.is_cleared():
+            self.chest.draw()
 
     def __repr__(self):
         return "Room: {},{}".format(self.width, self.height)
