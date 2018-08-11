@@ -124,6 +124,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         emmiter().load()
 
     def hits(self) -> bool:
+        kill = False
         with character.collides_with(self, character.Monster) as monsters:
             for monster in monsters:
                 kill = True
