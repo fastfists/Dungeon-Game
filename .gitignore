@@ -1,12 +1,4 @@
-.idea/*
 .vscode/*
-*.cpython.pyc
-*.txt
-.vscode/settings.json
 venv/*
 .idea/*
-*.swp
-.pytest_cache
-__init__.pyc
-lastfailed
-src/__pycache__
+*.pyc

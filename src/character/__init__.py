@@ -122,22 +122,6 @@ class Monster(Sprite, DungeonElement):
             super().animate()
             self.image.set_colorkey(utils.BLACK)
 
-
-class Monster(Sprite, DungeonElement):
-
-    def __init__(self, room, position=None):
-        self.room = room
-        if not position:
-            position = random.choice(self.room.blocks).position
-        Sprite.__init__(self)  # Calls the sprite class
-        DungeonElement.__init__(self, position, self.room.dungeon)
-        self.image.set_colorkey(utils.BLACK)
-
-    def update(self):
-        if not self.dead:
-            super().animate()
-            self.image.set_colorkey(utils.BLACK)
-
     def __hash__(self):
         return pygame.sprite.Sprite.__hash__(self)
 
