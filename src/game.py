@@ -5,6 +5,7 @@ import pygame
 import classydungeon as dun
 import time
 import random
+import UI
 
 '''
 Need to implement:
@@ -25,6 +26,8 @@ class Game:
         pygame.init()
         pygame.mixer.music.load(path.join(song_direc, 'skeletons_remix.mp3'))
 
+        self.paused = False
+
         self.clock = pygame.time.Clock()
         # Set game variables
         self.game_over = False
@@ -44,45 +47,68 @@ class Game:
         pygame.display.set_caption('Dungeon')
         pygame.mixer.music.play()
 
-    def __enter__(self):
+    def toggle_pause(self):
+        """
+        Called whenever p is clicked
+        """
+        self.paused = not self.paused
+        if self.paused:
+            pygame.mixer.music.pause()
+        else:
+            pygame.mixer.music.unpause()
+
+    def start(self):
         self.setup()
         while not self.game_over:
             self.draw()
             self.update()
             self.events()
-            self.clock.tick(20)
+            self.clock.tick(60)
 
     def draw(self): 
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
-        for room in self.dungeon.allrooms:
-            room.activate()
-            
+        if self.paused:
+            pause_menu.draw(self.display)
+            for room in self.dungeon.allrooms:
+                room.draw()
+
     def update(self):
         pygame.display.update()
-        self.dungeon.update_sprites()
+        if self.paused:
+            mouse_clicked = pygame.mouse.get_pressed()[0]
+            pause_menu.update(mouse_clicked)
+        else:
+            for room in self.dungeon.allrooms:
+                room.update()
+            self.dungeon.update_sprites()
 
     def events(self):
         """ The event handler for the Game object """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.__exit__()
+                self.end()
             if event.type == pygame.KEYDOWN:
-
+                if event.key == pygame.K_p:
+                    self.toggle_pause()
                 if event.key == pygame.K_CAPSLOCK:
                     print(self.dungeon.seed)
-                    self.__exit__()
+                    self.end()
                 if event.key == pygame.K_ESCAPE:
-                    self.__exit__()
+                    self.end()
 
-    def __exit__(self):
+    def end(self):
         pygame.quit()
         quit()
 
-def run():
-    game = Game((1366,768), tilesize=64)
-    with game:
-        pass
 
+def run():
+    global pause_menu
+    game = Game((1920, 1080), tilesize=64)
+    pause_menu = UI.menus.PauseMenu(game.SIZE)
+    pause_menu.quit_button.add_action(game.end)
+    pause_menu.resume_button.add_action(game.toggle_pause)
+    game.start()
+    
 if __name__ == '__main__':
     run()
