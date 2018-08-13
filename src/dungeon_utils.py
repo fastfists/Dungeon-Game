@@ -154,14 +154,25 @@ class Room:
     @property
     def block_positions(self):
         return [block.position for block in self.blocks]
-        if self.is_cleared():
-            self.chest.update()
 
+    @utils.do_once
+    def open_doors(self):
+        [door.open() for door in self.doors]
+    
+    @utils.do_once
+    def close_doors(self):
+        [door.close() for door in self.doors]
 
     def update(self):
+        active = self.active
+        if self.is_cleared():
+            self.chest.update()
+            self.open_doors()
         if not self.monsters == None:
             for monster in self.monsters:
-                monster.update(self.active)
+                monster.update(active)
+        if active:
+            self.close_doors()
 
     def draw(self, *args, **kwargs):
         [monster.draw(*args, **kwargs) for monster in self.monsters]
@@ -255,7 +266,6 @@ class Door(Background):
                 room.add_door(self)
 
     def open(self):
-        print("open")
         self.image = utils.get_img("Tile", 17)
         self.state = "Open"
 

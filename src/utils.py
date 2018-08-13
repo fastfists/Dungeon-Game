@@ -78,6 +78,17 @@ def transform(thing: int):
     if thing == 3: return 'Attacking'
     if thing == 4: return 'Dying'
 
+def do_once(func):
+    @functools.wraps(func)
+    def wrapper(*a, **kw):
+        try:
+            if not func.called:
+                func(*a, **kw)
+                func.called = True
+        except AttributeError:
+            func(*a, **kw)
+            func.called = True
+    return wrapper
 
 class Ignore:
     pass
