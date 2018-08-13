@@ -343,7 +343,7 @@ class Dungeon:
         objects = [room.monsters for room in self.allrooms] +\
                   [door for door in self.doors] + [self.player]
         self.elements = pygame.sprite.Group(*objects)
-        print("Im useful still")
+        self.draw_only = [door for door in self.doors] + [self.player]
 
     def _draw(self, tile_size=None):
         """The draw and update method for the dungeon
@@ -358,7 +358,9 @@ class Dungeon:
         y = -self.focus.y + self.game.GRIDHEIGHT// 2
         self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
         
-        [element.draw() for element in self.elements]
+        [room.draw() for room in self.allrooms]
+        
+        [element.draw() for element in self.draw_only]
     
     def update_sprites(self):
         self.player.update()
