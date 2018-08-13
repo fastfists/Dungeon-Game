@@ -1,8 +1,8 @@
 import pygame
-from dungeon_utils import DungeonElement
+from src.dungeon_utils import DungeonElement
 from contextlib import contextmanager
-import utils
-import artifacts
+import src.utils as utils
+import src.artifacts as artifacts
 
 class Sprite(pygame.sprite.Sprite):
     """
