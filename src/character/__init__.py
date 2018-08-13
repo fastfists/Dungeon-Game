@@ -74,7 +74,7 @@ class Sprite(pygame.sprite.Sprite):
         """Sets the frame counters to 0"""
         self.frame, self.counter = 0, 0
 
-    def damgage(self, dmg):
+    def damage(self, dmg):
         """ Reduces the health"""
         self.health -= dmg
         if self.health <= 0:
@@ -106,6 +106,9 @@ class Sprite(pygame.sprite.Sprite):
     def image(self, new_image: pygame.surface.Surface):
         self.images[self.frame] = new_image
 
+    def __hash__(self):
+        return pygame.sprite.Sprite.__hash__(self)
+
 
 class Monster(Sprite, DungeonElement):
 
@@ -121,9 +124,6 @@ class Monster(Sprite, DungeonElement):
         if not self.dead:
             super().animate()
             self.image.set_colorkey(utils.BLACK)
-
-    def __hash__(self):
-        return pygame.sprite.Sprite.__hash__(self)
 
 
 @contextmanager

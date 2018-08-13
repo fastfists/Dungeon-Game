@@ -128,7 +128,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         with character.collides_with(self, character.Monster) as monsters:
             for monster in monsters:
                 kill = True
-                monster.damgage(50)
+                monster.damage(50)
                 self.dead = True
         if kill: self.kill()
 
@@ -226,24 +226,3 @@ class Potion(DungeonElement):
         self.image.set_colorkey(utils.BLACK)
         #self.scale(())
         # vairalbes for hover
-
-if __name__ == '__main__':
-    class MockDungeonElement:
-
-        def draw(self):
-            print("Drawn")
-
-        def update(self, *args, **kwargs):
-            print("Updated and moved a bit")
-
-        def end_if(self, *args, **kwargs):
-            print(args, kwargs)
-            print("Checked and returned false")
-            return False
-
-
-    emmiter = Emitter(MockDungeonElement, MockDungeonElement.end_if, cooldown=0)
-    emmiter.load()
-    emmiter.emit()
-    emmiter.update()  ## calls both end_if and update methods
-    emmiter.emit()

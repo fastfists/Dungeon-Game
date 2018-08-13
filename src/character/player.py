@@ -74,5 +74,5 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         
         with collides_with(self, class_name=Skeleton) as skeleton:
             if skeleton:
-                self.damgage(5)
+                self.damage(5)
 
