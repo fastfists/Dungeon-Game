@@ -1,11 +1,15 @@
 """ Contains the Game class"""
 
-from utils import *
-import pygame
-import classydungeon as dun
-import time
 import random
-import UI
+import time
+
+import pygame
+
+from .utils import *
+
+from . import UI
+from . import classydungeon as dun
+
 
 '''
 Need to implement:

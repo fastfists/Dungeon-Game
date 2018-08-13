@@ -1,6 +1,6 @@
 import pygame
 from typing import List
-import utils
+from src import utils
 import sys
 from time import time
 import numpy as np

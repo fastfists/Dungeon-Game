@@ -1,12 +1,13 @@
 ''' Contains Dungeon object and Room objects '''
-import dungeon_utils
-import random
-import utils
-import pygame
-import character
-import numpy as np
 import json
+import random
 from collections import namedtuple
+
+import numpy as np
+import pygame
+
+from . import character, dungeon_utils, utils
+
 
 class Dungeon:
     """

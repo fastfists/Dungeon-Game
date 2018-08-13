@@ -9,9 +9,9 @@ from os import path
 import numpy as np
 import pygame
 
-import character
-import utils
-from dungeon_utils import DungeonElement
+from . import character
+from . import utils
+from .dungeon_utils import DungeonElement
 
 stored_class = collections.namedtuple("stored_class", ['inst', 'end_cond', 'start_time'])
 

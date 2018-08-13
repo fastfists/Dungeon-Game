@@ -8,10 +8,12 @@ Animations Each row has 10 animations
 5: Death 41-50
 """
 import functools
-from os import path
-import pygame
 from collections import namedtuple
-from maps import *
+from os import path
+
+import pygame
+
+from .maps import *
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)

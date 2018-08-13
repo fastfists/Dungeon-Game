@@ -8,7 +8,7 @@
             "type": "shell",
             "command": "${workspaceRoot}/venv/bin/python",
             "args": [
-                "src/game.py"
+                "run.py"
             ],
             "group": {
                 "kind": "build",

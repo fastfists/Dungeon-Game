@@ -1,7 +1,9 @@
 import random
-import pygame
-import utils
+
 import numpy as np
+import pygame
+
+from . import utils
 
 class DungeonElement(pygame.sprite.Sprite):
     """ Abstract class that is for all elements of the dungeon """
@@ -97,9 +99,7 @@ class DungeonElement(pygame.sprite.Sprite):
             # pygame.draw.rect(self.display, utils.RED, self.rect)
             self.display.blit(temp_img, self.rect)
 
-
-import character
-import artifacts
+from . import artifacts, character
 
 class Room:
     """ A class that contains its own pair of blocks and monsters"""
@@ -247,7 +247,7 @@ class Door(Background):
         self.rooms = []
 
     def find_rooms(self):
-        from classydungeon import Dungeon
+        from .classydungeon import Dungeon
         for x_move, y_move in map(Dungeon._findDir, range(4)):
             block = self.x + x_move, self.y + y_move
             room = self.dungeon.find_room_at(block)
