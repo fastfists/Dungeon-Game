@@ -1,7 +1,9 @@
 import random
-import pygame
-import utils
+
 import numpy as np
+import pygame
+
+from . import utils
 
 class DungeonElement(pygame.sprite.Sprite):
     """ Abstract class that is for all elements of the dungeon """
@@ -97,9 +99,7 @@ class DungeonElement(pygame.sprite.Sprite):
             # pygame.draw.rect(self.display, utils.RED, self.rect)
             self.display.blit(temp_img, self.rect)
 
-
-import character
-import artifacts
+from . import artifacts, character
 
 class Room:
     """ A class that contains its own pair of blocks and monsters"""
@@ -154,14 +154,25 @@ class Room:
     @property
     def block_positions(self):
         return [block.position for block in self.blocks]
-        if self.is_cleared():
-            self.chest.update()
 
+    @utils.do_once
+    def open_doors(self):
+        [door.open() for door in self.doors]
+    
+    @utils.do_once
+    def close_doors(self):
+        [door.close() for door in self.doors]
 
     def update(self):
+        active = self.active
+        if self.is_cleared():
+            self.chest.update()
+            self.open_doors()
         if not self.monsters == None:
             for monster in self.monsters:
-                monster.update(self.active)
+                monster.update(active)
+        if active:
+            self.close_doors()
 
     def draw(self, *args, **kwargs):
         [monster.draw(*args, **kwargs) for monster in self.monsters]
@@ -247,7 +258,7 @@ class Door(Background):
         self.rooms = []
 
     def find_rooms(self):
-        from classydungeon import Dungeon
+        from .classydungeon import Dungeon
         for x_move, y_move in map(Dungeon._findDir, range(4)):
             block = self.x + x_move, self.y + y_move
             room = self.dungeon.find_room_at(block)
@@ -255,7 +266,6 @@ class Door(Background):
                 room.add_door(self)
 
     def open(self):
-        print("open")
         self.image = utils.get_img("Tile", 17)
         self.state = "Open"
 

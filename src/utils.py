@@ -8,10 +8,12 @@ Animations Each row has 10 animations
 5: Death 41-50
 """
 import functools
-from os import path
-import pygame
 from collections import namedtuple
-from maps import *
+from os import path
+
+import pygame
+
+from .maps import *
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -76,6 +78,17 @@ def transform(thing: int):
     if thing == 3: return 'Attacking'
     if thing == 4: return 'Dying'
 
+def do_once(func):
+    @functools.wraps(func)
+    def wrapper(*a, **kw):
+        try:
+            if not func.called:
+                func(*a, **kw)
+                func.called = True
+        except AttributeError:
+            func(*a, **kw)
+            func.called = True
+    return wrapper
 
 class Ignore:
     pass

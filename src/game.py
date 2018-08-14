@@ -1,11 +1,15 @@
 """ Contains the Game class"""
 
-from utils import *
-import pygame
-import classydungeon as dun
-import time
 import random
-import UI
+import time
+
+import pygame
+
+from .utils import *
+
+from . import UI
+from . import classydungeon as dun
+
 
 '''
 Need to implement:
@@ -66,7 +70,7 @@ class Game:
             self.events()
             self.clock.tick(60)
 
-    def draw(self):
+    def draw(self): 
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
         if self.paused:

@@ -24,7 +24,8 @@ def loaded_emmiter():
 class test_object:
     draw = Mock()
     update = Mock()
-    
+    kill = Mock()
+
 def test_emmiter_load(stop_cond):
     e = artifacts.Emitter(test_object, stop_cond, cooldown=0)
     assert len(e) == 0
@@ -50,8 +51,10 @@ def test_emmiter_cooldown():
 def test_emmiter_remove_elemetns():
     e = artifacts.Emitter(test_object, lambda obj: False, cooldown=3)
     e.load()
+    element = e.elements_instances[0]
     assert len(e) == 1
     e.update()  # Shold remove element from list
+    element.kill.assert_called()
     assert len(e) == 0
 
 
