@@ -36,6 +36,7 @@ class Game:
             self.display = pygame.display.set_mode(self.SIZE)  # TODO add full screen
         except pygame.error:
             self.display = pygame.display.set_mode(self.SIZE)
+        random.seed()
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
         random.seed(self.dungeon.seed)
 
@@ -98,16 +99,28 @@ class Game:
                     self.end()
 
     def end(self):
-        pygame.quit()
-        quit()
+        self.game_over = True
 
+def restart():
+    game.game_over = True
+    new_game = Game((1920, 1080), tilesize=64)
+    pause_menu = UI.menus.PauseMenu(new_game.SIZE)
+    pause_menu.quit_button.add_action(new_game.end)
+    pause_menu.resume_button.add_action(new_game.toggle_pause)
+    pause_menu.restart_button.add_action(restart)
+    new_game.start()
+
+def true_end():
+    pygame.quit()
+    quit()
 
 def run():
-    global pause_menu
+    global pause_menu, game
     game = Game((1920, 1080), tilesize=64)
     pause_menu = UI.menus.PauseMenu(game.SIZE)
     pause_menu.quit_button.add_action(game.end)
     pause_menu.resume_button.add_action(game.toggle_pause)
+    pause_menu.restart_button.add_action(restart)
     game.start()
     
 if __name__ == '__main__':
