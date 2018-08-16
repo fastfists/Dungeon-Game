@@ -125,6 +125,11 @@ class Monster(Sprite, DungeonElement):
             super().animate()
             self.image.set_colorkey(utils.BLACK)
 
+    def damage(self, *a, **kw):
+        super().damage(*a, **kw)
+        if self.state == "Dying" or "Dead":
+            self.room.check_if_cleared()
+
 
 @contextmanager
 def collides_with(self, class_name="any_sprite", group=None):
