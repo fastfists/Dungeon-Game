@@ -1,7 +1,7 @@
 ''' Contains Dungeon object and Room objects '''
 import json
 import random
-from collections import namedtuple
+from collections import namedtuple, Counter
 
 import numpy as np
 import pygame
@@ -39,11 +39,11 @@ class Dungeon:
         self.RESOLUTION = resolution
         self.WIDTH, self.HEIGHT = self.RESOLUTION
         self.room_count = room_count
-        self.cantouch = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
-        self.Idtbl = [[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)]
+        self.cantouch = np.array([[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)])
+        self.Idtbl = np.array([[0 for _ in range(self.HEIGHT)] for _ in range(self.WIDTH)])
         self.weight = specialWeigth
         self.start_pos = (-1, -1)  # set it to an unreachable point to begin with to make the room class happy
-        self.notnull = []
+        self.notnull = set()
         self.allrooms = []
         self.currenType = -1
         self.walls = []
@@ -236,7 +236,7 @@ class Dungeon:
                     pass
             else:
                 self.cantouch[x][y] = 0
-                self.notnull.append((x, y))
+                self.notnull.add((x, y))
 
     @staticmethod
     def _findDir(dir_index):
@@ -277,7 +277,8 @@ class Dungeon:
                             self.Idtbl[neighborX][neighborY] = 1
                             temp_wall = dungeon_utils.Wall((neighborX, neighborY), self, (nx, ny))
                             self.walls.append(temp_wall)
-                            self.notnull.append((neighborX, neighborY))
+
+                            self.notnull.add((neighborX, neighborY))
                     except IndexError:
                         pass
 
@@ -334,8 +335,10 @@ class Dungeon:
         [wall.draw(display=background, target=target(0,0), background=True) for wall in self.border]
         
         for room in self.allrooms+ [self.start_room]:
-            print(room)
             [tile.draw(display=background, target=target(0,0), background=True) for tile in room.blocks]
+        room_counts = Counter(str(room) for room in self.allrooms+ [self.start_room])
+        for room in room_counts:
+            print(f"{room_counts[room]} number of {room}")
         background.set_colorkey(utils.BLACK)
         return background
 

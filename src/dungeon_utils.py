@@ -124,8 +124,11 @@ class Room:
         for tile in self.blocks:
             # this does the "dirty work" for me instead of handling it in the dungeon
             x, y = tile.position
-            self.dungeon.notnull.append((x, y))
+            if type(size) is tuple:
+                size = sum(size)
+            self.dungeon.notnull.add((x,y))
             self.dungeon.Idtbl[x][y] = size
+            print("worked", size)
         self.doors = []
         if (sx, sy) != self.dungeon.start_pos:
             if is_boss:
@@ -136,6 +139,7 @@ class Room:
         else:
             # it is the start room
             self.monsters = []
+        self.is_cleared = self.check_if_cleared()
 
     def all_elements(self):
         for element in self.blocks + self.monsters:
@@ -144,8 +148,8 @@ class Room:
     def add_door(self, door):
         self.doors.append(door)
 
-    def is_cleared(self) -> bool:
-        return all([monster.dead for monster in self.monsters])
+    def check_if_cleared(self) -> bool:
+        self.is_cleared = all([monster.dead for monster in self.monsters])
 
     @property
     def active(self):
@@ -165,7 +169,7 @@ class Room:
 
     def update(self):
         active = self.active
-        if self.is_cleared():
+        if self.is_cleared:
             self.chest.update()
             self.open_doors()
         if not self.monsters == None:
@@ -176,7 +180,7 @@ class Room:
 
     def draw(self, *args, **kwargs):
         [monster.draw(*args, **kwargs) for monster in self.monsters]
-        if self.is_cleared():
+        if self.is_cleared:
             self.chest.draw()
 
     def __repr__(self):
