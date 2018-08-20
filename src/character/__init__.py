@@ -47,9 +47,11 @@ class Sprite(pygame.sprite.Sprite):
         if not self.dead:
             self.counter += self.animation_speed
             if self.counter >= 1:
+                # Changes to another image/frame
                 self.counter = 0
                 self.frame += 1
                 if self.frame > len(self.images) - 1:
+                    # Resets the complete animation
                     if self.state in self.unstopable_states:
                         if self.state == "Dying":
                             super().kill()
