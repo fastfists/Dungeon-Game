@@ -44,9 +44,9 @@ class Game:
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
         random.seed(self.dungeon.seed)
 
-        self.pause_menu = UI.menus.PauseMenu(new_game.SIZE)
-        self.pause_menu.quit_button.add_action(new_game.end)
-        self.pause_menu.resume_button.add_action(new_game.toggle_pause)
+        self.pause_menu = UI.menus.PauseMenu(self.SIZE)
+        self.pause_menu.quit_button.add_action(self.end)
+        self.pause_menu.resume_button.add_action(self.toggle_pause)
         self.pause_menu.restart_button.add_action(restart)
 
     def setup(self):
