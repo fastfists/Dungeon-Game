@@ -128,7 +128,6 @@ class Room:
                 size = sum(size)
             self.dungeon.notnull.add((x,y))
             self.dungeon.Idtbl[x][y] = size
-            print("worked", size)
         self.doors = []
         if (sx, sy) != self.dungeon.start_pos:
             if is_boss:

@@ -3,8 +3,9 @@ import pygame
 
 
 class PauseMenu(pygame.sprite.Group):
+    font_size = 32
 
-    def __init__(self, screen_size:tuple, *args, **kwargs):
+    def __init__(self, screen_size:tuple, *a, **kw):
         WIDTH, HEIGHT = screen_size
         font_size = 32
 

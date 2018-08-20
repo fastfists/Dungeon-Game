@@ -349,21 +349,14 @@ class Dungeon:
         self.draw_only = [door for door in self.doors] + [self.player]
 
     def _draw(self, tile_size=None):
-        """The draw and update method for the dungeon
-        """
-        """        if tile_size:
-            background_img = pygame.transform.scale(self.background, (tile_size, tile_size))
-            background_img.set_alpha(100)
-        else:
-            background_img = self.background"""
         self.focus = self.player
         x = -self.focus.x + self.game.GRIDWIDTH // 2
         y = -self.focus.y + self.game.GRIDHEIGHT// 2
         self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
         
+        [element.draw() for element in self.draw_only]
         [room.draw() for room in self.allrooms]
         
-        [element.draw() for element in self.draw_only]
     
     def update_sprites(self):
         self.player.update()
