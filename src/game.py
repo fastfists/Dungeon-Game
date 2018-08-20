@@ -44,6 +44,11 @@ class Game:
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
         random.seed(self.dungeon.seed)
 
+        self.pause_menu = UI.menus.PauseMenu(new_game.SIZE)
+        self.pause_menu.quit_button.add_action(new_game.end)
+        self.pause_menu.resume_button.add_action(new_game.toggle_pause)
+        self.pause_menu.restart_button.add_action(restart)
+
     def setup(self):
         start = time.time()
         self.dungeon.make()
@@ -74,7 +79,7 @@ class Game:
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
         if self.paused:
-            pause_menu.draw(self.display)
+            self.pause_menu.draw(self.display)
             for room in self.dungeon.allrooms:
                 room.draw()
 
@@ -82,7 +87,7 @@ class Game:
         pygame.display.update()
         if self.paused:
             mouse_clicked = pygame.mouse.get_pressed()[0]
-            pause_menu.update(mouse_clicked)
+            self.pause_menu.update(mouse_clicked)
         else:
             for room in self.dungeon.allrooms:
                 room.update()
@@ -108,10 +113,6 @@ class Game:
 def restart():
     game.game_over = True
     new_game = Game((1920, 1080), tilesize=64)
-    pause_menu = UI.menus.PauseMenu(new_game.SIZE)
-    pause_menu.quit_button.add_action(new_game.end)
-    pause_menu.resume_button.add_action(new_game.toggle_pause)
-    pause_menu.restart_button.add_action(restart)
     new_game.start()
 
 def true_end():
@@ -119,12 +120,8 @@ def true_end():
     quit()
 
 def run():
-    global pause_menu, game
+    global game
     game = Game((1920, 1080), tilesize=64)
-    pause_menu = UI.menus.PauseMenu(game.SIZE)
-    pause_menu.quit_button.add_action(game.end)
-    pause_menu.resume_button.add_action(game.toggle_pause)
-    pause_menu.restart_button.add_action(restart)
     game.start()
     
 if __name__ == '__main__':
