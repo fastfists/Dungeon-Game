@@ -17,11 +17,7 @@ class PauseMenu(pygame.sprite.Group):
         self.restart_button = TextButton(Gap(), "Restart")
         self.quit_button = TextButton(Gap(), "Quit")
         super().__init__(self.resume_button, self.options_button, self.restart_button, self.quit_button)
-    
-    def draw(self, suface):
-        super().draw(suface)
-        pygame.draw.aaline(suface, utils.GRAY, (0, self.height//2), (self.width, self.height//2))
-
+        
 class EndGameMenu(pygame.sprite.Group):
 
     def __init__(self, screen_size:tuple, *args, **kwargs):
