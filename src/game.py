@@ -28,7 +28,7 @@ class Game:
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        pygame.mixer.music.load(path.join(song_direc, 'skeletons_remix.mp3'))
+        pygame.mixer.music.load(path.join(song_direc, 'skeletons.mp3'))
 
         self.paused = False
 
@@ -44,7 +44,9 @@ class Game:
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
         random.seed(self.dungeon.seed)
 
-        self.pause_menu = UI.menus.PauseMenu(self.SIZE)
+        button_names = dict(resume_button="Resume", restart_button="Restart",
+                            options_button="Options", quit_button="Quit")
+        self.pause_menu = UI.menus.Menu((self.SIZE), button_names)
         self.pause_menu.quit_button.add_action(self.end)
         self.pause_menu.resume_button.add_action(self.toggle_pause)
         self.pause_menu.restart_button.add_action(restart)
@@ -59,7 +61,7 @@ class Game:
 
     def toggle_pause(self):
         """
-        Called whenever p is clicked
+        Toggles pasue
         """
         self.paused = not self.paused
         if self.paused:
@@ -82,6 +84,11 @@ class Game:
             self.pause_menu.draw(self.display)
             for room in self.dungeon.allrooms:
                 room.draw()
+        
+        state = self.dungeon.player.state
+        if state == "Dying" or state == "Dead":
+            send_message("U Ded noob", self.display)
+
 
     def update(self):
         pygame.display.update()
@@ -112,7 +119,7 @@ class Game:
 
 def restart():
     game.game_over = True
-    new_game = Game((1920, 1080), tilesize=64)
+    new_game = Game((1366, 768), tilesize=64)
     new_game.start()
 
 def true_end():
@@ -121,7 +128,7 @@ def true_end():
 
 def run():
     global game
-    game = Game((1920, 1080), tilesize=64)
+    game = Game((1366, 768), tilesize=64)
     game.start()
     
 if __name__ == '__main__':

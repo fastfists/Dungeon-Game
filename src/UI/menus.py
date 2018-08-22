@@ -2,30 +2,24 @@ from . import TextButton
 import pygame
 import numpy as np
 from . import utils
+from typing import List
 
-
-class PauseMenu(pygame.sprite.Group):
-    font_size = 32
-
-    def __init__(self, screen_size:tuple, *a, **kw):
-        self.width, self.height = WIDTH, HEIGHT = screen_size
-        font_size = 32
-
-        Gap = MenuCentered(screen_size, font_size, 4)
-        self.resume_button = TextButton(Gap(), "Resume")
-        self.options_button = TextButton(Gap(), "Options")
-        self.restart_button = TextButton(Gap(), "Restart")
-        self.quit_button = TextButton(Gap(), "Quit")
-        super().__init__(self.resume_button, self.options_button, self.restart_button, self.quit_button)
-        
-class EndGameMenu(pygame.sprite.Group):
-
-    def __init__(self, screen_size:tuple, *args, **kwargs):
+class Menu(pygame.sprite.Group):
+    """
+    Recives a screen size and a 
+    dictionary of the variable name and text to display 
+    to create a pygame.Group menu 
+    """
+    def __init__(self, screen_size:tuple, button_names:dict, font_size=32):
         WIDTH, HEIGHT = screen_size
-        font_size = 32
-        Gap = MenuCentered(screen_size, font_size, 2)
-        self.quit_button = TextButton(Gap(), "Close")
-        self.new_game_button = TextButton(Gap(), "Play Again?")
+
+        Gap = MenuCentered(screen_size, font_size, len(button_names))
+        for pos, button_text in zip(Gap, button_names.items()):
+            var, disp = button_text
+            print(button_text)
+            exec(f"self.{var} = TextButton(pos, '{disp}')")
+        print(self.__dict__)
+        super().__init__(*self.__dict__.values())
 
 
 class MenuCentered:
