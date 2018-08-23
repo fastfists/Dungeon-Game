@@ -27,8 +27,6 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         self.image.set_colorkey(utils.BLACK)
         self.shooter.emit()
         super().draw(*args, flip=self.flip, **kwargs)
-        if self.state == "Attacking":
-            utils.send_message("Face my wrath", self.display)
 
     def speed_up(self):
         self.animation_speed += 0.01

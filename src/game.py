@@ -28,7 +28,7 @@ class Game:
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        pygame.mixer.music.load(path.join(song_direc, 'skeletons_remix.mp3'))
+        pygame.mixer.music.load(path.join(song_direc, 'skeletons.mp3'))
 
         self.paused = False
 
@@ -40,8 +40,16 @@ class Game:
             self.display = pygame.display.set_mode(self.SIZE)  # TODO add full screen
         except pygame.error:
             self.display = pygame.display.set_mode(self.SIZE)
+        random.seed()
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
         random.seed(self.dungeon.seed)
+
+        button_names = dict(resume_button="Resume", restart_button="Restart",
+                            options_button="Options", quit_button="Quit")
+        self.pause_menu = UI.menus.Menu((self.SIZE), button_names)
+        self.pause_menu.quit_button.add_action(self.end)
+        self.pause_menu.resume_button.add_action(self.toggle_pause)
+        self.pause_menu.restart_button.add_action(restart)
 
     def setup(self):
         start = time.time()
@@ -53,7 +61,7 @@ class Game:
 
     def toggle_pause(self):
         """
-        Called whenever p is clicked
+        Toggles pasue
         """
         self.paused = not self.paused
         if self.paused:
@@ -73,15 +81,20 @@ class Game:
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
         if self.paused:
-            pause_menu.draw(self.display)
+            self.pause_menu.draw(self.display)
             for room in self.dungeon.allrooms:
                 room.draw()
+        
+        state = self.dungeon.player.state
+        if state == "Dying" or state == "Dead":
+            send_message("U Ded noob", self.display)
+
 
     def update(self):
         pygame.display.update()
         if self.paused:
             mouse_clicked = pygame.mouse.get_pressed()[0]
-            pause_menu.update(mouse_clicked)
+            self.pause_menu.update(mouse_clicked)
         else:
             for room in self.dungeon.allrooms:
                 room.update()
@@ -102,16 +115,20 @@ class Game:
                     self.end()
 
     def end(self):
-        pygame.quit()
-        quit()
+        self.game_over = True
 
+def restart():
+    game.game_over = True
+    new_game = Game((1366, 768), tilesize=64)
+    new_game.start()
+
+def true_end():
+    pygame.quit()
+    quit()
 
 def run():
-    global pause_menu
-    game = Game((1920, 1080), tilesize=64)
-    pause_menu = UI.menus.PauseMenu(game.SIZE)
-    pause_menu.quit_button.add_action(game.end)
-    pause_menu.resume_button.add_action(game.toggle_pause)
+    global game
+    game = Game((1366, 768), tilesize=64)
     game.start()
     
 if __name__ == '__main__':
