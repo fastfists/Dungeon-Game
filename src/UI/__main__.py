@@ -1,7 +1,7 @@
 from . import *
 
 
-WIDTH, HEIGHT = SCREEN_RESOLUTION = 600,401
+WIDTH, HEIGHT = SCREEN_RESOLUTION = 600,400
 
 pygame.init()
 pygame.font.init()

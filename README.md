@@ -19,3 +19,12 @@ It contains
 
   * Read the init files for the dungeon name the parameteres as named in that and use the dungeon.from_json
 method to make the dungeon into exittence
+  * The file is found in 
+
+## example seeds to test out 
+
+636799439
+369782669
+774355407
+532671436
+784250948
