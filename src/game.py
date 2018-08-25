@@ -44,12 +44,19 @@ class Game:
         self.dungeon = dun.Dungeon.from_json(db + "/Dungeon.json", self)
         random.seed(self.dungeon.seed)
 
-        button_names = dict(resume_button="Resume", restart_button="Restart",
+        # Pause Menu
+        pause_button_names = dict(resume_button="Resume", restart_button="Restart",
                             options_button="Options", quit_button="Quit")
-        self.pause_menu = UI.menus.Menu((self.SIZE), button_names)
-        self.pause_menu.quit_button.add_action(self.end)
+        self.pause_menu = UI.menus.Menu((self.SIZE), pause_button_names)
         self.pause_menu.resume_button.add_action(self.toggle_pause)
         self.pause_menu.restart_button.add_action(restart)
+        self.pause_menu.quit_button.add_action(true_end)
+
+        # End Menu
+        end_button_names = dict(restart_button="Try Again?", quit_button="Quit")
+        self.endgame_menu = UI.menus.Menu((self.SIZE), end_button_names)
+        self.endgame_menu.quit_button.add_action(true_end)
+        self.endgame_menu.restart_button.add_action(restart)
 
     def setup(self):
         start = time.time()
@@ -71,29 +78,34 @@ class Game:
 
     def start(self):
         self.setup()
-        while not self.game_over:
+        while True:
             self.draw()
             self.update()
             self.events()
-            self.clock.tick(60)
+            self.clock.tick(60)    
 
     def draw(self): 
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
-        if self.paused:
+        if self.game_over:
+            self.endgame_menu.draw(self.display)
+        elif self.paused:
             self.pause_menu.draw(self.display)
             for room in self.dungeon.allrooms:
                 room.draw()
         
-        state = self.dungeon.player.state
-        if state == "Dying" or state == "Dead":
+        player_state = self.dungeon.player.state
+        if player_state == "Dying" or player_state == "Dead":
             send_message("U Ded noob", self.display)
+            self.game_over = True
 
 
     def update(self):
         pygame.display.update()
-        if self.paused:
-            mouse_clicked = pygame.mouse.get_pressed()[0]
+        mouse_clicked = pygame.mouse.get_pressed()[0]
+        if self.game_over:
+            self.endgame_menu.update(mouse_clicked)
+        elif self.paused:
             self.pause_menu.update(mouse_clicked)
         else:
             for room in self.dungeon.allrooms:
@@ -123,6 +135,7 @@ def restart():
     new_game.start()
 
 def true_end():
+    print("ending")
     pygame.quit()
     quit()
 

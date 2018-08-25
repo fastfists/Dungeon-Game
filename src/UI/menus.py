@@ -16,11 +16,9 @@ class Menu(pygame.sprite.Group):
         Gap = MenuCentered(screen_size, font_size, len(button_names))
         for pos, button_text in zip(Gap, button_names.items()):
             var, disp = button_text
-            print(button_text)
             exec(f"self.{var} = TextButton(pos, '{disp}')")
-        print(self.__dict__)
         super().__init__(*self.__dict__.values())
-
+        
 
 class MenuCentered:
     """
