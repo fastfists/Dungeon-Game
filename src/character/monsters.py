@@ -57,6 +57,7 @@ class Skeleton(Monster):
 
 
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
+    health = 200
     def __init__(self, *args, level=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.max_skeletons = self.levels(level)
@@ -64,7 +65,7 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
         self.size //= 2
         self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead',
                                                  cooldown=50, element_args=[self.room])
-        self.health = 200
+        
 
     @staticmethod
     def levels(level: int) -> int:
@@ -91,3 +92,9 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
             if len(self.skelton_spawner) != self.max_skeletons:
                 self.spawn_skeleton()
         self.skelton_spawner.update(active)
+
+
+class Goblin(Monster):
+    
+    def __init__(self, room, position=None):
+        speed = 0.7

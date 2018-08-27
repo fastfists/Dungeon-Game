@@ -23,10 +23,12 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         self.shooter.update()
 
     def draw(self, *args, **kwargs):
-        super().animate()
-        self.image.set_colorkey(utils.BLACK)
-        self.shooter.emit()
-        super().draw(*args, flip=self.flip, **kwargs)
+        if not self.dead:
+            super().animate()
+            self.image.set_colorkey(utils.BLACK)
+            self.shooter.emit()
+            super().draw(*args, flip=self.flip, **kwargs)
+            self.health.draw_bar(self.display, self.rect)
 
     def speed_up(self):
         self.animation_speed += 0.01
@@ -67,10 +69,10 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         direction = (-1, 0) if self.flip else (1, 0)
         if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
-            #self.speed_up()
+            self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
         
         with collides_with(self, class_name=Skeleton) as skeleton:
-            if skeleton:
+            for _ in skeleton:
                 self.damage(5)
 
