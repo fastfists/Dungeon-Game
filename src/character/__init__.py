@@ -3,6 +3,8 @@ from src.dungeon_utils import DungeonElement
 from contextlib import contextmanager
 import src.utils as utils
 import src.artifacts as artifacts
+import numpy as np
+from .healthbar import HealthBar
 
 class Sprite(pygame.sprite.Sprite):
     """
@@ -10,6 +12,7 @@ class Sprite(pygame.sprite.Sprite):
     handles the animation and changing
     of states for a sprite object
     """
+    max_health = 100
     health = 100
     possible_states = {"Idle",
                        "Emote",
@@ -36,6 +39,8 @@ class Sprite(pygame.sprite.Sprite):
         if not hasattr(self, "_images"):
             self._images = utils.get_all_images(self.__class__.__name__)  # returns a dict
         self._images["Dead"] = [self._images["Dying"][-1]]  # passes the last index
+        self.health = HealthBar(self.health, self.max_health, self.image.get_rect().width)
+        print(self.health.width)
 
     def __init_subclass__(cls, picture_name: str = None, **kwargs):
         if picture_name:
@@ -74,7 +79,7 @@ class Sprite(pygame.sprite.Sprite):
 
     def reset_animations(self):
         """Sets the frame counters to 0"""
-        self.frame, self.counter = 0, 0
+        self.frame, self.counter = 0, 0     
 
     def damage(self, dmg):
         """ Reduces the health"""
@@ -122,6 +127,11 @@ class Monster(Sprite, DungeonElement):
         DungeonElement.__init__(self, position, self.room.dungeon)
         self.image.set_colorkey(utils.BLACK)
 
+    def draw(self, *a, **kw):
+        if not self.dead:
+            super().draw(*a, **kw)
+            self.health.draw_bar(self.display, self.rect)
+
     def update(self):
         if not self.dead:
             super().animate()
@@ -129,7 +139,8 @@ class Monster(Sprite, DungeonElement):
 
     def damage(self, *a, **kw):
         super().damage(*a, **kw)
-        if self.state == "Dying" or "Dead":
+        state = self.state
+        if state == "Dying" or state == "Dead":
             self.room.check_if_cleared()
 
 

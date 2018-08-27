@@ -12,14 +12,18 @@ class Clickable(pygame.sprite.Sprite):
         pos, size = np.array(pos), np.array(size)
         self.rect = pygame.Rect(pos - (size / 2), size)
         self.actions = list(actions_on_click)
+        self.pressed = False
 
     def update(self, mouse_clicked: bool):
         mouse_pos = pygame.mouse.get_pos()
+        self.pressed = False
         if self.rect.collidepoint(mouse_pos):
             if not mouse_clicked:
                 self.on_hover()
             else:
+                self.pressed = True
                 self._perform()
+
         else:
             self.off_hover()
 
@@ -35,6 +39,10 @@ class Clickable(pygame.sprite.Sprite):
     def _perform(self):
         for action in self.actions:
             action()
+    
+    def __repr__(self):
+        return f"{self.__class__.__name__} object at ({self.rect.x}, {self.rect.y}) pressed {self.pressed}"
+    
 
 class TextButton(Clickable):
 
@@ -64,5 +72,5 @@ class TextButton(Clickable):
 
     def off_hover(self):
         self.color = utils.WHITE
-
+    
 from . import menus

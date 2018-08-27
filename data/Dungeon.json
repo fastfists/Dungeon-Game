@@ -1,8 +1,7 @@
 {
     "resolution":[
-        40,
-        40
+        50,
+        50
     ],
-    "room_count": 10,
-    "seed" : 838090034
+    "room_count": 5
 }
