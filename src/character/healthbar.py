@@ -23,6 +23,9 @@ class HealthBar:
         self.foreground = pygame.Surface((health_length,self.height))
         self.foreground.fill(utils.GREEN)
 
+    def draw_bar(self, screen: pygame.surface.Surface, target_rect:pygame.Rect):
+        position = target_rect.x, target_rect.y - self.height
+        screen.blit(self.health_bar, position)
 
     @property
     def current_health(self):
@@ -35,10 +38,6 @@ class HealthBar:
         self._current_health = value
         ## create a new health bar
         self.render_health_bar()
-
-    def draw_bar(self, screen: pygame.surface.Surface, target_rect:pygame.Rect):
-        position = target_rect.x, target_rect.y - self.height
-        screen.blit(self.health_bar, position)
 
     def __eq__(self, other):
         return int(self) == int(other)
@@ -58,6 +57,10 @@ class HealthBar:
     def __int__(self):
         return self.current_health
 
+    def __add__(self, other):
+        new_health = int(self) + int(other)
+        return HealthBar(new_health, self.max_health, self.width)
+
     def __iadd__(self, value):
         self.current_health += int(value)
         return self
@@ -65,3 +68,4 @@ class HealthBar:
     def __isub__(self, value):
         self.current_health -= int(value)
         return self
+    

@@ -57,7 +57,6 @@ class TextButton(Clickable):
     @property
     def image(self):
         return self.text
-    
 
     @image.setter
     def image(self, new_image):

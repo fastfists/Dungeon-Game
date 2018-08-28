@@ -9,7 +9,7 @@
     "python.autoComplete.addBrackets": false,
     "python.pythonPath": "${workspaceFolder}/venv/bin/python3",
     "python.unitTest.unittestEnabled": false,
-    "python.unitTest.promptToConfigure": false,
+    "python.unitTest.promptToConfigure": true,
     "python.unitTest.pyTestEnabled": true,
     "python.linting.enabled": true,
     "code-runner.executorMap": {
@@ -52,11 +52,5 @@
         "d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",
         "haskell": "runhaskell",
         "nim": "nim compile --verbosity:0 --hints:off --run"
-    },
-    "python.unitTest.pyTestPath": "${workspaceFolder}/unit_test",
-    "python.unitTest.pyTestArgs": [
-        "PYTHONPATH=src",
-        "--exitfirst",
-        "--verbose"
-        ],
+    }
 }
