@@ -62,7 +62,7 @@ class Game:
         start = time.time()
         self.dungeon.make()
         end = time.time()
-        print(end - start)
+        print(f"Rendered Dungeon in {end - start} seconds")
         pygame.display.set_caption('Dungeon')
         pygame.mixer.music.play()
 

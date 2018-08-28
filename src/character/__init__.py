@@ -40,7 +40,6 @@ class Sprite(pygame.sprite.Sprite):
             self._images = utils.get_all_images(self.__class__.__name__)  # returns a dict
         self._images["Dead"] = [self._images["Dying"][-1]]  # passes the last index
         self.health = HealthBar(self.health, self.max_health, self.image.get_rect().width)
-        print(self.health.width)
 
     def __init_subclass__(cls, picture_name: str = None, **kwargs):
         if picture_name:

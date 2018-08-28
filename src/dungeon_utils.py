@@ -31,6 +31,16 @@ class DungeonElement(pygame.sprite.Sprite):
         return hash((self.x, self.y))
 
     @property
+    def size(self):
+        return self._size
+    
+    @size.setter
+    def size(self, new_size):
+        self._size = new_size
+        if isinstance(self, character.Sprite):
+            self.health.width = self.width
+
+    @property
     def width(self):
         return self.size // 2
 

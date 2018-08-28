@@ -28,6 +28,17 @@ class HealthBar:
         screen.blit(self.health_bar, position)
 
     @property
+    def width(self):
+        return self._width
+
+    @width.setter
+    def width(self, width):
+        try:
+            self._width = width
+            self.render_health_bar()
+        except:
+            pass
+    @property
     def current_health(self):
         return self._current_health
 
