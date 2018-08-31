@@ -10,12 +10,13 @@ class Menu(pygame.sprite.Group):
     dictionary of the variable name and text to display 
     to create a pygame.Group menu 
     """
-    def __init__(self, screen_size:tuple, button_names:dict, font_size=32):
+    def __init__(self, screen_size:tuple, button_names:dict, font=utils.bold_font):
         WIDTH, HEIGHT = screen_size
+        font_size = font.size(" ")[1]
         Gap = MenuCentered(screen_size, font_size, len(button_names))
         for pos, button_text in zip(Gap, button_names.items()):
             var, disp = button_text
-            exec(f"self.{var} = TextButton(pos, '{disp}')")
+            exec(f"self.{var} = TextButton(pos, '{disp}', font={font})")
         super().__init__(*self.__dict__.values())
         
 
