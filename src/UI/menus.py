@@ -12,7 +12,6 @@ class Menu(pygame.sprite.Group):
     """
     def __init__(self, screen_size:tuple, button_names:dict, font_size=32):
         WIDTH, HEIGHT = screen_size
-
         Gap = MenuCentered(screen_size, font_size, len(button_names))
         for pos, button_text in zip(Gap, button_names.items()):
             var, disp = button_text
@@ -23,7 +22,7 @@ class Menu(pygame.sprite.Group):
 class MenuCentered:
     """
     Generator class that provides x and y
-    coordinates for 
+    coordinates for a menu in order to center it
     """
     def __init__(self, screen_size: tuple, gap_size, item_count:int):
         self.item_count = item_count

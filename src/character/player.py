@@ -1,4 +1,4 @@
-from . import Sprite, DungeonElement, collides_with, utils, artifacts, pygame, Skeleton
+from . import Sprite, DungeonElement, collides_with, utils, artifacts, pygame, Skeleton, Monster
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.33
@@ -16,7 +16,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         self.size //= 5
         weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed * 3, delay=30)
         self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if,
-                                         element_kwargs=weapon_dict, cooldown=10)
+                                         element_kwargs=weapon_dict, cooldown=4)
 
     def update(self):
         self.get_keys()
@@ -72,7 +72,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
             self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
         
-        with collides_with(self, class_name=Skeleton) as skeleton:
-            for _ in skeleton:
-                self.damage(5)
-
+        with collides_with(self, class_name=Monster) as monsters:
+            for monster in monsters:
+                if monster.state != "Dying":
+                    self.damage(5)

@@ -20,6 +20,7 @@ class HealthBar:
     def update(self):
         # Create a new health indicator
         health_length = (self.current_health * self.width) // self.max_health
+        health_length = health_length if health_length >= 0 else 0        
         self.foreground = pygame.Surface((health_length,self.height))
         self.foreground.fill(utils.GREEN)
 
