@@ -40,7 +40,6 @@ class Sprite(pygame.sprite.Sprite):
             self._images = utils.get_all_images(self.__class__.__name__)  # returns a dict
         self._images["Dead"] = [self._images["Dying"][-1]]  # passes the last index
         self.health = HealthBar(self.health, self.max_health, self.image.get_rect().width)
-        print(self.health.width)
 
     def __init_subclass__(cls, picture_name: str = None, **kwargs):
         if picture_name:
@@ -62,6 +61,7 @@ class Sprite(pygame.sprite.Sprite):
                             super().kill()
                             with self.end_of_animation():
                                 self.state = "Dead"
+                                self.on_death()
                         else:
                             with self.end_of_animation():
                                 self.state = self.default_state
@@ -70,6 +70,9 @@ class Sprite(pygame.sprite.Sprite):
     @property
     def dead(self):
         return self.state == "Dead"
+
+    def on_death(self):
+        pass
 
     @contextmanager
     def end_of_animation(self):
@@ -86,6 +89,10 @@ class Sprite(pygame.sprite.Sprite):
         self.health -= dmg
         if self.health <= 0:
             self.state = "Dying"
+            self.on_dying()
+
+    def on_dying(self):
+        pass
 
     @property
     def state(self) -> str:
@@ -116,6 +123,9 @@ class Sprite(pygame.sprite.Sprite):
     def __hash__(self):
         return pygame.sprite.Sprite.__hash__(self)
 
+    def __repr__(self):
+        return f"{self.__class__.__name__} object at pos: {self.x}, {self.y} currently {self.state}"
+
 
 class Monster(Sprite, DungeonElement):
 
@@ -127,6 +137,9 @@ class Monster(Sprite, DungeonElement):
         DungeonElement.__init__(self, position, self.room.dungeon)
         self.image.set_colorkey(utils.BLACK)
 
+    def on_death(self):
+        self.room.check_if_cleared()
+
     def draw(self, *a, **kw):
         if not self.dead:
             super().draw(*a, **kw)
@@ -136,13 +149,6 @@ class Monster(Sprite, DungeonElement):
         if not self.dead:
             super().animate()
             self.image.set_colorkey(utils.BLACK)
-
-    def damage(self, *a, **kw):
-        super().damage(*a, **kw)
-        state = self.state
-        if state == "Dying" or state == "Dead":
-            self.room.check_if_cleared()
-
 
 @contextmanager
 def collides_with(self, class_name="any_sprite", group=None):

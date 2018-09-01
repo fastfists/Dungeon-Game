@@ -31,6 +31,16 @@ class DungeonElement(pygame.sprite.Sprite):
         return hash((self.x, self.y))
 
     @property
+    def size(self):
+        return self._size
+    
+    @size.setter
+    def size(self, new_size):
+        self._size = new_size
+        if isinstance(self, character.Sprite):
+            self.health.width = self.width
+
+    @property
     def width(self):
         return self.size // 2
 
@@ -147,8 +157,10 @@ class Room:
     def add_door(self, door):
         self.doors.append(door)
 
-    def check_if_cleared(self) -> bool:
+    def check_if_cleared(self):
         self.is_cleared = all([monster.dead for monster in self.monsters])
+        print([monster.dead for monster in self.monsters])
+        print(self.is_cleared)
 
     @property
     def active(self):

@@ -44,8 +44,9 @@ robot_mouthopen = pygame.transform.scale(robot_mouthopen, (180, 100))
 
 dialouge_box: pygame.surface.Surface = pygame.image.load(path.join(img_direc, "Dialouge_box.png"))
 pygame.font.init()
-robot_font = pygame.font.Font(path.join(db, "Fonts", "HUMANOID.TTF"), 32)
 
+robot_font = pygame.font.Font(path.join(db, "Fonts", "HUMANOID.TTF"), 32)
+bold_font = pygame.font.Font(path.join(db, "Fonts", "Under_the_Weather.otf"), 50)
 
 def get_single_img(name):
     if name in sheets.keys():

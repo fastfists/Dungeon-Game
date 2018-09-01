@@ -62,7 +62,7 @@ class Game:
         start = time.time()
         self.dungeon.make()
         end = time.time()
-        print(end - start)
+        print(f"Rendered Dungeon in {end - start} seconds")
         pygame.display.set_caption('Dungeon')
         pygame.mixer.music.play()
 
@@ -103,6 +103,7 @@ class Game:
     def update(self):
         pygame.display.update()
         mouse_clicked = pygame.mouse.get_pressed()[0]
+        self.game_over = self.dungeon.is_cleared or self.game_over
         if self.game_over:
             self.endgame_menu.update(mouse_clicked)
         elif self.paused:
