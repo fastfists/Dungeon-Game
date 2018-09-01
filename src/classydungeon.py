@@ -356,7 +356,10 @@ class Dungeon:
         
         [element.draw() for element in self.draw_only]
         [room.draw() for room in self.allrooms]
-        
-    
+
+    @property 
+    def is_cleared(self):
+        return all([room.is_cleared for room in self.allrooms])
+
     def update_sprites(self):
         self.player.update()

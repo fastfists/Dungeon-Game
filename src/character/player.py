@@ -69,7 +69,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         direction = (-1, 0) if self.flip else (1, 0)
         if key[pygame.K_SPACE] and self.shooter.ready:
             self.state = 'Attacking'
-            self.speed_up()
+            #self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
         
         with collides_with(self, class_name=Monster) as monsters:

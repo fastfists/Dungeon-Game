@@ -157,8 +157,10 @@ class Room:
     def add_door(self, door):
         self.doors.append(door)
 
-    def check_if_cleared(self) -> bool:
+    def check_if_cleared(self):
         self.is_cleared = all([monster.dead for monster in self.monsters])
+        print([monster.dead for monster in self.monsters])
+        print(self.is_cleared)
 
     @property
     def active(self):

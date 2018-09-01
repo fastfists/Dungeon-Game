@@ -103,6 +103,7 @@ class Game:
     def update(self):
         pygame.display.update()
         mouse_clicked = pygame.mouse.get_pressed()[0]
+        self.game_over = self.dungeon.is_cleared or self.game_over
         if self.game_over:
             self.endgame_menu.update(mouse_clicked)
         elif self.paused:
