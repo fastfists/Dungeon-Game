@@ -287,7 +287,7 @@ class Dungeon:
         moveX, moveY = self._findDir(self._Prng(4))
         newX, newY = x + moveX, y + moveY
         try:
-            if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.Idtbl[x][y] != 3 and newX > 0 and newY > 0:
+            if self.Idtbl[newX][newY] == 0 and self.cantouch[x][y] == 0 and self.door_fits((x,y), (moveX, moveY)):
                 self.start_pos = (newX, newY)
                 self.start_room = dungeon_utils.Room(1, 1, newX, newY, self)
                 self.Idtbl[newX][newY] = 5
@@ -344,7 +344,7 @@ class Dungeon:
 
     def make_order(self):
         objects = [room.monsters for room in self.allrooms] +\
-                  [door for door in self.doors] + [self.player]
+                  self.doors + self.walls + [self.player]
         self.elements = pygame.sprite.Group(*objects)
         self.draw_only = [door for door in self.doors] + [self.player]
 
@@ -362,4 +362,5 @@ class Dungeon:
         return all([room.is_cleared for room in self.allrooms])
 
     def update_sprites(self):
+        [wall.update() for wall in self.walls]
         self.player.update()

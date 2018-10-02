@@ -1,8 +1,9 @@
-from . import Sprite, DungeonElement, collides_with, utils, artifacts, pygame, Skeleton, Monster
+from . import Sprite, DungeonElement, collides_with, utils, artifacts, pygame, Skeleton, Monster, Wall
+
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
-    animation_speed = 0.33
-    speed = 0.15
+    animation_speed = 0.5
+    speed = 0.08
     x: float
     y: float
     flip = False
@@ -16,7 +17,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         self.size //= 5
         weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed * 3, delay=30)
         self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if,
-                                         element_kwargs=weapon_dict, cooldown=4)
+                                         element_kwargs=weapon_dict, cooldown=20)
 
     def update(self):
         self.get_keys()
@@ -49,11 +50,15 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
             move_x = -self.speed
         if key[pygame.K_RIGHT]:
             move_x = self.speed
+        if move_x and move_y:
+            move_x /= 1.41
+            move_y /= 1.41
         self.x += move_x
         self.y += move_y
         if self.dungeon.Idtbl[round(self.x)][round(self.y)] == 1:
             self.x -= move_x
             self.y -= move_y
+        
         if move_x != 0 or move_y != 0:
             self.state = 'Walk'
         else:

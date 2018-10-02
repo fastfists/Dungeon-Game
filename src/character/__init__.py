@@ -1,5 +1,5 @@
 import pygame
-from src.dungeon_utils import DungeonElement
+from src.dungeon_utils import DungeonElement, Wall
 from contextlib import contextmanager
 import src.utils as utils
 import src.artifacts as artifacts

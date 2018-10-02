@@ -80,7 +80,13 @@ class DungeonElement(pygame.sprite.Sprite):
 
     def kill(self):
         super().kill()
-
+    
+    def update(self):
+        target = self.dungeon.focus
+        x = -target.x + self.dungeon.game.GRIDWIDTH // 2
+        y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
+        self.transform(x, y)
+    
     def draw(self, size=None, flip=False, display=None, target=None, background=False):
         """
         Blits the element onto the screen
@@ -106,7 +112,7 @@ class DungeonElement(pygame.sprite.Sprite):
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
             self.transform(x, y)
-            # pygame.draw.rect(self.display, utils.RED, self.rect)
+            pygame.draw.rect(self.display, utils.RED, self.rect)
             self.display.blit(temp_img, self.rect)
 
 from . import artifacts, character

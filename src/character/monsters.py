@@ -5,13 +5,13 @@ import random
 import json
 from os import path
 
-from . import utils, artifacts, Monster, DungeonElement
+from . import utils, artifacts, Monster, DungeonElement, collides_with, Wall
 
 class Skeleton(Monster):
     default_state = 'Walk'
     possible_states = {'Walk', 'Attack'}
-    animation_speed = 0.88
-    speed = 0.03
+    animation_speed = 0.3
+    speed = 0.04
     flip = False
 
     def __init__(self, *args, **kwargs):
@@ -34,10 +34,12 @@ class Skeleton(Monster):
             super().update()
             if active:
                 self.state = "Walk"
-                if self.x >= self.x_limit[1]:
-                    self.direction = 'West'
-                elif self.x <= self.x_limit[0]:
-                    self.direction = 'East'
+                with collides_with(self, Wall) as walls:
+                    if walls:
+                        if self.x >= self.x_limit[1]:
+                            self.direction = 'West'
+                        elif self.x <= self.x_limit[0]:
+                            self.direction = 'East'
 
                 if self.direction == 'East':
                     self.x += self.speed
@@ -58,6 +60,7 @@ class Skeleton(Monster):
 
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
     health = 200
+    speed = 0.02
     def __init__(self, *args, level=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.max_skeletons = self.levels(level)
@@ -65,7 +68,6 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
         self.size //= 2
         self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead',
                                                  cooldown=50, element_args=[self.room])
-        
 
     @staticmethod
     def levels(level: int) -> int:
@@ -74,14 +76,11 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
             data = json.load(f)
             return data[f"Level {level}"]
 
-    def draw(self, *args, **kwargs):
-        super().draw()
-
     def spawn_skeleton(self):
         if self.skelton_spawner.ready:
             self.state = "Attacking"
             x, y = self.position
-            start_pos = x + random.uniform(.5, .10), y + random.uniform(.5, .10)
+            start_pos = x + random.uniform(-.1, .1), y + random.uniform(-.1, .1)
             self.skelton_spawner.load(additional_kwargs={'position': start_pos})
             self.dungeon.elements.add(self.skelton_spawner[-1])
             self.room.monsters.append(self.skelton_spawner[-1])
