@@ -1,9 +1,9 @@
 from . import Sprite, DungeonElement, collides_with, utils, artifacts, pygame, Skeleton, Monster, Wall
-
+from src.object_list import ObjectList
 
 class Player(Sprite, DungeonElement, picture_name="Rouge"):
     animation_speed = 0.5
-    speed = 0.08
+    speed = 0.2
     x: float
     y: float
     flip = False
@@ -15,9 +15,10 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         DungeonElement.__init__(self, self.position, self.dungeon)
         self.size *= 4
         self.size //= 5
-        weapon_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed * 3, delay=30)
-        self.shooter = artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if,
-                                         element_kwargs=weapon_dict, cooldown=20)
+        laser_dict = dict(master=self, image=pygame.transform.rotate(utils.get_img("laser_blast", 1), 90), damage=5, speed=self.speed * 3)
+        sword_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed * 3, delay=30)
+        self.shooter = ObjectList([artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if,
+                element_kwargs=sword_dict, cooldown=20),artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=laser_dict, cooldown=2)])
 
     def update(self):
         self.get_keys()
@@ -72,7 +73,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         #      Get actions      #
         #########################
         direction = (-1, 0) if self.flip else (1, 0)
-        if key[pygame.K_SPACE] and self.shooter.ready:
+        if key[pygame.K_SPACE] and self.shooter.ready[0]:
             self.state = 'Attacking'
             #self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))

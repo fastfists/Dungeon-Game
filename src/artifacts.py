@@ -99,8 +99,9 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
     """
 
     def __init__(self, *, start_pos: tuple, image, master: DungeonElement, 
-                 speed: float, direction: tuple, max_dist=5, delay=0):
+                 speed: float, direction: tuple, max_dist=5, delay=0, damage=50):
 
+        self.damage = damage
         self.speed = speed if type(speed) is tuple else speed, speed
         self.image = image
         self.image.set_colorkey(utils.BLACK)
@@ -128,7 +129,7 @@ class Projectile(DungeonElement, pygame.sprite.Sprite):
         with character.collides_with(self, character.Monster) as monsters:
             for monster in monsters:
                 kill = True
-                monster.damage(50)
+                monster.damage(self.damage)
                 self.dead = True
         if kill: self.kill()
 

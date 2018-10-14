@@ -111,8 +111,7 @@ class DungeonElement(pygame.sprite.Sprite):
                 target.y = self.dungeon.game.GRIDHEIGHT // 2 - target.y
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
-            self.transform(x, y)
-            pygame.draw.rect(self.display, utils.RED, self.rect)
+            self.transform(x, y) 
             self.display.blit(temp_img, self.rect)
 
 from . import artifacts, character

@@ -469,6 +469,8 @@ Potions_ref = {1: (0, 0, 7, 7),
 	           11: (80, 0, 7, 7),
 	           13: (96, 0, 7, 7)}
 
+laser_blast_ref = {1: (2, 2, 206, 656)}
+
 sword_slash_ref = None
 robot_mouthopen_ref = None
 robot_mouthclosed_ref = None

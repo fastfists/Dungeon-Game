@@ -37,7 +37,7 @@ class Game:
         self.game_over = False
         # Set Up Dungeon
         try:
-            self.display = pygame.display.set_mode(self.SIZE)  # TODO add full screen
+            self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN) 
         except pygame.error:
             self.display = pygame.display.set_mode(self.SIZE)
         random.seed()
@@ -132,7 +132,7 @@ class Game:
 
 def restart():
     game.game_over = True
-    new_game = Game((1366, 768), tilesize=64)
+    new_game = Game((1920, 1080), tilesize=64)
     new_game.start()
 
 def true_end():
@@ -142,7 +142,7 @@ def true_end():
 
 def run():
     global game
-    game = Game((1366, 768), tilesize=64)
+    game = Game((1920, 1080), tilesize=64)
     game.start()
     
 if __name__ == '__main__':

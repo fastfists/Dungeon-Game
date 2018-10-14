@@ -32,7 +32,7 @@ db = path.join(package_path, "data")
 FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])
 sprite_sheet_names = ["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg",
                       "Ranger.png","sci_fi.png", "Goblin.png", "robot_mouthopen.png",
-                      "robot_mouthclosed.png", "Containers.png","Potions.png"]
+                      "robot_mouthclosed.png", "Containers.png","Potions.png", "laser_blast.png"]
 sheets = {}
 for name in sprite_sheet_names:
     name, ext = name.split('.')
@@ -53,7 +53,7 @@ def get_single_img(name):
         return sheets[name].Picture
 
 
-def get_img(key_name, sprite_number):
+def get_img(key_name, sprite_number) -> pygame.Surface:
     if name in sheets.keys():
         ref = sheets[key_name].Reference[sprite_number]
         img = pygame.Surface((ref[2], ref[3]))

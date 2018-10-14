@@ -1,7 +1,4 @@
 {
-    "resolution":[
-        50,
-        50
-    ],
-    "room_count": 2
+    "resolution": [100,100],
+    "room_count": 20
 }

@@ -28,3 +28,10 @@ method to make the dungeon into exittence
 774355407
 532671436
 784250948
+
+Explore this bug
+{
+"seed": 725885353
+"size": [50,50]
+"room_count": 2
+}
