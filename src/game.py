@@ -28,7 +28,7 @@ class Game:
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        pygame.mixer.music.load(path.join(song_direc, 'skeletons.mp3'))
+        pygame.mixer.music.load(path.join(song_direc, 'skeletons_remix.mp3'))
 
         self.paused = False
 
@@ -37,7 +37,7 @@ class Game:
         self.game_over = False
         # Set Up Dungeon
         try:
-            self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN) 
+            self.display = pygame.display.set_mode(self.SIZE)
         except pygame.error:
             self.display = pygame.display.set_mode(self.SIZE)
         random.seed()
@@ -82,9 +82,9 @@ class Game:
             self.draw()
             self.update()
             self.events()
-            self.clock.tick(60)    
+            self.clock.tick(60)
 
-    def draw(self): 
+    def draw(self):
         self.display.fill(BLACK, rect=None, special_flags=0)
         self.dungeon._draw()
         if self.game_over:
@@ -93,7 +93,7 @@ class Game:
             self.pause_menu.draw(self.display)
             for room in self.dungeon.allrooms:
                 room.draw()
-        
+
         player_state = self.dungeon.player.state
         if player_state == "Dying" or player_state == "Dead":
             send_message("U Ded noob", self.display)
@@ -144,6 +144,6 @@ def run():
     global game
     game = Game((1920, 1080), tilesize=64)
     game.start()
-    
+
 if __name__ == '__main__':
     run()

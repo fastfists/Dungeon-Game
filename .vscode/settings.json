@@ -1,16 +1,16 @@
 {
     "python.terminal.activateEnvironment": true,
     "python.linting.pylintEnabled": false,
-    "python.linting.pep8Enabled": true,
-    "python.linting.pep8Args": [
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleArgs": [
         "--Disable E501"
     ],
     "python.linting.lintOnSave": true,
     "python.autoComplete.addBrackets": false,
-    "python.pythonPath": "${workspaceFolder}/venv/bin/python3",
-    "python.unitTest.unittestEnabled": false,
-    "python.unitTest.promptToConfigure": true,
-    "python.unitTest.pyTestEnabled": true,
+    "python.pythonPath": "/usr/sbin/python",
+    "python.testing.unittestEnabled": false,
+    "python.testing.promptToConfigure": true,
+    "python.testing.pytestEnabled": true,
     "python.linting.enabled": true,
     "code-runner.executorMap": {
         "javascript": "node",

@@ -18,7 +18,6 @@ class DungeonElement(pygame.sprite.Sprite):
         self.dungeon = dungeon
         self.dungeon.elements.add(self)
         self.rect = self.image.get_rect()
-        # debuging reasons
 
     @property
     def true_pos(self):
@@ -33,7 +32,7 @@ class DungeonElement(pygame.sprite.Sprite):
     @property
     def size(self):
         return self._size
-    
+
     @size.setter
     def size(self, new_size):
         self._size = new_size
@@ -80,13 +79,13 @@ class DungeonElement(pygame.sprite.Sprite):
 
     def kill(self):
         super().kill()
-    
+
     def update(self):
         target = self.dungeon.focus
         x = -target.x + self.dungeon.game.GRIDWIDTH // 2
         y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
         self.transform(x, y)
-    
+
     def draw(self, size=None, flip=False, display=None, target=None, background=False):
         """
         Blits the element onto the screen
@@ -111,7 +110,7 @@ class DungeonElement(pygame.sprite.Sprite):
                 target.y = self.dungeon.game.GRIDHEIGHT // 2 - target.y
             x = -target.x + self.dungeon.game.GRIDWIDTH // 2
             y = -target.y + self.dungeon.game.GRIDHEIGHT // 2
-            self.transform(x, y) 
+            self.transform(x, y)
             self.display.blit(temp_img, self.rect)
 
 from . import artifacts, character
@@ -146,7 +145,9 @@ class Room:
         self.doors = []
         if (sx, sy) != self.dungeon.start_pos:
             if is_boss:
-                self.monsters = [character.BossSkeleton(self)]
+                self.monsters = []
+                spwan_position=self.blocks[70].position
+                self.monsters.append(character.BossSkeleton(self, position=spwan_position))
             else:
                 self.monsters = [character.Skeleton(self) for x in range(random.randint(3, 5))]
             self.chest = artifacts.Chest.chest_with_health_potion(self.blocks[0].position, self.dungeon)
@@ -164,22 +165,22 @@ class Room:
 
     def check_if_cleared(self):
         self.is_cleared = all([monster.dead for monster in self.monsters])
-        print([monster.dead for monster in self.monsters])
-        print(self.is_cleared)
 
     @property
     def active(self):
         return self.dungeon.focus.graph_position in self.block_positions
 
+    def power_up(self):
+        for monster in self.monsters:
+            monster.power_up()
+
     @property
     def block_positions(self):
         return [block.position for block in self.blocks]
 
-    @utils.do_once
     def open_doors(self):
         [door.open() for door in self.doors]
-    
-    @utils.do_once
+
     def close_doors(self):
         [door.close() for door in self.doors]
 
@@ -295,3 +296,4 @@ class Door(Background):
             # side to side
             self.image = pygame.transform.rotate(self.image, 270)
         self.state = "Closed"
+

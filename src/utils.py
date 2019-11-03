@@ -10,9 +10,7 @@ Animations Each row has 10 animations
 import functools
 from collections import namedtuple
 from os import path
-
 import pygame
-
 from .maps import *
 
 RED = (255, 0, 0)
