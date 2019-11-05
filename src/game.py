@@ -28,7 +28,7 @@ class Game:
         self.GRIDHEIGHT = self.HEIGHT // self.TILESIZE
         # Set Up Pygame
         pygame.init()
-        pygame.mixer.music.load(path.join(song_direc, 'skeletons.mp3'))
+        # pygame.mixer.music.load(path.join(song_direc, 'skeletons.mp3'))
 
         self.paused = False
 
@@ -37,7 +37,8 @@ class Game:
         self.game_over = False
         # Set Up Dungeon
         try:
-            self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN) 
+            self.display = pygame.display.set_mode(self.SIZE) 
+            # self.display = pygame.display.set_mode(self.SIZE, pygame.FULLSCREEN) 
         except pygame.error:
             self.display = pygame.display.set_mode(self.SIZE)
         random.seed()
@@ -64,7 +65,7 @@ class Game:
         end = time.time()
         print(f"Rendered Dungeon in {end - start} seconds")
         pygame.display.set_caption('Dungeon')
-        pygame.mixer.music.play()
+        # pygame.mixer.music.play()
 
     def toggle_pause(self):
         """
@@ -72,9 +73,11 @@ class Game:
         """
         self.paused = not self.paused
         if self.paused:
-            pygame.mixer.music.pause()
+            pass
+            # pygame.mixer.music.pause()
         else:
-            pygame.mixer.music.unpause()
+            pass
+            # pygame.mixer.music.unpause()
 
     def start(self):
         self.setup()
@@ -132,7 +135,7 @@ class Game:
 
 def restart():
     game.game_over = True
-    new_game = Game((1920, 1080), tilesize=64)
+    new_game = Game((800, 600), tilesize=64)
     new_game.start()
 
 def true_end():
@@ -142,7 +145,7 @@ def true_end():
 
 def run():
     global game
-    game = Game((1920, 1080), tilesize=64)
+    game = Game((800, 600), tilesize=64)
     game.start()
     
 if __name__ == '__main__':

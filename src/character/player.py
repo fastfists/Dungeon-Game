@@ -15,7 +15,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         DungeonElement.__init__(self, self.position, self.dungeon)
         self.size *= 4
         self.size //= 5
-        laser_dict = dict(master=self, image=pygame.transform.rotate(utils.get_img("laser_blast", 1), 90), damage=5, speed=self.speed * 3)
+        laser_dict = dict(master=self, image=pygame.transform.rotate(utils.get_img("laser_blast", 1), 90), damage=5, speed=self.speed * 3, delay=0)
         sword_dict = dict(master=self, image=utils.get_single_img('sword_slash'), speed=self.speed * 3, delay=30)
         self.shooter = ObjectList([artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if,
                 element_kwargs=sword_dict, cooldown=20),artifacts.Emitter(artifacts.Projectile, artifacts.Projectile.end_if, element_kwargs=laser_dict, cooldown=2)])
