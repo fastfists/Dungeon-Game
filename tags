@@ -1,0 +1,653 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/3fdf28bc/
+0	.vscode/launch.json	/^                "${workspaceFolder}\/development.ini"$/;"	s	array:configurations.9.args
+0	.vscode/launch.json	/^                "RedirectOutput"$/;"	s	array:configurations.0.debugOptions
+0	.vscode/launch.json	/^                "RedirectOutput"$/;"	s	array:configurations.10.debugOptions
+0	.vscode/launch.json	/^                "RedirectOutput"$/;"	s	array:configurations.5.debugOptions
+0	.vscode/launch.json	/^                "RedirectOutput"$/;"	s	array:configurations.6.debugOptions
+0	.vscode/launch.json	/^                "RedirectOutput"$/;"	s	array:configurations.7.debugOptions
+0	.vscode/launch.json	/^                "RedirectOutput"$/;"	s	array:configurations.8.debugOptions
+0	.vscode/launch.json	/^                "RedirectOutput",$/;"	s	array:configurations.4.debugOptions
+0	.vscode/launch.json	/^                "RedirectOutput",$/;"	s	array:configurations.9.debugOptions
+0	.vscode/launch.json	/^                "dev",$/;"	s	array:configurations.10.args
+0	.vscode/launch.json	/^                "run",$/;"	s	array:configurations.5.args
+0	.vscode/launch.json	/^                "runserver",$/;"	s	array:configurations.4.args
+0	.vscode/launch.json	/^        {$/;"	o	array:configurations
+0	.vscode/settings.json	/^        "--Disable E501"$/;"	s	array:python.linting.pep8Args
+0	.vscode/tasks.json	/^                "run.py"$/;"	s	array:tasks.0.args
+0	.vscode/tasks.json	/^        {$/;"	o	array:tasks
+0	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+0	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+0	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+0	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+0	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+0	data/Dungeon.json	/^    "resolution": [100,100],$/;"	n	array:resolution
+0	data/Potions/Damage.json	/^    "effects":["Increase_Damage"],$/;"	s	array:effects
+0	data/Potions/Health.json	/^    "effects": ["Heal"],$/;"	s	array:effects
+0	data/Potions/Shield.json	/^    "effects": ["Increase_Defense"],$/;"	s	array:effects
+1	.vscode/launch.json	/^                "--no-debugger",$/;"	s	array:configurations.5.args
+1	.vscode/launch.json	/^                "--noreload",$/;"	s	array:configurations.4.args
+1	.vscode/launch.json	/^                "DjangoDebugging"$/;"	s	array:configurations.4.debugOptions
+1	.vscode/launch.json	/^                "Pyramid"$/;"	s	array:configurations.9.debugOptions
+1	.vscode/launch.json	/^                "runserver",$/;"	s	array:configurations.10.args
+1	.vscode/launch.json	/^        {$/;"	o	array:configurations
+1	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+1	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+1	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+1	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+1	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+1	data/Dungeon.json	/^    "resolution": [100,100],$/;"	n	array:resolution
+10	.vscode/launch.json	/^        {$/;"	o	array:configurations
+2	.vscode/launch.json	/^                "--no-reload"$/;"	s	array:configurations.5.args
+2	.vscode/launch.json	/^                "--noreload=True"$/;"	s	array:configurations.10.args
+2	.vscode/launch.json	/^                "--nothreading"$/;"	s	array:configurations.4.args
+2	.vscode/launch.json	/^        {$/;"	o	array:configurations
+2	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+2	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+2	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+2	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+2	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+3	.vscode/launch.json	/^        {$/;"	o	array:configurations
+3	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+3	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+3	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+3	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+3	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+4	.vscode/launch.json	/^        {$/;"	o	array:configurations
+4	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+4	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+4	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+4	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+4	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+5	.vscode/launch.json	/^        {$/;"	o	array:configurations
+5	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+5	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+5	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+5	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+5	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+6	.vscode/launch.json	/^        {$/;"	o	array:configurations
+6	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+6	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+6	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+6	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+6	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+7	.vscode/launch.json	/^        {$/;"	o	array:configurations
+7	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+7	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+7	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+7	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+7	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+8	.vscode/launch.json	/^        {$/;"	o	array:configurations
+8	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+8	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+8	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+8	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+8	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+9	.vscode/launch.json	/^        {$/;"	o	array:configurations
+9	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	n	array:State.Attack
+9	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	n	array:State.Death
+9	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	n	array:State.Emote
+9	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	n	array:State.Idle
+9	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	n	array:State.Walk
+Attack	data/Characters/Skeleton.json	/^    "Attack": [31, 32, 33, 34, 35, 36, 37, 38, 39, 40],$/;"	a	object:State
+BLACK	src/utils.py	/^BLACK = (0, 0, 0)$/;"	v
+BLUE	src/utils.py	/^BLUE = (0, 0, 255)$/;"	v
+Background	src/dungeon_utils.py	/^class Background(DungeonElement):$/;"	c
+BossSkeleton	src/character/monsters.py	/^class BossSkeleton(Skeleton, picture_name="Skeleton"):$/;"	c
+Chest	src/artifacts.py	/^class Chest(DungeonElement):$/;"	c
+Clickable	src/UI/clickables.py	/^class Clickable(pygame.sprite.Sprite):$/;"	c
+Containers_ref	src/maps.py	/^Containers_ref = {1: (0, 0, 15, 15),$/;"	v
+Death	data/Characters/Skeleton.json	/^    "Death": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]$/;"	a	object:State
+Description	data/Potions/Damage.json	/^    "Description": "Increaese the ammount of Damage dealt",$/;"	s
+Description	data/Potions/Health.json	/^    "Description": "Heals the player for some health",$/;"	s
+Description	data/Potions/Shield.json	/^    "Description": "Decrease the ammount of Damage taken",$/;"	s
+Door	src/dungeon_utils.py	/^class Door(Background):$/;"	c
+Door_ref	src/maps.py	/^Door_ref = {1: (0, 0, 32, 32),$/;"	v
+Dungeon	src/classydungeon.py	/^class Dungeon:$/;"	c
+Dungeon-Game	README.md	/^# Dungeon-Game$/;"	c
+DungeonElement	src/dungeon_utils.py	/^class DungeonElement(pygame.sprite.Sprite):$/;"	c
+Emitter	src/artifacts.py	/^class Emitter():$/;"	c
+Emote	data/Characters/Skeleton.json	/^    "Emote": [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],$/;"	a	object:State
+FLASK_APP	.vscode/launch.json	/^                "FLASK_APP": "${workspaceFolder}\/app.py"$/;"	s	object:configurations.5.env
+FileDoc	src/utils.py	/^FileDoc = namedtuple('FileDoc', ['Reference', 'Picture'])$/;"	v
+GRAY	src/utils.py	/^GRAY = (50, 50, 50)$/;"	v
+GREEN	src/utils.py	/^GREEN = (0, 255, 0)$/;"	v
+Game	src/game.py	/^class Game:$/;"	c
+Game aspects:	README.md	/^## Game aspects:$/;"	s
+Goblin	src/character/monsters.py	/^class Goblin(Monster):$/;"	c
+Goblin_ref	src/maps.py	/^Goblin_ref = {1: (10, 14, 12, 17),$/;"	v
+HEIGHT	src/UI/__main__.py	/^WIDTH, HEIGHT = SCREEN_RESOLUTION = 600,400$/;"	v
+Heal	src/artifacts.py	/^    def Heal(self, target):$/;"	m	class:Potion
+HealthBar	src/character/healthbar.py	/^class HealthBar:$/;"	c
+Idle	data/Characters/Skeleton.json	/^    "Idle": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],$/;"	a	object:State
+Idtbl	dungeon_with_res.py	/^Idtbl=[[0 for i in range(resolution)] for i in range(resolution)]$/;"	v
+Ignore	src/utils.py	/^class Ignore:$/;"	c
+Increase_Damage	src/artifacts.py	/^    def Increase_Damage(self, target):$/;"	m	class:Potion
+Increase_Defense	src/artifacts.py	/^    def Increase_Defense(self, target):$/;"	m	class:Potion
+Json file format	README.md	/^## Json file format$/;"	s
+Level 1	data/Characters/boss_skeleton.json	/^    "Level 1": 2,$/;"	n
+Level 10	data/Characters/boss_skeleton.json	/^    "Level 10": 150$/;"	n
+Level 2	data/Characters/boss_skeleton.json	/^    "Level 2": 4,$/;"	n
+Level 3	data/Characters/boss_skeleton.json	/^    "Level 3": 6,$/;"	n
+Level 4	data/Characters/boss_skeleton.json	/^    "Level 4": 10,$/;"	n
+Level 5	data/Characters/boss_skeleton.json	/^    "Level 5": 15,$/;"	n
+Level 6	data/Characters/boss_skeleton.json	/^    "Level 6": 25,$/;"	n
+Level 7	data/Characters/boss_skeleton.json	/^    "Level 7": 40,$/;"	n
+Level 8	data/Characters/boss_skeleton.json	/^    "Level 8": 75,$/;"	n
+Level 9	data/Characters/boss_skeleton.json	/^    "Level 9": 100,$/;"	n
+Menu	src/UI/menus.py	/^class Menu(pygame.sprite.Group):$/;"	c
+MenuCentered	src/UI/menus.py	/^class MenuCentered:$/;"	c
+Monster	src/character/__init__.py	/^class Monster(Sprite, DungeonElement):$/;"	c
+ORANGE	src/utils.py	/^ORANGE = (255, 98, 0)$/;"	v
+ObjectList	src/object_list.py	/^class ObjectList(list):$/;"	c
+PURPLE	src/utils.py	/^PURPLE = (145, 57, 92)$/;"	v
+Player	src/character/player.py	/^class Player(Sprite, DungeonElement, picture_name="Rouge"):$/;"	c
+Potion	src/artifacts.py	/^class Potion(DungeonElement):$/;"	c
+Potions_ref	src/maps.py	/^Potions_ref = {1: (0, 0, 7, 7),$/;"	v
+Prng	dungeon_with_res.py	/^def Prng(limit):$/;"	f
+Projectile	src/artifacts.py	/^class Projectile(DungeonElement, pygame.sprite.Sprite):$/;"	c
+RED	src/utils.py	/^RED = (255, 0, 0)$/;"	v
+Ranger_ref	src/maps.py	/^Ranger_ref = {1: (9, 1, 16, 32),$/;"	v
+Room	dungeon_with_res.py	/^class Room:$/;"	c
+Room	src/dungeon_utils.py	/^class Room:$/;"	c
+Rouge_ref	src/maps.py	/^Rouge_ref = {1: (9, 1, 16, 32),$/;"	v
+Skeleton	src/character/monsters.py	/^class Skeleton(Monster):$/;"	c
+Skeleton_ref	src/maps.py	/^Skeleton_ref = {1: (9, 1, 20, 31),$/;"	v
+Sprite	src/character/__init__.py	/^class Sprite(pygame.sprite.Sprite):$/;"	c
+State	data/Characters/Skeleton.json	/^    "State": {$/;"	o
+TextButton	src/UI/clickables.py	/^class TextButton(Clickable):$/;"	c
+Tile	src/dungeon_utils.py	/^class Tile(Background):$/;"	c
+Tile_ref	src/maps.py	/^Tile_ref = {1: (0, 0, 32, 32),$/;"	v
+WHITE	src/utils.py	/^WHITE = (255, 255, 255)$/;"	v
+WIDTH	src/UI/__main__.py	/^WIDTH, HEIGHT = SCREEN_RESOLUTION = 600,400$/;"	v
+Walk	data/Characters/Skeleton.json	/^    "Walk": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30],$/;"	a	object:State
+Wall	src/dungeon_utils.py	/^class Wall(Background):$/;"	c
+_Prng	src/classydungeon.py	/^    def _Prng(self, limit, wantBool=False):$/;"	m	class:Dungeon
+__add__	src/character/healthbar.py	/^    def __add__(self, other):$/;"	m	class:HealthBar
+__call__	src/UI/menus.py	/^    def __call__(self):$/;"	m	class:MenuCentered
+__eq__	src/character/healthbar.py	/^    def __eq__(self, other):$/;"	m	class:HealthBar
+__ge__	src/character/healthbar.py	/^    def __ge__(self, other):$/;"	m	class:HealthBar
+__getattr__	src/object_list.py	/^    def __getattr__(self, item):$/;"	m	class:ObjectList
+__getitem__	src/artifacts.py	/^    def __getitem__(self, index):$/;"	m	class:Emitter
+__gt__	src/character/healthbar.py	/^    def __gt__(self, other):$/;"	m	class:HealthBar
+__gt__	src/dungeon_utils.py	/^    def __gt__(self, other):$/;"	m	class:Tile
+__hash__	src/character/__init__.py	/^    def __hash__(self):$/;"	m	class:Sprite
+__hash__	src/dungeon_utils.py	/^    def __hash__(self):$/;"	m	class:DungeonElement
+__iadd__	src/character/healthbar.py	/^    def __iadd__(self, value):$/;"	m	class:HealthBar
+__init__	dungeon_with_res.py	/^    def __init__(self,size,how,sx,sy):$/;"	m	class:Room
+__init__	src/UI/clickables.py	/^    def __init__(self, pos:tuple, message:str, font=utils.bold_font, *actions_on_click):$/;"	m	class:TextButton
+__init__	src/UI/clickables.py	/^    def __init__(self, pos:tuple, size:tuple, *actions_on_click):$/;"	m	class:Clickable
+__init__	src/UI/menus.py	/^    def __init__(self, screen_size: tuple, gap_size, item_count:int):$/;"	m	class:MenuCentered
+__init__	src/UI/menus.py	/^    def __init__(self, screen_size:tuple, button_names:dict, font=utils.bold_font):$/;"	m	class:Menu
+__init__	src/artifacts.py	/^    def __init__(self, *, start_pos: tuple, image, master: DungeonElement, $/;"	m	class:Projectile
+__init__	src/artifacts.py	/^    def __init__(self, element, stop_condition, cooldown=25, element_args=[], element_kwargs={})/;"	m	class:Emitter
+__init__	src/artifacts.py	/^    def __init__(self, name:str, pos:tuple, dungeon, image=None, effects=[], power=10, Descripti/;"	m	class:Potion
+__init__	src/artifacts.py	/^    def __init__(self, pos: tuple, images: collections.namedtuple, dungeon, *contains):$/;"	m	class:Chest
+__init__	src/character/__init__.py	/^    def __init__(self):$/;"	m	class:Sprite
+__init__	src/character/__init__.py	/^    def __init__(self, room, position=None):$/;"	m	class:Monster
+__init__	src/character/healthbar.py	/^    def __init__(self, current_health, max_health, width):$/;"	m	class:HealthBar
+__init__	src/character/monsters.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Skeleton
+__init__	src/character/monsters.py	/^    def __init__(self, *args, level=1, **kwargs):$/;"	m	class:BossSkeleton
+__init__	src/character/monsters.py	/^    def __init__(self, room, position=None):$/;"	m	class:Goblin
+__init__	src/character/player.py	/^    def __init__(self, dungeon):$/;"	m	class:Player
+__init__	src/classydungeon.py	/^            def __init__(self, x, y):$/;"	m	class:Dungeon.make_background.target
+__init__	src/classydungeon.py	/^    def __init__(self, resolution, room_count, game, specialWeigth=2, seed=random.randint(0, 879/;"	m	class:Dungeon
+__init__	src/dungeon_utils.py	/^    def __init__(self, position, Dungeon, direction):$/;"	m	class:Wall
+__init__	src/dungeon_utils.py	/^    def __init__(self, position, Room):$/;"	m	class:Tile
+__init__	src/dungeon_utils.py	/^    def __init__(self, position, dungeon):$/;"	m	class:DungeonElement
+__init__	src/dungeon_utils.py	/^    def __init__(self, size, how, sx, sy, dungeon, is_boss=False):$/;"	m	class:Room
+__init__	src/dungeon_utils.py	/^    def __init__(self, x, y, dungeon, direction):$/;"	m	class:Door
+__init__	src/game.py	/^    def __init__(self, screen_size: tuple, tilesize=16):$/;"	m	class:Game
+__init_subclass__	src/character/__init__.py	/^    def __init_subclass__(cls, picture_name: str = None, **kwargs):$/;"	m	class:Sprite
+__int__	src/character/healthbar.py	/^    def __int__(self):$/;"	m	class:HealthBar
+__isub__	src/character/healthbar.py	/^    def __isub__(self, value):$/;"	m	class:HealthBar
+__iter__	src/UI/menus.py	/^    def __iter__(self):$/;"	m	class:MenuCentered
+__iter__	src/artifacts.py	/^    def __iter__(self):$/;"	m	class:Emitter
+__le__	src/character/healthbar.py	/^    def __le__(self, other):$/;"	m	class:HealthBar
+__len__	src/artifacts.py	/^    def __len__(self):$/;"	m	class:Emitter
+__lt__	src/character/healthbar.py	/^    def __lt__(self, other):$/;"	m	class:HealthBar
+__lt__	src/dungeon_utils.py	/^    def __lt__(self, other):$/;"	m	class:Tile
+__next__	src/UI/menus.py	/^    def __next__(self):$/;"	m	class:MenuCentered
+__repr__	src/UI/clickables.py	/^    def __repr__(self):$/;"	m	class:Clickable
+__repr__	src/artifacts.py	/^    def __repr__(self):$/;"	m	class:Emitter
+__repr__	src/artifacts.py	/^    def __repr__(self):$/;"	m	class:Projectile
+__repr__	src/character/__init__.py	/^    def __repr__(self):$/;"	m	class:Sprite
+__repr__	src/classydungeon.py	/^    def __repr__(self):$/;"	m	class:Dungeon
+__repr__	src/dungeon_utils.py	/^    def __repr__(self):$/;"	m	class:DungeonElement
+__repr__	src/dungeon_utils.py	/^    def __repr__(self):$/;"	m	class:Room
+__startVal	src/classydungeon.py	/^    def __startVal(room):$/;"	m	class:Dungeon	file:
+_break	src/UI/__main__.py	/^            _break = True$/;"	v
+_break	src/UI/__main__.py	/^_break = False$/;"	v
+_draw	src/classydungeon.py	/^    def _draw(self, tile_size=None):$/;"	m	class:Dungeon
+_end	src/character/__init__.py	/^    _end = False$/;"	v	class:Sprite
+_finalize	src/classydungeon.py	/^    def _finalize(self):$/;"	m	class:Dungeon
+_findDir	src/classydungeon.py	/^    def _findDir(dir_index):$/;"	m	class:Dungeon
+_format	src/classydungeon.py	/^    def _format(self, size, sx, sy):$/;"	m	class:Dungeon
+_perform	src/UI/clickables.py	/^    def _perform(self):$/;"	m	class:Clickable
+active	src/dungeon_utils.py	/^    def active(self):$/;"	m	class:Room
+add_action	src/UI/clickables.py	/^    def add_action(self, action) -> None:$/;"	m	class:Clickable
+add_border	src/classydungeon.py	/^    def add_border(self):$/;"	m	class:Dungeon
+add_door	src/dungeon_utils.py	/^    def add_door(self, door):$/;"	m	class:Room
+addwalls	src/classydungeon.py	/^    def addwalls(self, corners=False):$/;"	m	class:Dungeon
+ahk	.vscode/settings.json	/^        "ahk": "autohotkey",$/;"	s	object:code-runner.executorMap
+all_elements	src/dungeon_utils.py	/^    def all_elements(self):$/;"	m	class:Room
+allrooms	dungeon_with_res.py	/^allrooms=[]$/;"	v
+animate	src/character/__init__.py	/^    def animate(self):$/;"	m	class:Sprite
+animation_speed	src/character/__init__.py	/^    animation_speed = 1$/;"	v	class:Sprite
+animation_speed	src/character/monsters.py	/^    animation_speed = 0.3$/;"	v	class:Skeleton
+animation_speed	src/character/player.py	/^    animation_speed = 0.5$/;"	v	class:Player
+applescript	.vscode/settings.json	/^        "applescript": "osascript",$/;"	s	object:code-runner.executorMap
+args	.vscode/launch.json	/^            "args": [$/;"	a	object:configurations.10
+args	.vscode/launch.json	/^            "args": [$/;"	a	object:configurations.4
+args	.vscode/launch.json	/^            "args": [$/;"	a	object:configurations.5
+args	.vscode/launch.json	/^            "args": [$/;"	a	object:configurations.9
+args	.vscode/launch.json	/^            "args": [],$/;"	a	object:configurations.6
+args	.vscode/tasks.json	/^            "args": [$/;"	a	object:tasks.0
+artifacts	src/character/__init__.py	/^import src.artifacts as artifacts$/;"	I
+artifacts	tests/test_artifacts.py	/^import src.artifacts as artifacts$/;"	I
+autoit	.vscode/settings.json	/^        "autoit": "autoit3",$/;"	s	object:code-runner.executorMap
+bat	.vscode/settings.json	/^        "bat": "cmd \/c",$/;"	s	object:code-runner.executorMap
+block_positions	src/dungeon_utils.py	/^    def block_positions(self):$/;"	m	class:Room
+bold_font	src/utils.py	/^bold_font = pygame.font.Font(path.join(db, "Fonts", "Under_the_Weather.otf"), 50)$/;"	v
+bot	src/utils.py	/^bot = None$/;"	v
+c	.vscode/settings.json	/^        "c": "cd $dir && gcc $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",$/;"	s	object:code-runner.executorMap
+cantouch	dungeon_with_res.py	/^cantouch=[[0 for i in range(resolution)] for i in range(resolution)]$/;"	v
+change_bot	src/utils.py	/^def change_bot(func):$/;"	f
+check	src/classydungeon.py	/^        def check(old_direc, new_direc):$/;"	f	member:Dungeon.door_fits	file:
+check_if_cleared	src/dungeon_utils.py	/^    def check_if_cleared(self):$/;"	m	class:Room
+chest_with_health_potion	src/artifacts.py	/^    def chest_with_health_potion(cls, pos, dungeon):$/;"	m	class:Chest
+clock	src/UI/__main__.py	/^clock = pygame.time.Clock()$/;"	v
+clojure	.vscode/settings.json	/^        "clojure": "lein exec",$/;"	s	object:code-runner.executorMap
+close	src/dungeon_utils.py	/^    def close(self):$/;"	m	class:Door
+close_doors	src/dungeon_utils.py	/^    def close_doors(self):$/;"	m	class:Room
+closed	src/artifacts.py	/^            closed = utils.get_img("Containers", 2)$/;"	v	class:Chest.chest_with_health_potion.images
+code-runner.executorMap	.vscode/settings.json	/^    "code-runner.executorMap": {$/;"	o
+coffeescript	.vscode/settings.json	/^        "coffeescript": "coffee",$/;"	s	object:code-runner.executorMap
+collides_with	src/character/__init__.py	/^def collides_with(self, class_name="any_sprite", group=None):$/;"	f
+command	.vscode/tasks.json	/^            "command": "${workspaceRoot}\/venv\/bin\/python",$/;"	s	object:tasks.0
+configurations	.vscode/launch.json	/^    "configurations": [$/;"	a
+console	.vscode/launch.json	/^            "console": "externalTerminal",$/;"	s	object:configurations.3
+console	.vscode/launch.json	/^            "console": "integratedTerminal",$/;"	s	object:configurations.2
+counter	src/character/__init__.py	/^    counter = 0$/;"	v	class:Sprite
+cpp	.vscode/settings.json	/^        "cpp": "cd $dir && g++ $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt",$/;"	s	object:code-runner.executorMap
+crystal	.vscode/settings.json	/^        "crystal": "crystal",$/;"	s	object:code-runner.executorMap
+csharp	.vscode/settings.json	/^        "csharp": "scriptcs",$/;"	s	object:code-runner.executorMap
+current_health	src/character/healthbar.py	/^    def current_health(self):$/;"	m	class:HealthBar
+current_health	src/character/healthbar.py	/^    def current_health(self, value):$/;"	m	class:HealthBar
+cwd	.vscode/launch.json	/^            "cwd": "",$/;"	s	object:configurations.2
+cwd	.vscode/launch.json	/^            "cwd": "",$/;"	s	object:configurations.3
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.0
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.10
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.4
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.5
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.6
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.7
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.8
+cwd	.vscode/launch.json	/^            "cwd": "${workspaceFolder}",$/;"	s	object:configurations.9
+d	.vscode/settings.json	/^        "d": "cd $dir && dmd $fileName && $dir$fileNameWithoutExt",$/;"	s	object:code-runner.executorMap
+damage	src/character/__init__.py	/^    def damage(self, dmg):$/;"	m	class:Sprite
+dart	.vscode/settings.json	/^        "dart": "dart",$/;"	s	object:code-runner.executorMap
+db	src/utils.py	/^db = path.join(package_path, "data")$/;"	v
+dead	src/character/__init__.py	/^    def dead(self):$/;"	m	class:Sprite
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.0
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.10
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.4
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.5
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.6
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.7
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.8
+debugOptions	.vscode/launch.json	/^            "debugOptions": [$/;"	a	object:configurations.9
+debugOptions	.vscode/launch.json	/^            "debugOptions": [],$/;"	a	object:configurations.2
+debugOptions	.vscode/launch.json	/^            "debugOptions": [],$/;"	a	object:configurations.3
+default_state	src/character/__init__.py	/^    default_state = "Idle"$/;"	v	class:Sprite
+default_state	src/character/monsters.py	/^    default_state = 'Walk'$/;"	v	class:Skeleton
+dialouge_box	src/utils.py	/^dialouge_box: pygame.surface.Surface = pygame.image.load(path.join(img_direc, "Dialouge_box.png"/;"	v
+display	src/UI/__main__.py	/^display = pygame.display.set_mode(SCREEN_RESOLUTION)$/;"	v
+do_once	src/utils.py	/^def do_once(func):$/;"	f
+door_fits	src/classydungeon.py	/^    def door_fits(self, positon, move_vector)->bool:$/;"	m	class:Dungeon
+draw	dungeon_with_res.py	/^def draw():$/;"	f
+draw	src/artifacts.py	/^    def draw(self, *a):$/;"	m	class:Projectile
+draw	src/artifacts.py	/^    def draw(self, *a, **kw):$/;"	m	class:Chest
+draw	src/character/__init__.py	/^    def draw(self, *a, **kw):$/;"	m	class:Monster
+draw	src/character/monsters.py	/^    def draw(self, *args, **kwargs):$/;"	m	class:Skeleton
+draw	src/character/player.py	/^    def draw(self, *args, **kwargs):$/;"	m	class:Player
+draw	src/dungeon_utils.py	/^    def draw(self, *args, **kwargs):$/;"	m	class:Room
+draw	src/dungeon_utils.py	/^    def draw(self, size=None, flip=False, display=None, target=None, background=False):$/;"	m	class:DungeonElement
+draw	src/game.py	/^    def draw(self):$/;"	m	class:Game
+draw	tests/test_artifacts.py	/^    draw = Mock()$/;"	v	class:test_object
+draw_bar	src/character/healthbar.py	/^    def draw_bar(self, screen: pygame.surface.Surface, target_rect:pygame.Rect):$/;"	m	class:HealthBar
+dun	src/game.py	/^from . import classydungeon as dun$/;"	x
+dungeon	dungeon_with_res.py	/^dungeon= Canvas(master,width=1000,height=1000)$/;"	v
+dungeon_master	dungeon_with_res.py	/^def dungeon_master():$/;"	f
+effects	data/Potions/Damage.json	/^    "effects":["Increase_Damage"],$/;"	a
+effects	data/Potions/Health.json	/^    "effects": ["Heal"],$/;"	a
+effects	data/Potions/Shield.json	/^    "effects": ["Increase_Defense"],$/;"	a
+elements_instances	src/artifacts.py	/^    def elements_instances(self):$/;"	m	class:Emitter
+emit	src/artifacts.py	/^    def emit(self,*draw_args, **draw_kwargs):$/;"	m	class:Emitter
+end	src/game.py	/^    def end(self):$/;"	m	class:Game
+end_if	src/artifacts.py	/^    def end_if(self):$/;"	m	class:Projectile
+end_of_animation	src/character/__init__.py	/^    def end_of_animation(self):$/;"	m	class:Sprite
+env	.vscode/launch.json	/^            "env": {$/;"	o	object:configurations.5
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.0
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.10
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.2
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.3
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.4
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.6
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.7
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.8
+env	.vscode/launch.json	/^            "env": {},$/;"	o	object:configurations.9
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.0
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.10
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.2
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.3
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.4
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.5
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.6
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.7
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.8
+envFile	.vscode/launch.json	/^            "envFile": "${workspaceFolder}\/.env",$/;"	s	object:configurations.9
+events	src/game.py	/^    def events(self):$/;"	m	class:Game
+example seeds to test out	README.md	/^## example seeds to test out $/;"	s
+ext	src/utils.py	/^    name, ext = name.split('.')$/;"	v
+find_block_at	src/classydungeon.py	/^    def find_block_at(self, pos:tuple) -> dungeon_utils.Background:$/;"	m	class:Dungeon
+find_dir	dungeon_with_res.py	/^def find_dir(dir_index):$/;"	f
+find_room_at	src/classydungeon.py	/^    def find_room_at(self, pos:tuple):$/;"	m	class:Dungeon
+find_rooms	src/dungeon_utils.py	/^    def find_rooms(self):$/;"	m	class:Door
+flip	src/character/monsters.py	/^    flip = False$/;"	v	class:Skeleton
+flip	src/character/player.py	/^    flip = False$/;"	v	class:Player
+format	dungeon_with_res.py	/^def format(size, sx ,sy):$/;"	f
+frame	src/character/__init__.py	/^    frame = 0$/;"	v	class:Sprite
+from_db	src/artifacts.py	/^    def from_db(cls, lookup_name:str, dungeon, pos:tuple):$/;"	m	class:Potion
+from_json	src/classydungeon.py	/^    def from_json(cls, file_name, game, **extras):$/;"	m	class:Dungeon
+fsharp	.vscode/settings.json	/^        "fsharp": "fsi",$/;"	s	object:code-runner.executorMap
+g	dungeon_with_res.py	/^g=0$/;"	v
+game	tests/test_classydungeon.py	/^def game():$/;"	f
+game	tests/test_dungeon.py	/^def game():$/;"	f
+get_all_images	src/utils.py	/^def get_all_images(class_name: str) -> dict:$/;"	f
+get_img	src/utils.py	/^def get_img(key_name, sprite_number) -> pygame.Surface:$/;"	f
+get_keys	src/character/player.py	/^    def get_keys(self):$/;"	m	class:Player
+get_single_img	src/utils.py	/^def get_single_img(name):$/;"	f
+go	.vscode/settings.json	/^        "go": "go run",$/;"	s	object:code-runner.executorMap
+graph_position	src/dungeon_utils.py	/^    def graph_position(self):$/;"	m	class:DungeonElement
+groovy	.vscode/settings.json	/^        "groovy": "groovy",$/;"	s	object:code-runner.executorMap
+group	.vscode/tasks.json	/^            "group": {$/;"	o	object:tasks.0
+haskell	.vscode/settings.json	/^        "haskell": "runhaskell",$/;"	s	object:code-runner.executorMap
+haxe	.vscode/settings.json	/^        "haxe": "haxe --cwd $dirWithoutTrailingSlash --run $fileNameWithoutExt",$/;"	s	object:code-runner.executorMap
+health	src/character/__init__.py	/^    health = 100$/;"	v	class:Sprite
+health	src/character/monsters.py	/^    health = 200$/;"	v	class:BossSkeleton
+height	src/dungeon_utils.py	/^    def height(self):$/;"	m	class:Background
+height	src/dungeon_utils.py	/^    def height(self):$/;"	m	class:DungeonElement
+height	src/dungeon_utils.py	/^    def height(self, new_height):$/;"	m	class:DungeonElement
+hits	src/artifacts.py	/^    def hits(self) -> bool:$/;"	m	class:Projectile
+host	.vscode/launch.json	/^            "host": "localhost"$/;"	s	object:configurations.1
+image	src/UI/clickables.py	/^    def image(self):$/;"	m	class:TextButton
+image	src/UI/clickables.py	/^    def image(self, new_image):$/;"	m	class:TextButton
+image	src/character/__init__.py	/^    def image(self) -> pygame.surface.Surface:$/;"	m	class:Sprite
+image	src/character/__init__.py	/^    def image(self, new_image: pygame.surface.Surface):$/;"	m	class:Sprite
+image	src/dungeon_utils.py	/^    image = None$/;"	v	class:DungeonElement
+image	src/dungeon_utils.py	/^    image = utils.get_img("Tile", 5)$/;"	v	class:Wall
+images	src/artifacts.py	/^        class images:$/;"	c	member:Chest.chest_with_health_potion	file:
+images	src/character/__init__.py	/^    def images(self):$/;"	m	class:Sprite
+img_direc	src/utils.py	/^img_direc = path.join(package_path, "img")$/;"	v
+interact	src/artifacts.py	/^    def interact(self):$/;"	m	class:Chest
+internalConsoleOptions	.vscode/launch.json	/^            "internalConsoleOptions": "neverOpen"$/;"	s	object:configurations.2
+internalConsoleOptions	.vscode/launch.json	/^            "internalConsoleOptions": "neverOpen"$/;"	s	object:configurations.3
+isDefault	.vscode/tasks.json	/^                "isDefault": true$/;"	b	object:tasks.0.group
+is_cleared	src/classydungeon.py	/^    def is_cleared(self):$/;"	m	class:Dungeon
+ison	dungeon_with_res.py	/^    def ison(self):$/;"	m	class:Room
+java	.vscode/settings.json	/^        "java": "cd $dir && javac $fileName && java $fileNameWithoutExt",$/;"	s	object:code-runner.executorMap
+javascript	.vscode/settings.json	/^        "javascript": "node",$/;"	s	object:code-runner.executorMap
+julia	.vscode/settings.json	/^        "julia": "julia",$/;"	s	object:code-runner.executorMap
+kill	src/artifacts.py	/^    def kill(self):$/;"	m	class:Projectile
+kill	src/dungeon_utils.py	/^    def kill(self):$/;"	m	class:DungeonElement
+kill	tests/test_artifacts.py	/^    kill = Mock()$/;"	v	class:test_object
+kind	.vscode/tasks.json	/^                "kind": "build",$/;"	s	object:tasks.0.group
+label	.vscode/tasks.json	/^            "label": "python",$/;"	s	object:tasks.0
+laser_blast_ref	src/maps.py	/^laser_blast_ref = {1: (2, 2, 206, 656)}$/;"	v
+levels	src/character/monsters.py	/^    def levels(level: int) -> int:$/;"	m	class:BossSkeleton
+linux	.vscode/launch.json	/^            "linux": {$/;"	o	object:configurations.7
+load	src/artifacts.py	/^    def load(self, additional_args=[], stop_condition=None, additional_kwargs={}):$/;"	m	class:Emitter
+loaded_emmiter	tests/test_artifacts.py	/^def loaded_emmiter():$/;"	f
+localRoot	.vscode/launch.json	/^            "localRoot": "${workspaceFolder}",$/;"	s	object:configurations.1
+lookup_number	data/Potions/Damage.json	/^    "lookup_number": 7$/;"	n
+lookup_number	data/Potions/Health.json	/^    "lookup_number": 1$/;"	n
+lookup_number	data/Potions/Shield.json	/^    "lookup_number": 2$/;"	n
+lua	.vscode/settings.json	/^        "lua": "lua",$/;"	s	object:code-runner.executorMap
+make	src/classydungeon.py	/^    def make(self):$/;"	m	class:Dungeon
+make_background	src/classydungeon.py	/^    def make_background(self, background:pygame.surface.Surface):$/;"	m	class:Dungeon
+make_order	src/classydungeon.py	/^    def make_order(self):$/;"	m	class:Dungeon
+make_start_room	src/classydungeon.py	/^    def make_start_room(self):$/;"	m	class:Dungeon
+master	dungeon_with_res.py	/^master= Tk()$/;"	v
+max_health	src/character/__init__.py	/^    max_health = 100$/;"	v	class:Sprite
+menus	tests/test_UI/test_menus.py	/^import src.UI.menus as menus$/;"	I
+modify	src/UI/menus.py	/^    def modify(self):$/;"	m	class:MenuCentered
+module	.vscode/launch.json	/^            "module": "flask",$/;"	s	object:configurations.5
+module	.vscode/launch.json	/^            "module": "module.name",$/;"	s	object:configurations.8
+monsters	src/classydungeon.py	/^    def monsters(self):$/;"	m	class:Dungeon
+mouse_clicked	src/UI/__main__.py	/^    mouse_clicked = pygame.mouse.get_pressed()[0]$/;"	v
+name	.vscode/launch.json	/^            "name": "Python: Attach",$/;"	s	object:configurations.1
+name	.vscode/launch.json	/^            "name": "Python: Current File",$/;"	s	object:configurations.0
+name	.vscode/launch.json	/^            "name": "Python: Django",$/;"	s	object:configurations.4
+name	.vscode/launch.json	/^            "name": "Python: Flask (0.10.x or earlier)",$/;"	s	object:configurations.6
+name	.vscode/launch.json	/^            "name": "Python: Flask (0.11.x or later)",$/;"	s	object:configurations.5
+name	.vscode/launch.json	/^            "name": "Python: Module",$/;"	s	object:configurations.8
+name	.vscode/launch.json	/^            "name": "Python: PySpark",$/;"	s	object:configurations.7
+name	.vscode/launch.json	/^            "name": "Python: Pyramid",$/;"	s	object:configurations.9
+name	.vscode/launch.json	/^            "name": "Python: Terminal (external)",$/;"	s	object:configurations.3
+name	.vscode/launch.json	/^            "name": "Python: Terminal (integrated)",$/;"	s	object:configurations.2
+name	.vscode/launch.json	/^            "name": "Python: Watson",$/;"	s	object:configurations.10
+name	data/Potions/Damage.json	/^    "name": "Damage Potion",$/;"	s
+name	data/Potions/Health.json	/^    "name": "Health Potion",$/;"	s
+name	data/Potions/Shield.json	/^    "name": "Sheild Potion",$/;"	s
+name	src/utils.py	/^    name, ext = name.split('.')$/;"	v
+newdoor	dungeon_with_res.py	/^def newdoor(doorX, doorY):$/;"	f
+nim	.vscode/settings.json	/^        "nim": "nim compile --verbosity:0 --hints:off --run"$/;"	s	object:code-runner.executorMap
+notnull	dungeon_with_res.py	/^notnull=[]$/;"	v
+np	src/UI/__init__.py	/^import numpy as np$/;"	I
+np	src/UI/clickables.py	/^import numpy as np$/;"	I
+np	src/UI/menus.py	/^import numpy as np$/;"	I
+np	src/artifacts.py	/^import numpy as np$/;"	I
+np	src/character/__init__.py	/^import numpy as np$/;"	I
+np	src/classydungeon.py	/^import numpy as np$/;"	I
+np	src/dungeon_utils.py	/^import numpy as np$/;"	I
+np	tests/test_UI/test_menus.py	/^import numpy as np$/;"	I
+objective-c	.vscode/settings.json	/^        "objective-c": "cd $dir && gcc -framework Cocoa $fileName -o $fileNameWithoutExt && $dir/;"	s	object:code-runner.executorMap
+ocaml	.vscode/settings.json	/^        "ocaml": "ocaml",$/;"	s	object:code-runner.executorMap
+off_hover	src/UI/clickables.py	/^    def off_hover(self):$/;"	m	class:Clickable
+off_hover	src/UI/clickables.py	/^    def off_hover(self):$/;"	m	class:TextButton
+on_death	src/character/__init__.py	/^    def on_death(self):$/;"	m	class:Monster
+on_death	src/character/__init__.py	/^    def on_death(self):$/;"	m	class:Sprite
+on_dying	src/character/__init__.py	/^    def on_dying(self):$/;"	m	class:Sprite
+on_hover	src/UI/clickables.py	/^    def on_hover(self):$/;"	m	class:Clickable
+on_hover	src/UI/clickables.py	/^    def on_hover(self):$/;"	m	class:TextButton
+open	src/dungeon_utils.py	/^    def open(self):$/;"	m	class:Door
+open_doors	src/dungeon_utils.py	/^    def open_doors(self):$/;"	m	class:Room
+opened	src/artifacts.py	/^            opened = utils.get_img("Containers", 1)$/;"	v	class:Chest.chest_with_health_potion.images
+osx	.vscode/launch.json	/^            "osx": {$/;"	o	object:configurations.7
+package_path	src/utils.py	/^package_path = path.dirname(path.dirname(__file__))$/;"	v
+pascal	.vscode/settings.json	/^        "pascal": "cd $dir && fpc $fileName && $dir$fileNameWithoutExt",$/;"	s	object:code-runner.executorMap
+pause_menu	src/UI/__main__.py	/^pause_menu = menus.PauseMenu(SCREEN_RESOLUTION)$/;"	v
+perl	.vscode/settings.json	/^        "perl": "perl",$/;"	s	object:code-runner.executorMap
+perl6	.vscode/settings.json	/^        "perl6": "perl6",$/;"	s	object:code-runner.executorMap
+php	.vscode/settings.json	/^        "php": "php",$/;"	s	object:code-runner.executorMap
+port	.vscode/launch.json	/^            "port": 3000,$/;"	n	object:configurations.1
+position	src/dungeon_utils.py	/^    def position(self):$/;"	m	class:DungeonElement
+position	src/dungeon_utils.py	/^    def position(self, new_position: tuple):$/;"	m	class:DungeonElement
+possible_states	src/character/__init__.py	/^    possible_states = {"Idle",$/;"	v	class:Sprite
+possible_states	src/character/monsters.py	/^    possible_states = {'Walk', 'Attack'}$/;"	v	class:Skeleton
+powershell	.vscode/settings.json	/^        "powershell": "powershell -ExecutionPolicy ByPass -File",$/;"	s	object:code-runner.executorMap
+prngNum	dungeon_with_res.py	/^prngNum = int(input("What is the seed? "))$/;"	v
+program	.vscode/launch.json	/^            "program": "${file}",$/;"	s	object:configurations.0
+program	.vscode/launch.json	/^            "program": "${file}",$/;"	s	object:configurations.2
+program	.vscode/launch.json	/^            "program": "${file}",$/;"	s	object:configurations.3
+program	.vscode/launch.json	/^            "program": "${file}",$/;"	s	object:configurations.7
+program	.vscode/launch.json	/^            "program": "${workspaceFolder}\/console.py",$/;"	s	object:configurations.10
+program	.vscode/launch.json	/^            "program": "${workspaceFolder}\/manage.py",$/;"	s	object:configurations.4
+program	.vscode/launch.json	/^            "program": "${workspaceFolder}\/run.py",$/;"	s	object:configurations.6
+pytest cache directory	.pytest_cache/README.md	/^# pytest cache directory #$/;"	c
+python	.vscode/settings.json	/^        "python": "python3",$/;"	s	object:code-runner.executorMap
+python.autoComplete.addBrackets	.vscode/settings.json	/^    "python.autoComplete.addBrackets": false,$/;"	b
+python.linting.enabled	.vim/coc-settings.json	/^  "python.linting.enabled": true$/;"	b
+python.linting.enabled	.vscode/settings.json	/^    "python.linting.enabled": true,$/;"	b
+python.linting.lintOnSave	.vscode/settings.json	/^    "python.linting.lintOnSave": true,$/;"	b
+python.linting.pep8Args	.vscode/settings.json	/^    "python.linting.pep8Args": [$/;"	a
+python.linting.pep8Enabled	.vim/coc-settings.json	/^  "python.linting.pep8Enabled": true,$/;"	b
+python.linting.pep8Enabled	.vscode/settings.json	/^    "python.linting.pep8Enabled": true,$/;"	b
+python.linting.pylintEnabled	.vim/coc-settings.json	/^  "python.linting.pylintEnabled": false,$/;"	b
+python.linting.pylintEnabled	.vscode/settings.json	/^    "python.linting.pylintEnabled": false,$/;"	b
+python.pythonPath	.vscode/settings.json	/^    "python.pythonPath": "${workspaceFolder}\/venv\/bin\/python3",$/;"	s
+python.terminal.activateEnvironment	.vscode/settings.json	/^    "python.terminal.activateEnvironment": true,$/;"	b
+python.unitTest.promptToConfigure	.vscode/settings.json	/^    "python.unitTest.promptToConfigure": true,$/;"	b
+python.unitTest.pyTestEnabled	.vscode/settings.json	/^    "python.unitTest.pyTestEnabled": true,$/;"	b
+python.unitTest.unittestEnabled	.vscode/settings.json	/^    "python.unitTest.unittestEnabled": false,$/;"	b
+pythonPath	.vscode/launch.json	/^                "pythonPath": "${env:SPARK_HOME}\/bin\/spark-submit"$/;"	s	object:configurations.7.linux
+pythonPath	.vscode/launch.json	/^                "pythonPath": "${env:SPARK_HOME}\/bin\/spark-submit"$/;"	s	object:configurations.7.osx
+pythonPath	.vscode/launch.json	/^                "pythonPath": "${env:SPARK_HOME}\/bin\/spark-submit.cmd"$/;"	s	object:configurations.7.windows
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.0
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.10
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.2
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.3
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.4
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.5
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.6
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.8
+pythonPath	.vscode/launch.json	/^            "pythonPath": "${config:python.pythonPath}",$/;"	s	object:configurations.9
+r	.vscode/settings.json	/^        "r": "Rscript",$/;"	s	object:code-runner.executorMap
+racket	.vscode/settings.json	/^        "racket": "racket",$/;"	s	object:code-runner.executorMap
+ready	src/artifacts.py	/^    def ready(self):$/;"	m	class:Emitter
+ready	src/artifacts.py	/^    def ready(self):$/;"	m	class:Projectile
+remoteRoot	.vscode/launch.json	/^            "remoteRoot": "${workspaceFolder}",$/;"	s	object:configurations.1
+remove_wall_at	src/classydungeon.py	/^    def remove_wall_at(self, x, y):$/;"	m	class:Dungeon
+render_health_bar	src/character/healthbar.py	/^    def render_health_bar(self):$/;"	m	class:HealthBar
+request	.vscode/launch.json	/^            "request": "attach",$/;"	s	object:configurations.1
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.0
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.10
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.2
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.3
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.4
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.5
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.6
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.7
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.8
+request	.vscode/launch.json	/^            "request": "launch",$/;"	s	object:configurations.9
+reset_animations	src/character/__init__.py	/^    def reset_animations(self):$/;"	m	class:Sprite
+resolution	data/Dungeon.json	/^    "resolution": [100,100],$/;"	a
+resolution	dungeon_with_res.py	/^resolution = int(input('What is the resolution (10 is recommended): '))$/;"	v
+restart	src/game.py	/^def restart():$/;"	f
+robot	src/utils.py	/^robot = 0$/;"	v
+robot_font	src/utils.py	/^robot_font = pygame.font.Font(path.join(db, "Fonts", "HUMANOID.TTF"), 32)$/;"	v
+robot_mouthclosed	src/utils.py	/^robot_mouthclosed = pygame.transform.scale(robot_mouthclosed, (180, 100))$/;"	v
+robot_mouthclosed_ref	src/maps.py	/^robot_mouthclosed_ref = None$/;"	v
+robot_mouthopen	src/utils.py	/^robot_mouthopen = pygame.transform.scale(robot_mouthopen, (180, 100))$/;"	v
+robot_mouthopen_ref	src/maps.py	/^robot_mouthopen_ref = None$/;"	v
+room_count	data/Dungeon.json	/^    "room_count": 20$/;"	n
+roomamt	dungeon_with_res.py	/^roomamt= int(input("how many rooms? "))$/;"	v
+ruby	.vscode/settings.json	/^        "ruby": "ruby",$/;"	s	object:code-runner.executorMap
+run	src/game.py	/^def run():$/;"	f
+rust	.vscode/settings.json	/^        "rust": "cd $dir && rustc $fileName && $dir$fileNameWithoutExt",$/;"	s	object:code-runner.executorMap
+scala	.vscode/settings.json	/^        "scala": "scala",$/;"	s	object:code-runner.executorMap
+scale	src/dungeon_utils.py	/^    def scale(self, size: tuple):$/;"	m	class:DungeonElement
+sci_fi_ref	src/maps.py	/^sci_fi_ref = {1: (0, 0, 31, 31),$/;"	v
+secret	.vscode/launch.json	/^            "secret": "my_secret",$/;"	s	object:configurations.1
+send_message	src/utils.py	/^def send_message(msg, screen, bot: Ignore):$/;"	f
+setup	dungeon_with_res.py	/^def setup():$/;"	f
+setup	src/game.py	/^    def setup(self):$/;"	m	class:Game
+sheets	src/utils.py	/^sheets = {}$/;"	v
+shellscript	.vscode/settings.json	/^        "shellscript": "bash",$/;"	s	object:code-runner.executorMap
+showMonsters	dungeon_with_res.py	/^    def showMonsters(self):$/;"	m	class:Room
+size	src/dungeon_utils.py	/^    def size(self):$/;"	m	class:DungeonElement
+size	src/dungeon_utils.py	/^    def size(self, new_size):$/;"	m	class:DungeonElement
+song_direc	src/utils.py	/^song_direc = path.join(package_path, "music")$/;"	v
+spawn_skeleton	src/character/monsters.py	/^    def spawn_skeleton(self):$/;"	m	class:BossSkeleton
+speed	src/character/__init__.py	/^    speed = 0.5$/;"	v	class:Sprite
+speed	src/character/monsters.py	/^    speed = 0.02$/;"	v	class:BossSkeleton
+speed	src/character/monsters.py	/^    speed = 0.04$/;"	v	class:Skeleton
+speed	src/character/player.py	/^    speed = 0.2$/;"	v	class:Player
+speed_up	src/character/player.py	/^    def speed_up(self):$/;"	m	class:Player
+sprite_sheet_names	src/utils.py	/^sprite_sheet_names = ["Tile.png", "Rouge.png", "Skeleton.png", "Door.jpg", "sword_slash.jpg",$/;"	v
+start	src/game.py	/^    def start(self):$/;"	m	class:Game
+state	src/character/__init__.py	/^    def state(self) -> str:$/;"	m	class:Sprite
+state	src/character/__init__.py	/^    def state(self, new_state):$/;"	m	class:Sprite
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": false,$/;"	b	object:configurations.5
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": false,$/;"	b	object:configurations.6
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.0
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.10
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.2
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.3
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.4
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.7
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.8
+stopOnEntry	.vscode/launch.json	/^            "stopOnEntry": true,$/;"	b	object:configurations.9
+stop_cond	tests/test_artifacts.py	/^def stop_cond(request):$/;"	f
+stored_class	src/artifacts.py	/^stored_class = collections.namedtuple("stored_class", ['inst', 'end_cond', 'start_time'])$/;"	v
+swift	.vscode/settings.json	/^        "swift": "swift",$/;"	s	object:code-runner.executorMap
+sword_slash_ref	src/maps.py	/^sword_slash_ref = None$/;"	v
+target	src/classydungeon.py	/^        class target:$/;"	c	member:Dungeon.make_background	file:
+tasks	.vscode/tasks.json	/^    "tasks": [$/;"	a
+test_center_modifiers	tests/test_UI/test_menus.py	/^def test_center_modifiers():$/;"	f
+test_emmiter_calls_draw	tests/test_artifacts.py	/^def test_emmiter_calls_draw(loaded_emmiter):$/;"	f
+test_emmiter_cooldown	tests/test_artifacts.py	/^def test_emmiter_cooldown():$/;"	f
+test_emmiter_load	tests/test_artifacts.py	/^def test_emmiter_load(stop_cond):$/;"	f
+test_emmiter_remove_elemetns	tests/test_artifacts.py	/^def test_emmiter_remove_elemetns():$/;"	f
+test_menu_centerd5	tests/test_UI/test_menus.py	/^def test_menu_centerd5():$/;"	f
+test_menu_centered4	tests/test_UI/test_menus.py	/^def test_menu_centered4():$/;"	f
+test_object	tests/test_artifacts.py	/^class test_object:$/;"	c
+test_seed_consitency	tests/test_classydungeon.py	/^def test_seed_consitency():$/;"	f
+test_seed_consitency	tests/test_dungeon.py	/^def test_seed_consitency():$/;"	f
+toggle_pause	src/game.py	/^    def toggle_pause(self):$/;"	m	class:Game
+transform	src/dungeon_utils.py	/^    def transform(self, x, y):$/;"	m	class:DungeonElement
+transform	src/utils.py	/^def transform(thing: int):$/;"	f
+true_end	src/game.py	/^def true_end():$/;"	f
+true_pos	src/dungeon_utils.py	/^    def true_pos(self):$/;"	m	class:DungeonElement
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.0
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.1
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.10
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.2
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.3
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.4
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.5
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.6
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.7
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.8
+type	.vscode/launch.json	/^            "type": "python",$/;"	s	object:configurations.9
+type	.vscode/tasks.json	/^            "type": "shell",$/;"	s	object:tasks.0
+typescript	.vscode/settings.json	/^        "typescript": "ts-node",$/;"	s	object:code-runner.executorMap
+unstopable_states	src/character/__init__.py	/^    unstopable_states = {"Attacking",$/;"	v	class:Sprite
+update	dungeon_with_res.py	/^def update():$/;"	f
+update	src/UI/clickables.py	/^    def update(self, mouse_clicked):$/;"	m	class:TextButton
+update	src/UI/clickables.py	/^    def update(self, mouse_clicked: bool):$/;"	m	class:Clickable
+update	src/artifacts.py	/^    def update(self):$/;"	m	class:Chest
+update	src/artifacts.py	/^    def update(self):$/;"	m	class:Potion
+update	src/artifacts.py	/^    def update(self):$/;"	m	class:Projectile
+update	src/artifacts.py	/^    def update(self, *update_args, **update_kwargs):$/;"	m	class:Emitter
+update	src/character/__init__.py	/^    def update(self):$/;"	m	class:Monster
+update	src/character/healthbar.py	/^    def update(self):$/;"	m	class:HealthBar
+update	src/character/monsters.py	/^    def update(self, active):$/;"	m	class:BossSkeleton
+update	src/character/monsters.py	/^    def update(self, active: bool):$/;"	m	class:Skeleton
+update	src/character/player.py	/^    def update(self):$/;"	m	class:Player
+update	src/classydungeon.py	/^    def update(self, size, how, startX, startY):$/;"	m	class:Dungeon
+update	src/dungeon_utils.py	/^    def update(self):$/;"	m	class:DungeonElement
+update	src/dungeon_utils.py	/^    def update(self):$/;"	m	class:Room
+update	src/game.py	/^    def update(self):$/;"	m	class:Game
+update	tests/test_artifacts.py	/^    update = Mock()$/;"	v	class:test_object
+update_all	src/classydungeon.py	/^    def update_all(self):$/;"	m	class:Dungeon
+update_sprites	src/classydungeon.py	/^    def update_sprites(self):$/;"	m	class:Dungeon
+utils	src/character/__init__.py	/^import src.utils as utils$/;"	I
+vbscript	.vscode/settings.json	/^        "vbscript": "cscript \/\/Nologo",$/;"	s	object:code-runner.executorMap
+walls	dungeon_with_res.py	/^def walls():$/;"	f
+width	src/character/healthbar.py	/^    def width(self):$/;"	m	class:HealthBar
+width	src/character/healthbar.py	/^    def width(self, width):$/;"	m	class:HealthBar
+width	src/dungeon_utils.py	/^    def width(self):$/;"	m	class:Background
+width	src/dungeon_utils.py	/^    def width(self):$/;"	m	class:DungeonElement
+width	src/dungeon_utils.py	/^    def width(self, new_width):$/;"	m	class:DungeonElement
+windows	.vscode/launch.json	/^            "windows": {$/;"	o	object:configurations.7
+wrapped	src/utils.py	/^    def wrapped(*args, **kwargs):$/;"	f	function:change_bot	file:
+wrapper	src/utils.py	/^    def wrapper(*a, **kw):$/;"	f	function:do_once	file:
+x_limit	src/character/monsters.py	/^    def x_limit(self):$/;"	m	class:Skeleton
+y_limit	src/character/monsters.py	/^    def y_limit(self):$/;"	m	class:Skeleton

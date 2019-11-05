@@ -51,6 +51,15 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
             move_x = -self.speed
         if key[pygame.K_RIGHT]:
             move_x = self.speed
+
+        if key[pygame.K_s]:
+            move_y = self.speed
+        if key[pygame.K_w]:
+            move_y = -self.speed
+        if key[pygame.K_a]:
+            move_x = -self.speed
+        if key[pygame.K_d]:
+            move_x = self.speed
         if move_x and move_y:
             move_x /= 1.41
             move_y /= 1.41
@@ -59,7 +68,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
         if self.dungeon.Idtbl[round(self.x)][round(self.y)] == 1:
             self.x -= move_x
             self.y -= move_y
-        
+
         if move_x != 0 or move_y != 0:
             self.state = 'Walk'
         else:
@@ -77,7 +86,7 @@ class Player(Sprite, DungeonElement, picture_name="Rouge"):
             self.state = 'Attacking'
             #self.speed_up()
             self.shooter.load(additional_kwargs=dict(start_pos=self.position, direction=direction))
-        
+
         with collides_with(self, class_name=Monster) as monsters:
             for monster in monsters:
                 if monster.state != "Dying":

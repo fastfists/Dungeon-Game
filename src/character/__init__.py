@@ -82,7 +82,7 @@ class Sprite(pygame.sprite.Sprite):
 
     def reset_animations(self):
         """Sets the frame counters to 0"""
-        self.frame, self.counter = 0, 0     
+        self.frame, self.counter = 0, 0
 
     def damage(self, dmg):
         """ Reduces the health"""

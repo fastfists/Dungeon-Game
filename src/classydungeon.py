@@ -8,7 +8,6 @@ import pygame
 
 from . import character, dungeon_utils, utils
 
-
 class Dungeon:
     """
     The dungeon uses a method of Procedual generation that I created without any outside info on the topic
@@ -63,7 +62,7 @@ class Dungeon:
         return cls(**data)
 
     def _Prng(self, limit, wantBool=False):
-        """ 
+        """
             Randomizer
             :param limit: The highest value (2 returns 1 or 0)
             :returns: int
@@ -77,10 +76,10 @@ class Dungeon:
         works = False
         while not works:
             x, y = self._Prng(len(self.Idtbl)), self._Prng(len(self.Idtbl))
-            if self._format(6, x, y):
-                self.allrooms.append(dungeon_utils.Room(6, self.currenType, x, y, self, is_boss=True))
+            if self._format(12, x, y):
+                self.allrooms.append(dungeon_utils.Room(12, self.currenType, x, y, self, is_boss=True))
                 x, y = self.__startVal(self.allrooms[len(self.allrooms) - 1])
-                self.update(6, self.currenType, x, y)
+                self.update(12, self.currenType, x, y)
                 self.addwalls()
                 works = True
         while len(self.allrooms) != self.room_count:
@@ -119,7 +118,7 @@ class Dungeon:
             for block in room.blocks:
                 if block.position == pos:
                     return block
-            
+
 
     def find_room_at(self, pos:tuple):
         try:
@@ -329,11 +328,11 @@ class Dungeon:
         class target:
             def __init__(self, x, y):
                 self.x = x
-                self.y = y            
+                self.y = y
         draw_args = dict()
         [wall.draw(display=background, target=target(0,0), background=True) for wall in self.walls]
         [wall.draw(display=background, target=target(0,0), background=True) for wall in self.border]
-        
+
         for room in self.allrooms+ [self.start_room]:
             [tile.draw(display=background, target=target(0,0), background=True) for tile in room.blocks]
         room_counts = Counter(str(room) for room in self.allrooms+ [self.start_room])
@@ -353,11 +352,14 @@ class Dungeon:
         x = -self.focus.x + self.game.GRIDWIDTH // 2
         y = -self.focus.y + self.game.GRIDHEIGHT// 2
         self.display.blit(self.background, (x*self.TILESIZE, y*self.TILESIZE))
-        
+
         [element.draw() for element in self.draw_only]
         [room.draw() for room in self.allrooms]
 
-    @property 
+    def power_up(self):
+        [room.power_up() for room in self.allrooms]
+
+    @property
     def is_cleared(self):
         return all([room.is_cleared for room in self.allrooms])
 

@@ -11,7 +11,7 @@ class Skeleton(Monster):
     default_state = 'Walk'
     possible_states = {'Walk', 'Attack'}
     animation_speed = 0.3
-    speed = 0.04
+    speed = 0.01
     flip = False
 
     def __init__(self, *args, **kwargs):
@@ -28,6 +28,15 @@ class Skeleton(Monster):
     @property
     def y_limit(self):
         return self.room.blocks[0].y, self.room.blocks[-1].y
+
+    def on_death(self):
+        super().on_death()
+        self.room.power_up()
+        if self.room.is_cleared:
+            self.room.dungeon.power_up()
+
+    def power_up(self):
+        self.speed += 0.01
 
     def update(self, active: bool):
         if not self.dead:
@@ -59,15 +68,29 @@ class Skeleton(Monster):
 
 
 class BossSkeleton(Skeleton, picture_name="Skeleton"):
-    health = 200
+    health = 500
     speed = 0.02
-    def __init__(self, *args, level=1, **kwargs):
+    def __init__(self, *args, level=10, **kwargs):
         super().__init__(*args, **kwargs)
         self.max_skeletons = self.levels(level)
         self.size *= 8
         self.size //= 2
+        self.revenge = 0
         self.skelton_spawner = artifacts.Emitter(Skeleton, lambda skel: skel.state != 'Dead',
                                                  cooldown=50, element_args=[self.room])
+        [self.spawn_skeleton() for i in range(random.randint(3,5))]
+
+    def on_death(self):
+        super().on_death()
+        utils.send_message("The boss revenge begins", self.room.dungeon.game.display)
+        for i in range(self.revenge % 2):
+            self.room.dungeon.power_up()
+            self.room.power_up()
+            self.room.power_up()
+
+    def power_up(self):
+        self.speed -= 0.01
+
 
     @staticmethod
     def levels(level: int) -> int:
@@ -77,12 +100,16 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
             return data[f"Level {level}"]
 
     def spawn_skeleton(self):
+        def on_skeleton_death():
+            self.revenge += 1
+
         if self.skelton_spawner.ready:
             self.state = "Attacking"
             x, y = self.position
-            start_pos = x + random.uniform(-.1, .1), y + random.uniform(-.1, .1)
+            start_pos = x + random.uniform(-.1, .1), y + random.uniform(-3, 3)
             self.skelton_spawner.load(additional_kwargs={'position': start_pos})
             self.dungeon.elements.add(self.skelton_spawner[-1])
+            self.skelton_spawner[-1].on_death = on_skeleton_death
             self.room.monsters.append(self.skelton_spawner[-1])
 
     def update(self, active):
@@ -94,6 +121,6 @@ class BossSkeleton(Skeleton, picture_name="Skeleton"):
 
 
 class Goblin(Monster):
-    
+
     def __init__(self, room, position=None):
         speed = 0.7

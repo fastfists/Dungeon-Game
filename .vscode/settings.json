@@ -1,8 +1,8 @@
 {
     "python.terminal.activateEnvironment": true,
     "python.linting.pylintEnabled": false,
-    "python.linting.pep8Enabled": true,
-    "python.linting.pep8Args": [
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pycodestyleArgs": [
         "--Disable E501"
     ],
     "python.linting.lintOnSave": true,
